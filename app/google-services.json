@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "465671304667",
+    "project_id": "nailzip-21eea",
+    "storage_bucket": "nailzip-21eea.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:465671304667:android:b5ca5b1ebf39ab5a22e3fe",
+        "android_client_info": {
+          "package_name": "com.example.nailzip"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "465671304667-d0eqb9o4aeta1bj15fepcgshl982fggr.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.nailzip",
+            "certificate_hash": "4a8013a130526e5338b3f112f48c2b2ea4e36ee8"
+          }
+        },
+        {
+          "client_id": "465671304667-1nfs6cug6ac1vdsa4nomgr8sd73orm4j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBvgovrPiz4lGE7nGdApfTjCLnKKzYAVNQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "465671304667-1nfs6cug6ac1vdsa4nomgr8sd73orm4j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
