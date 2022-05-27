@@ -2,7 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.nailzip">
 
-    <uses-permission android:name="android.permission.INTERNET" /> //인터넷 권한 허용
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -12,7 +12,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.NailZip">
         <activity
-            android:name=".MainActivity"
+            android:name=".RegisterShopActivity"
+            android:exported="false" />
+        <activity
+            android:name=".member.RegisterClientActivity"
+            android:exported="false" />
+        <activity
+            android:name=".member.RegisterqueActivity"
+            android:exported="false" />
+        <activity
+            android:name=".member.StartActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -20,6 +29,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".MainActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

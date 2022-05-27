@@ -1,3 +1,30 @@
 <resources>
     <string name="app_name">NailZip</string>
+
+    <!--    login-->
+    <string name="userId">ID</string>
+    <string name="userPw">PW</string>
+    <string name="findID">아이디 찾기</string>
+    <string name="contour">|</string>
+    <string name="findPW">비밀번호 찾기</string>
+    <string name="login">로그인</string>
+    <string name="register">회원가입</string>
+    <string name="fa_email">&#xf0e0;</string>
+
+    <!--    registerque-->
+    <string name="regis_notion">어떤 회원으로\n가입하시겠어요?</string>
+    <string name="regis_nailshop">NailShop</string>
+    <string name="regis_Customer">Customer</string>
+
+    <!--    register-->
+    <string name="username">이름</string>
+    <string name="useremail">이메일</string>
+    <string name="password">비밀번호</string>
+    <string name="check_pw">비밀번호 확인</string>
+    <string name="phonenum">전화번호</string>
+    <string name="shopname">네일샵 이름</string>
+    <string name="ceoname">운영자 이름</string>
+    <string name="address">주소</string>
+    <string name="complete">완료</string>
+
 </resources>
