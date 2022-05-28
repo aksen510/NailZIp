@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/menu_home"
+        android:icon="@drawable/ic_file_zipper_regular"
+        android:title="Home"/>
+    <item
+        android:id="@+id/menu_nailshop"
+        android:icon="@drawable/ic_list_ul_solid"
+        android:title="NailShop"/>
+    <item
+        android:id="@+id/menu_chat"
+        android:icon="@drawable/ic_comment_dots_regular"
+        android:title="Chat"/>
+    <item
+        android:id="@+id/menu_setting"
+        android:icon="@drawable/ic_gear_solid"
+        android:title="Setting"/>
+
+</menu>
