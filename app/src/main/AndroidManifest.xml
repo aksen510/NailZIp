@@ -12,7 +12,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.NailZip">
         <activity
-            android:name=".RegisterShopActivity"
+            android:name=".member.FindPwActivity"
+            android:exported="false" />
+        <activity
+            android:name=".member.FoundIDActivity"
+            android:exported="false" />
+        <activity
+            android:name=".member.FindIDActivity"
+            android:exported="false" />
+        <activity
+            android:name=".member.RegisterShopActivity"
             android:exported="false" />
         <activity
             android:name=".member.RegisterClientActivity"
