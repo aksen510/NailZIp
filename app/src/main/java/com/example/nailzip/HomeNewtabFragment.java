@@ -3,21 +3,17 @@ package com.example.nailzip;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.viewpager.widget.ViewPager;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.android.material.tabs.TabLayout;
-
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link HomeFragment#newInstance} factory method to
+ * Use the {@link HomeNewtabFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class HomeFragment extends Fragment {
+public class HomeNewtabFragment extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -28,11 +24,7 @@ public class HomeFragment extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    private TabLayout tablayout;
-    private ViewPager viewpager;
-    private PagerAdapter pagerAdapter;
-
-    public HomeFragment() {
+    public HomeNewtabFragment() {
         // Required empty public constructor
     }
 
@@ -42,11 +34,11 @@ public class HomeFragment extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment HomeFragment.
+     * @return A new instance of fragment HomeNewtabFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static HomeFragment newInstance(String param1, String param2) {
-        HomeFragment fragment = new HomeFragment();
+    public static HomeNewtabFragment newInstance(String param1, String param2) {
+        HomeNewtabFragment fragment = new HomeNewtabFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -67,23 +59,14 @@ public class HomeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_home, container, false);
+        View view = inflater.inflate(R.layout.fragment_home_newtab, container, false);
 
         init(view);
-
-        tablayout.setupWithViewPager(viewpager);
-
-        pagerAdapter = new PagerAdapter(getActivity().getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
-        pagerAdapter.addFragment(new HomeAlltabFragment(), "ALL");
-        pagerAdapter.addFragment(new HomeBesttabFragment(), "BEST");
-        pagerAdapter.addFragment(new HomeNewtabFragment(), "NEW");
-        viewpager.setAdapter(pagerAdapter);
 
         return view;
     }
 
     public void init(View view){
-        tablayout = view.findViewById(R.id.tablayout);
-        viewpager = view.findViewById(R.id.viewpager);
+
     }
 }

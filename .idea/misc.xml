@@ -5,7 +5,9 @@
       <map>
         <entry key="../../../../layout/custom_preview.xml" value="0.16337386018237082" />
         <entry key="app/src/main/res/drawable-v24/menu_selector_color.xml" value="0.128" />
+        <entry key="app/src/main/res/drawable/edge_search.xml" value="0.1255" />
         <entry key="app/src/main/res/drawable/edge_txtbox.xml" value="0.1665" />
+        <entry key="app/src/main/res/drawable/ic_baseline_search_24.xml" value="0.1255" />
         <entry key="app/src/main/res/drawable/ic_comment_dots_regular.xml" value="0.128" />
         <entry key="app/src/main/res/drawable/ic_file_zipper_regular.xml" value="0.128" />
         <entry key="app/src/main/res/drawable/ic_gear_solid.xml" value="0.128" />
@@ -20,8 +22,12 @@
         <entry key="app/src/main/res/layout/activity_start.xml" value="0.335" />
         <entry key="app/src/main/res/layout/fragment_chat.xml" value="0.2334330910645575" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.165" />
+        <entry key="app/src/main/res/layout/fragment_home_alltab.xml" value="0.2543822146216332" />
+        <entry key="app/src/main/res/layout/fragment_home_besttab.xml" value="0.24283882000855067" />
+        <entry key="app/src/main/res/layout/fragment_home_newtab.xml" value="0.2543822146216332" />
         <entry key="app/src/main/res/layout/fragment_nail_shop.xml" value="0.221889696451475" />
         <entry key="app/src/main/res/layout/fragment_setting.xml" value="0.2334330910645575" />
+        <entry key="app/src/main/res/layout/tab_custom.xml" value="0.2535271483539974" />
         <entry key="app/src/main/res/menu/bottom_menu.xml" value="0.12654980761008977" />
       </map>
     </option>
