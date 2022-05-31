@@ -2,11 +2,15 @@ package com.example.nailzip;
 
 import android.os.Bundle;
 
+import androidx.constraintlayout.utils.widget.ImageFilterView;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -14,6 +18,10 @@ import android.view.ViewGroup;
  * create an instance of this fragment.
  */
 public class SettingFragment extends Fragment {
+
+    private ListView lv_mypage;
+    private ImageFilterView img_profile;
+    private TextView tv_nickname;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -58,7 +66,25 @@ public class SettingFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_setting, container, false);
+
+        init(view);
+
+        // TODO: 회원정보에 따라 다른 리스트뷰 생성
+        final String[] lv1 = {"설정", "찜 목록", "팔로우", "나의 후기"};
+        final String[] lv2 = {"설정", "찜 목록", "팔로우", "매장 정보 수정"};
+        final int image[] = {R.drawable.ic_outline_settings_24, R.drawable.ic_heart_regular,R.drawable.ic_bookmark_regular, R.drawable.ic_pen_to_square_regular};
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, lv1);
+        lv_mypage.setAdapter(adapter);
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_setting, container, false);
+        return view;
+    }
+
+    public void init(View view){
+        lv_mypage = view.findViewById(R.id.lv_mypage);
+        img_profile = view.findViewById(R.id.img_profile);
+        tv_nickname = view.findViewById(R.id.tv_nickname);
     }
 }
