@@ -1,4 +1,4 @@
-package com.example.nailzip;
+package com.example.nailzip.mypage;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

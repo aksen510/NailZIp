@@ -12,6 +12,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.NailZip">
         <activity
+            android:name=".mypage.ChangepwActivity"
+            android:exported="false" />
+        <activity
+            android:name=".mypage.SettingEditInfoActivity"
+            android:exported="false" />
+        <activity
             android:name=".member.FindPwActivity"
             android:exported="false" />
         <activity

@@ -1,5 +1,6 @@
-package com.example.nailzip;
+package com.example.nailzip.mypage;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.constraintlayout.utils.widget.ImageFilterView;
@@ -8,9 +9,14 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.example.nailzip.R;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -20,8 +26,10 @@ import android.widget.TextView;
 public class SettingFragment extends Fragment {
 
     private ListView lv_mypage;
+    private ArrayList<Setting> settings;
     private ImageFilterView img_profile;
     private TextView tv_nickname;
+    private static CustomAdapter customAdapter;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -75,10 +83,43 @@ public class SettingFragment extends Fragment {
         final String[] lv2 = {"설정", "찜 목록", "팔로우", "매장 정보 수정"};
         final int image[] = {R.drawable.ic_outline_settings_24, R.drawable.ic_heart_regular,R.drawable.ic_bookmark_regular, R.drawable.ic_pen_to_square_regular};
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, lv1);
-        lv_mypage.setAdapter(adapter);
+        settings = new ArrayList<>();
+        settings.add(new Setting("설정", R.drawable.ic_outline_settings_24));
+        settings.add(new Setting("찜 목록", R.drawable.ic_heart_regular));
+        settings.add(new Setting("팔로우", R.drawable.ic_baseline_bookmark_border_24));
+        settings.add(new Setting("나의 후기", R.drawable.ic_pen_to_square_regular));
 
-        // Inflate the layout for this fragment
+        lv_mypage = (ListView) view.findViewById(R.id.lv_mypage);
+        customAdapter = new CustomAdapter(getContext(), settings);
+        lv_mypage.setAdapter(customAdapter);
+
+        lv_mypage.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                String selectedItem = (String) view.findViewById(R.id.tv_list).getTag().toString();
+               // Toast.makeText(getActivity(), "item 클릭", Toast.LENGTH_SHORT).show();
+
+                switch (position){
+                    case 0:
+                        Toast.makeText(getActivity(), "설정", Toast.LENGTH_SHORT).show();
+                        Intent startChangepwActivity = new Intent(getContext(), SettingEditInfoActivity.class);
+                        startActivity(startChangepwActivity);
+                        break;
+                    case 1:
+                        Toast.makeText(getActivity(), "찜목록", Toast.LENGTH_SHORT).show();
+                        break;
+                    case 2:
+                        Toast.makeText(getActivity(), "팔로우", Toast.LENGTH_SHORT).show();
+                        break;
+                    case 3:
+                        Toast.makeText(getActivity(), "나의 후기", Toast.LENGTH_SHORT).show();
+                        break;
+                }
+            }
+        });
+
         return view;
     }
 
@@ -86,5 +127,23 @@ public class SettingFragment extends Fragment {
         lv_mypage = view.findViewById(R.id.lv_mypage);
         img_profile = view.findViewById(R.id.img_profile);
         tv_nickname = view.findViewById(R.id.tv_nickname);
+    }
+
+    class Setting{
+        private String menuname;
+        private int image;
+
+        public Setting(String menuname, int image){
+            this.menuname = menuname;
+            this.image = image;
+        }
+
+        public String getMenuname(){
+            return menuname;
+        }
+
+        public int getImage(){
+            return image;
+        }
     }
 }
