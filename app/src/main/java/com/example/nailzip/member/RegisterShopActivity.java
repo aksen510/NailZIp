@@ -14,7 +14,7 @@ import com.google.android.material.button.MaterialButton;
 
 public class RegisterShopActivity extends AppCompatActivity {
 
-    private EditText edt_shopname, edt_ceoname, edt_email, edt_pw, edt_checkPw, edt_phonenum, edt_address;
+    private EditText edt_shopname, edt_ceoname, edt_email, edt_pw, edt_checkPw, edt_phonenum, edt_address, edt_shopphonenum;
     private Button btn_complete;
 
     @Override
@@ -40,6 +40,7 @@ public class RegisterShopActivity extends AppCompatActivity {
         edt_pw = findViewById(R.id.edt_pw);
         edt_checkPw = findViewById(R.id.edt_pw_check);
         edt_phonenum = findViewById(R.id.edt_phonenum);
+        edt_shopphonenum = findViewById(R.id.edt_shopphonenum);
         edt_address = findViewById(R.id.edt_address);
         btn_complete = (Button) findViewById(R.id.btn_complete);
     }
