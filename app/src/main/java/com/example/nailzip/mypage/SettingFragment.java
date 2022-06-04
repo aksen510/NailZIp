@@ -3,9 +3,11 @@ package com.example.nailzip.mypage;
 import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.constraintlayout.utils.widget.ImageFilterView;
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +17,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.nailzip.R;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
@@ -25,11 +36,14 @@ import java.util.ArrayList;
  */
 public class SettingFragment extends Fragment {
 
+    private static final String TAG = "SettingFragment";
     private ListView lv_mypage;
     private ArrayList<Setting> settings;
-    private ImageFilterView img_profile;
     private TextView tv_nickname;
     private static CustomAdapter customAdapter;
+    private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+    private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+    public String nickname;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -78,6 +92,49 @@ public class SettingFragment extends Fragment {
 
         init(view);
 
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+        String uid = user.getEmail();
+
+        firestore.collection("users")
+                .whereEqualTo("email",uid)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if(task.isSuccessful()){
+                            for (QueryDocumentSnapshot document : task.getResult()){
+                                Log.d(TAG, document.getId() + " => " + document.get("username"));
+                                nickname = document.get("username").toString();
+//                                tv_nickname.setText(nickname);
+                            }
+                            if (nickname == null){
+                                Log.d(TAG, "일치하는 회원정보가 없습니다.");
+                                Toast.makeText(getContext(), "일치하는 회원정보가 없습니다.", Toast.LENGTH_SHORT).show();
+                                return;
+                            }
+                            else {
+                                tv_nickname.setText(nickname);
+                            }
+                        }
+                        else{
+                            Log.d(TAG, "일치하는 회원정보가 없습니다.");
+                            Toast.makeText(getContext(), "일치하는 회원정보가 없습니다.", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d(TAG, "일치하는 회원정보가 없습니다.");
+                        Toast.makeText(getContext(), "일치하는 회원정보가 없습니다.", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                });
+
+//        Intent intent = getActivity().getIntent();
+//        Log.d(TAG,"닉네임 => " + nickname);
+//        tv_nickname.setText(nickname);
+
         // TODO: 회원정보에 따라 다른 리스트뷰 생성
         final String[] lv1 = {"설정", "찜 목록", "팔로우", "나의 후기"};
         final String[] lv2 = {"설정", "찜 목록", "팔로우", "매장 정보 수정"};
@@ -125,7 +182,6 @@ public class SettingFragment extends Fragment {
 
     public void init(View view){
         lv_mypage = view.findViewById(R.id.lv_mypage);
-        img_profile = view.findViewById(R.id.img_profile);
         tv_nickname = view.findViewById(R.id.tv_nickname);
     }
 

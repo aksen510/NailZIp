@@ -15,6 +15,7 @@ import android.widget.ListView;
 
 import com.example.nailzip.R;
 import com.example.nailzip.member.StartActivity;
+import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.Objects;
 
@@ -22,6 +23,7 @@ public class SettingEditInfoActivity extends AppCompatActivity {
 
     private Toolbar tb_setting;
     private ListView lv_setting;
+    private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,8 +53,7 @@ public class SettingEditInfoActivity extends AppCompatActivity {
                                 .setPositiveButton("로그아웃", new DialogInterface.OnClickListener() {
                                     @Override
                                     public void onClick(DialogInterface dialogInterface, int i) {
-                                        //firebaseAuth.signOut();
-                                        // requireActivity().finish();
+                                        firebaseAuth.signOut();
                                         Intent startInitialActivity = new Intent(SettingEditInfoActivity.this, StartActivity.class);
                                         startActivity(startInitialActivity);
                                         finish();
