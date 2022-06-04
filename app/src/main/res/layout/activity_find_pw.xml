@@ -8,6 +8,18 @@
     android:background="@color/maincolor"
     android:orientation="vertical">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/tb_back"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/maincolor"
+        android:backgroundTint="@color/maincolor"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </androidx.appcompat.widget.Toolbar>
+
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline"
         android:layout_width="wrap_content"
@@ -71,6 +83,7 @@
                     android:id="@+id/edt_username"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textSize="15dp"
                     android:hint="@string/find_username"
                     android:inputType="textPersonName"
                     android:background="@android:color/transparent">
@@ -100,6 +113,7 @@
                     android:id="@+id/edt_phonenum"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textSize="15dp"
                     android:hint="@string/phonenum"
                     android:inputType="phone"
                     android:maxLength="13"
@@ -129,6 +143,7 @@
                     android:id="@+id/edt_email"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textSize="15dp"
                     android:hint="@string/useremail"
                     android:inputType="textEmailAddress"
                     android:background="@android:color/transparent">
