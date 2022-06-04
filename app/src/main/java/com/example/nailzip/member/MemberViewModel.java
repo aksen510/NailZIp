@@ -34,6 +34,10 @@ public class MemberViewModel extends AndroidViewModel {
         memberModel.register(email,password,userAccount);
     }
 
+    public void login(String email, String password){
+        memberModel.login(email, password);
+    }
+
     public MutableLiveData<FirebaseUser> getUserMutableLiveData() {
         return userMutableLiveData;
     }

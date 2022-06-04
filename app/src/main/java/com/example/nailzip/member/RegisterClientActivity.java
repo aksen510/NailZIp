@@ -73,10 +73,10 @@ public class RegisterClientActivity extends AppCompatActivity {
                                 if (aBoolean) {
                                     mDialog.dismiss();
                                     Toast.makeText(RegisterClientActivity.this, "가입 성공", Toast.LENGTH_SHORT).show();
-//                                    Intent intent = new Intent(RegisterClientActivity.this, HomeFragment.class);
-//                                    startActivity(intent);
-                                    //ToDo: 액티비티->프래그먼트
-                                    //getSupportFragmentManager().beginTransaction().replace(R.layout.fragment_home, HomeFragment).commit();
+                                    Intent intent = new Intent(RegisterClientActivity.this, MainActivity.class);
+                                    startActivity(intent);
+//                                    getSupportFragmentManager().beginTransaction().replace(R.id.menu_home, MainActivity()).commitAllowingStateLoss();
+
                                 }else{
                                     mDialog.dismiss();
                                     Toast.makeText(RegisterClientActivity.this, "이미 존재하는 아이디입니다.", Toast.LENGTH_SHORT).show();

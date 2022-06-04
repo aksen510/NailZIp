@@ -72,6 +72,7 @@
                     android:id="@+id/edt_id"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textSize="15dp"
                     android:hint="@string/userId"
                     android:inputType="textEmailAddress"
                     android:background="@android:color/transparent">
@@ -101,8 +102,9 @@
                     android:id="@+id/edt_pw"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:textSize="15dp"
                     android:hint="@string/userPw"
-                    android:inputType="textEmailAddress"
+                    android:inputType="textPassword"
                     android:background="@android:color/transparent">
 
                 </EditText>
