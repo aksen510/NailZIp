@@ -36,6 +36,13 @@
     <string name="find_email">Email</string>
     <string name="findPWView">비밀번호 찾기</string>
 
+    <!--    nailshop-->
+    <string name="ex_region">용인시 죽전동</string>
+    <string name="sort_recommand">추천순</string>
+    <string name="sort_distance">거리순</string>
+    <string name="sort_review">리뷰많은순</string>
+
+
     <string name="hello_blank_fragment">Hello blank fragment</string>
 
     <!--    setting-->
