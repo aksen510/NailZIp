@@ -2,11 +2,19 @@ package com.example.nailzip;
 
 import android.os.Bundle;
 
+import androidx.constraintlayout.utils.widget.ImageFilterButton;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -14,6 +22,18 @@ import android.view.ViewGroup;
  * create an instance of this fragment.
  */
 public class NailShopFragment extends Fragment {
+
+    private ArrayList<NailshopData> arrayShops = new ArrayList<>();
+    private NailshopAdapter nailshopAdapter = new NailshopAdapter(arrayShops);
+    private RecyclerView recyclerView;
+    private RecyclerView.LayoutManager layoutManager;
+    private LinearLayoutManager linearLayoutManager;
+    private TextView tv_region;
+    private ImageFilterButton btn_region;
+    private Button btn_sort;
+
+    FragmentManager fragmentManager;
+
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -58,7 +78,27 @@ public class NailShopFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_nail_shop, container, false);
+        View view = inflater.inflate(R.layout.fragment_nail_shop, container, false);
+
+        init(view);
+        fragmentManager = getActivity().getSupportFragmentManager();
+        linearLayoutManager = new LinearLayoutManager(getContext());
+        recyclerView.setLayoutManager(linearLayoutManager);
+
+        recyclerView.setAdapter(nailshopAdapter);
+
+        //데이터 추가방법
+        NailshopData nailshopData = new NailshopData(R.drawable.edge, R.drawable.ic_baseline_bookmark_white, "만두네일", "5.0", "(112)","11:00~21:00", "(휴무:일)", "경기도 용인시 수지구 현암로 123번길 33" );
+        arrayShops.add(nailshopData);
+        nailshopAdapter.notifyDataSetChanged();
+
+        return view;
+    }
+
+    public void init(View view){
+        tv_region = view.findViewById(R.id.tv_region);
+        btn_region = view.findViewById(R.id.btn_region);
+        btn_sort = view.findViewById(R.id.btn_sort);
+        recyclerView = view.findViewById(R.id.recyclerview);
     }
 }
