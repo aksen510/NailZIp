@@ -6,7 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.nailzip.model.Nailshop;
+import com.example.nailzip.model.NailshopData;
 import com.example.nailzip.model.User;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -35,7 +35,7 @@ public class MemberViewModel extends AndroidViewModel {
         memberModel.register(email,password,userAccount);
     }
 
-    public void storeInfo(Nailshop shopAccount){
+    public void storeInfo(NailshopData shopAccount){
         memberModel.storeInfo(shopAccount);
     }
 

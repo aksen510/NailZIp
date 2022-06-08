@@ -2,17 +2,30 @@ package com.example.nailzip;
 
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.constraintlayout.utils.widget.ImageFilterButton;
 import androidx.fragment.app.Fragment;
+import android.support.v4.app.*;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.example.nailzip.model.NailshopData;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentChange;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 
@@ -23,6 +36,7 @@ import java.util.ArrayList;
  */
 public class NailShopFragment extends Fragment {
 
+    private String TAG = "NailShopFragment";
     private ArrayList<NailshopData> arrayShops = new ArrayList<>();
     private NailshopAdapter nailshopAdapter = new NailshopAdapter(arrayShops);
     private RecyclerView recyclerView;
@@ -31,6 +45,9 @@ public class NailShopFragment extends Fragment {
     private TextView tv_region;
     private ImageFilterButton btn_region;
     private Button btn_sort;
+
+    private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+    private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
     FragmentManager fragmentManager;
 
@@ -81,6 +98,10 @@ public class NailShopFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_nail_shop, container, false);
 
         init(view);
+
+        FirebaseUser user = firebaseAuth.getCurrentUser();
+        String uid = user.getUid();
+
         fragmentManager = getActivity().getSupportFragmentManager();
         linearLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
@@ -88,9 +109,29 @@ public class NailShopFragment extends Fragment {
         recyclerView.setAdapter(nailshopAdapter);
 
         //데이터 추가방법
-        NailshopData nailshopData = new NailshopData(R.drawable.edge, R.drawable.ic_baseline_bookmark_white, "만두네일", "5.0", "(112)","11:00~21:00", "(휴무:일)", "경기도 용인시 수지구 현암로 123번길 33" );
-        arrayShops.add(nailshopData);
-        nailshopAdapter.notifyDataSetChanged();
+//        NailshopData nailshopData = new NailshopData(R.drawable.edge, R.drawable.ic_baseline_bookmark_white, "만두네일", null,"5.0", "(112)","11:00~21:00", "(휴무:일)", "경기도 용인시 수지구 현암로 123번길 33" ,null, null, null);
+//        arrayShops.add(nailshopData);
+//        nailshopAdapter.notifyDataSetChanged();
+
+        firestore.collection("shoplist")
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                        if(value.isEmpty()){
+                            Toast.makeText(getActivity().getApplicationContext(), "등록된 네일샵이 없습니다.", Toast.LENGTH_SHORT).show();
+                            Log.d(TAG, "등록된 네일샵 없음");
+                        }
+                        else{
+                            for(DocumentChange dc : value.getDocumentChanges()){
+                                NailshopData nailshop = dc.getDocument().toObject(NailshopData.class);
+                                arrayShops.add(nailshop);
+                                nailshopAdapter.notifyDataSetChanged();
+                                Log.d(TAG, "현재 arrayShops 사이즈 : " + arrayShops.size());
+
+                            }
+                        }
+                    }
+                });
 
         return view;
     }

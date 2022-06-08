@@ -7,7 +7,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.nailzip.model.Nailshop;
+import com.example.nailzip.model.NailshopData;
 import com.example.nailzip.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -18,8 +18,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 public class MemberModel {
 
@@ -58,7 +56,10 @@ public class MemberModel {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
                             userMutableLiveData.postValue(firebaseAuth.getCurrentUser());
-                            firestore.collection("users").document(firebaseAuth.getCurrentUser().getUid()).set(userAccount).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            firestore.collection("users")
+                                    .document(firebaseAuth.getCurrentUser().getUid())
+                                    .set(userAccount)
+                                    .addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if(task.isSuccessful()){
@@ -79,7 +80,7 @@ public class MemberModel {
                 });
     }
 
-    public void storeInfo(Nailshop shopAccount){
+    public void storeInfo(NailshopData shopAccount){
         firestore.collection("users")
                 .document(firebaseAuth.getCurrentUser().getUid())
                 .collection("shopInfo")
@@ -93,6 +94,22 @@ public class MemberModel {
                     @Override
                     public void onFailure(@NonNull Exception e) {
                         Log.e(TAG, "매장 등록 실패");
+                    }
+                });
+
+        firestore.collection("shoplist")
+                .document()
+                .set(shopAccount)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void unused) {
+
+                        Log.d(TAG, "매장 등록 완료2");
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e(TAG, "매장 등록 실패2");
                     }
                 });
     }

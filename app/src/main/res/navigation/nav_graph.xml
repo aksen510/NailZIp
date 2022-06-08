@@ -14,7 +14,20 @@
         android:id="@+id/menu_nailshop"
         android:name="com.example.nailzip.NailShopFragment"
         android:label="fragment_nail_shop"
-        tools:layout="@layout/fragment_nail_shop" />
+        tools:layout="@layout/fragment_nail_shop" >
+        <action
+            android:id="@+id/action_nailshopFragment_to_informationFragment"
+            app:destination="@id/informationFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/informationFragment"
+        android:name="com.example.nailzip.InformationFragment"
+        android:label="fragment_information"
+        tools:layout="@layout/fragment_information" >
+        <action
+            android:id="@+id/action_informationFragment_to_nailshopFragment"
+            app:destination="@id/menu_nailshop" />
+    </fragment>
     <fragment
         android:id="@+id/menu_chat"
         android:name="com.example.nailzip.ChatFragment"

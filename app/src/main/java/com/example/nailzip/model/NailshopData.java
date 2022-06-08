@@ -1,10 +1,16 @@
-package com.example.nailzip;
+package com.example.nailzip.model;
 
 public class NailshopData {
     private int img_shop, img_scrab;
     private String shopname, rating, ratingcnt, time, closed, location;
 
-    public NailshopData(int img_shop, int img_scrab, String shopname, String rating, String ratingcnt, String time, String closed, String location) {
+    String shopphone, memo;
+
+    //Todo: 추후 추가
+    String price_nail;
+    String price_pedi;
+
+    public NailshopData(int img_shop, int img_scrab, String shopname, String rating, String ratingcnt, String time, String closed, String location, String shopphone, String memo, String price_nail, String price_pedi) {
         this.img_shop = img_shop;
         this.img_scrab = img_scrab;
         this.shopname = shopname;
@@ -13,6 +19,14 @@ public class NailshopData {
         this.time = time;
         this.closed = closed;
         this.location = location;
+        this.shopphone = shopphone;
+        this.memo = memo;
+        this.price_nail = price_nail;
+        this.price_pedi = price_pedi;
+    }
+
+    public NailshopData() {
+
     }
 
     public int getImg_shop() {
@@ -77,5 +91,37 @@ public class NailshopData {
 
     public void setLocation(String location) {
         this.location = location;
+    }
+
+    public String getShopphone() {
+        return shopphone;
+    }
+
+    public void setShopphone(String shopphone) {
+        this.shopphone = shopphone;
+    }
+
+    public String getMemo() {
+        return memo;
+    }
+
+    public void setMemo(String memo) {
+        this.memo = memo;
+    }
+
+    public String getPrice_nail() {
+        return price_nail;
+    }
+
+    public void setPrice_nail(String price_nail) {
+        this.price_nail = price_nail;
+    }
+
+    public String getPrice_pedi() {
+        return price_pedi;
+    }
+
+    public void setPrice_pedi(String price_pedi) {
+        this.price_pedi = price_pedi;
     }
 }

@@ -1,20 +1,35 @@
 package com.example.nailzip;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
+
+import com.example.nailzip.member.FindIDActivity;
+import com.example.nailzip.member.FoundIDActivity;
+import com.example.nailzip.model.NailshopData;
 
 import java.util.ArrayList;
 
 public class NailshopAdapter extends RecyclerView.Adapter<NailshopAdapter.CustomViewHolder> {
     private ArrayList<NailshopData> arrayList;
+    private String TAG = "NailshopAdapter";
+    private Fragment fragment;
+    private FragmentManager fragmentManager;
+    private FragmentStateAdapter fragmentStateAdapter;
 
     public NailshopAdapter(ArrayList<NailshopData> arrayList) {
         this.arrayList = arrayList;
@@ -47,7 +62,12 @@ public class NailshopAdapter extends RecyclerView.Adapter<NailshopAdapter.Custom
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // Todo: 해당 게시글로 이동
+//                 Todo: 해당 게시글로 이동
+                InformationFragment informationFragment = new InformationFragment();
+                AppCompatActivity activity = (AppCompatActivity) v.getContext();
+                activity.getFragmentManager().beginTransaction().replace(R.id.menu_nailshop, informationFragment).addToBackStack(null).commit();
+//                Navigation.findNavController(v.getRootView()).navigate(R.id.action_nailshopFragment_to_informationFragment);
+                Toast.makeText(v.getContext(), "네일 상세 정보 확인", Toast.LENGTH_SHORT).show();
             }
         });
     }
