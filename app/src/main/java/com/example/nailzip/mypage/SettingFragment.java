@@ -93,6 +93,7 @@ public class SettingFragment extends Fragment {
         init(view);
 
         FirebaseUser user = firebaseAuth.getCurrentUser();
+        String userUid = user.getUid();
         String uid = user.getEmail();
 
         firestore.collection("users")
@@ -141,41 +142,84 @@ public class SettingFragment extends Fragment {
         final int image[] = {R.drawable.ic_outline_settings_24, R.drawable.ic_heart_regular,R.drawable.ic_bookmark_regular, R.drawable.ic_pen_to_square_regular};
 
         settings = new ArrayList<>();
-        settings.add(new Setting("설정", R.drawable.ic_outline_settings_24));
-        settings.add(new Setting("찜 목록", R.drawable.ic_heart_regular));
-        settings.add(new Setting("팔로우", R.drawable.ic_baseline_bookmark_border_24));
-        settings.add(new Setting("나의 후기", R.drawable.ic_pen_to_square_regular));
 
-        lv_mypage = (ListView) view.findViewById(R.id.lv_mypage);
-        customAdapter = new CustomAdapter(getContext(), settings);
-        lv_mypage.setAdapter(customAdapter);
+        if(firestore.collection("users").document(userUid).collection("position").get().equals(0)){
+            settings.add(new Setting("설정", R.drawable.ic_outline_settings_24));
+            settings.add(new Setting("찜 목록", R.drawable.ic_heart_regular));
+            settings.add(new Setting("팔로우", R.drawable.ic_baseline_bookmark_border_24));
+            settings.add(new Setting("나의 후기", R.drawable.ic_pen_to_square_regular));
 
-        lv_mypage.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            lv_mypage = (ListView) view.findViewById(R.id.lv_mypage);
+            customAdapter = new CustomAdapter(getContext(), settings);
+            lv_mypage.setAdapter(customAdapter);
 
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            lv_mypage.setOnItemClickListener(new AdapterView.OnItemClickListener(){
 
-                String selectedItem = (String) view.findViewById(R.id.tv_list).getTag().toString();
-               // Toast.makeText(getActivity(), "item 클릭", Toast.LENGTH_SHORT).show();
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
-                switch (position){
-                    case 0:
-                        Toast.makeText(getActivity(), "설정", Toast.LENGTH_SHORT).show();
-                        Intent startChangepwActivity = new Intent(getContext(), SettingEditInfoActivity.class);
-                        startActivity(startChangepwActivity);
-                        break;
-                    case 1:
-                        Toast.makeText(getActivity(), "찜목록", Toast.LENGTH_SHORT).show();
-                        break;
-                    case 2:
-                        Toast.makeText(getActivity(), "팔로우", Toast.LENGTH_SHORT).show();
-                        break;
-                    case 3:
-                        Toast.makeText(getActivity(), "나의 후기", Toast.LENGTH_SHORT).show();
-                        break;
+                    String selectedItem = (String) view.findViewById(R.id.tv_list).getTag().toString();
+                    // Toast.makeText(getActivity(), "item 클릭", Toast.LENGTH_SHORT).show();
+
+                    switch (position){
+                        case 0:
+                            Toast.makeText(getActivity(), "설정", Toast.LENGTH_SHORT).show();
+                            Intent startChangepwActivity = new Intent(getContext(), SettingEditInfoActivity.class);
+                            startActivity(startChangepwActivity);
+                            break;
+                        case 1:
+                            Toast.makeText(getActivity(), "찜목록", Toast.LENGTH_SHORT).show();
+                            break;
+                        case 2:
+                            Toast.makeText(getActivity(), "팔로우", Toast.LENGTH_SHORT).show();
+                            break;
+                        case 3:
+                            Toast.makeText(getActivity(), "나의 후기", Toast.LENGTH_SHORT).show();
+                            break;
+                    }
                 }
-            }
-        });
+            });
+        }
+        else{
+            settings.add(new Setting("설정", R.drawable.ic_outline_settings_24));
+            settings.add(new Setting("찜 목록", R.drawable.ic_heart_regular));
+            settings.add(new Setting("팔로우", R.drawable.ic_baseline_bookmark_border_24));
+            settings.add(new Setting("매장 정보 수정", R.drawable.ic_pen_to_square_regular));
+
+            lv_mypage = (ListView) view.findViewById(R.id.lv_mypage);
+            customAdapter = new CustomAdapter(getContext(), settings);
+            lv_mypage.setAdapter(customAdapter);
+
+            lv_mypage.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                    String selectedItem = (String) view.findViewById(R.id.tv_list).getTag().toString();
+                    // Toast.makeText(getActivity(), "item 클릭", Toast.LENGTH_SHORT).show();
+
+                    switch (position){
+                        case 0:
+                            Toast.makeText(getActivity(), "설정", Toast.LENGTH_SHORT).show();
+                            Intent startChangepwActivity = new Intent(getContext(), SettingEditInfoActivity.class);
+                            startActivity(startChangepwActivity);
+                            break;
+                        case 1:
+                            Toast.makeText(getActivity(), "찜목록", Toast.LENGTH_SHORT).show();
+                            break;
+                        case 2:
+                            Toast.makeText(getActivity(), "팔로우", Toast.LENGTH_SHORT).show();
+                            break;
+                        case 3:
+                            Toast.makeText(getActivity(), "매장 정보 수정", Toast.LENGTH_SHORT).show();
+                            break;
+                    }
+                }
+            });
+        }
+
+
+
 
         return view;
     }

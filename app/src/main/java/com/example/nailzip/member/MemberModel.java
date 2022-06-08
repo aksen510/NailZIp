@@ -7,12 +7,16 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.nailzip.model.Nailshop;
 import com.example.nailzip.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -71,6 +75,24 @@ public class MemberModel {
                             saveUserInfoMutableLiveData.postValue(false);
                             Log.w(TAG, "회원가입 오류");
                         }
+                    }
+                });
+    }
+
+    public void storeInfo(Nailshop shopAccount){
+        firestore.collection("users")
+                .document(firebaseAuth.getCurrentUser().getUid())
+                .collection("shopInfo")
+                .add(shopAccount)
+                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
+                    @Override
+                    public void onSuccess(DocumentReference documentReference) {
+                        Log.d(TAG, "매장 등록 완료");
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e(TAG, "매장 등록 실패");
                     }
                 });
     }

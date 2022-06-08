@@ -2,9 +2,18 @@ package com.example.nailzip.model;
 
 public class User {
     int position = 0;   //기본값 : 고객
+    String uid;
     String email;
     String username;
     String phonenum;
+
+    public String getUid() {
+        return uid;
+    }
+
+    public void setUid(String uid) {
+        this.uid = uid;
+    }
 
     public int getPosition() {
         return position;

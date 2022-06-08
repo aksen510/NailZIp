@@ -12,6 +12,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.NailZip">
         <activity
+            android:name=".member.StoreInfoActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ChattingroomActivity"
+            android:exported="false" />
+        <activity
             android:name=".mypage.ChangepwActivity"
             android:exported="false" />
         <activity

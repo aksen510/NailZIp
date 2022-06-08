@@ -28,6 +28,16 @@
     <string name="address">주소</string>
     <string name="complete">완료</string>
 
+    <!--    storeInfo-->
+    <string name="storeInfo">매장등록</string>
+    <string name="opentime">영업시간</string>
+    <string name="memo">매장정보</string>
+    <string name="menu_nail">네일</string>
+    <string name="menu_pedi">페디</string>
+    <string name="menuname">이름</string>
+    <string name="menuprice">가격</string>
+    <string name="next">다음</string>
+
     <!--    findID/PW-->
     <string name="find_username">사용자 이름</string>
     <string name="findIDView">아이디 찾기</string>
@@ -55,6 +65,7 @@
     <string name="title_chatting">채팅</string>
     <string name="ex_name">닉네임</string>
     <string name="ex_content">마지막 내용</string>
+    <string name="send">전송</string>
 
     <!--    setting-->
     <string name="title_setting">설정</string>

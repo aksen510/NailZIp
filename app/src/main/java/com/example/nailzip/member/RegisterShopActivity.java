@@ -78,7 +78,7 @@ public class RegisterShopActivity extends AppCompatActivity {
                                 if (aBoolean) {
                                     mDialog.dismiss();
                                     Toast.makeText(RegisterShopActivity.this, "가입 성공", Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent(RegisterShopActivity.this, MainActivity.class);
+                                    Intent intent = new Intent(RegisterShopActivity.this, StoreInfoActivity.class);
                                     startActivity(intent);
                                 }else{
                                     mDialog.dismiss();
