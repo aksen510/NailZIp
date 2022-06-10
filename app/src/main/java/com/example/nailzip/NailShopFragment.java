@@ -1,15 +1,6 @@
 package com.example.nailzip;
 
 import android.os.Bundle;
-
-import androidx.annotation.Nullable;
-import androidx.constraintlayout.utils.widget.ImageFilterButton;
-import androidx.fragment.app.Fragment;
-import android.support.v4.app.*;
-import androidx.fragment.app.FragmentManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,6 +8,13 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
+import androidx.constraintlayout.utils.widget.ImageFilterButton;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.nailzip.model.NailshopData;
 import com.google.firebase.auth.FirebaseAuth;
@@ -102,7 +100,6 @@ public class NailShopFragment extends Fragment {
         FirebaseUser user = firebaseAuth.getCurrentUser();
         String uid = user.getUid();
 
-        fragmentManager = getActivity().getSupportFragmentManager();
         linearLayoutManager = new LinearLayoutManager(getContext());
         recyclerView.setLayoutManager(linearLayoutManager);
 
