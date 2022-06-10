@@ -1,18 +1,19 @@
 package com.example.nailzip;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.viewpager.widget.ViewPager;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
+
+import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.ViewPager;
 
 import com.example.nailzip.mypage.PagerAdapter;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.FirebaseFirestore;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -24,7 +25,13 @@ public class InfoHomeFragment extends Fragment {
     private TabLayout tablayout;
     private ViewPager viewpager;
     private PagerAdapter pagerAdapter;
-    private TextView txt_title;
+    private TextView txt_title, tv_shopname, tv_opentimeInfo, tv_closedInfo, tv_memoInfo;
+    private Button btn_scrab, btn_location, btn_call, btn_reservation, btn_share;
+
+    //Todo: 이미지 추가
+
+    private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+    private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -80,6 +87,16 @@ public class InfoHomeFragment extends Fragment {
     }
 
     public void init(View view){
+        txt_title = view.findViewById(R.id.txt_title);
+        tv_shopname = view.findViewById(R.id.tv_shopname);
+        tv_opentimeInfo = view.findViewById(R.id.tv_opentimeInfo);
+        tv_closedInfo = view.findViewById(R.id.tv_closedInfo);
+        tv_memoInfo = view.findViewById(R.id.tv_memoInfo);
+        btn_scrab = (Button) view.findViewById(R.id.btn_scrab);
+        btn_location = (Button) view.findViewById(R.id.btn_location);
+        btn_call = (Button) view.findViewById(R.id.btn_call);
+        btn_reservation = (Button) view.findViewById(R.id.btn_reservation);
+        btn_share = (Button) view.findViewById(R.id.btn_share);
 
     }
 }
