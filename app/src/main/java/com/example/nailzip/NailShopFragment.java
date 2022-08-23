@@ -114,18 +114,23 @@ public class NailShopFragment extends Fragment {
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
-                        if(value.isEmpty()){
-                            Toast.makeText(getActivity().getApplicationContext(), "등록된 네일샵이 없습니다.", Toast.LENGTH_SHORT).show();
-                            Log.d(TAG, "등록된 네일샵 없음");
-                        }
-                        else{
-                            for(DocumentChange dc : value.getDocumentChanges()){
-                                NailshopData nailshop = dc.getDocument().toObject(NailshopData.class);
-                                arrayShops.add(nailshop);
-                                nailshopAdapter.notifyDataSetChanged();
-                                Log.d(TAG, "현재 arrayShops 사이즈 : " + arrayShops.size());
-
+                        if (error == null){
+                            if(value.isEmpty()){
+                                Toast.makeText(getActivity().getApplicationContext(), "등록된 네일샵이 없습니다.", Toast.LENGTH_SHORT).show();
+                                Log.d(TAG, "등록된 네일샵 없음");
                             }
+                            else{
+                                for(DocumentChange dc : value.getDocumentChanges()){
+                                    NailshopData nailshop = dc.getDocument().toObject(NailshopData.class);
+                                    arrayShops.add(nailshop);
+                                    nailshopAdapter.notifyDataSetChanged();
+                                    Log.d(TAG, "현재 arrayShops 사이즈 : " + arrayShops.size());
+
+                                }
+                            }
+                        }
+                        else {
+                            Log.d(TAG, "error == null : " + error.getMessage());
                         }
                     }
                 });
