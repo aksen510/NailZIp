@@ -1,19 +1,27 @@
 package com.example.nailzip;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.nailzip.mypage.PagerAdapter;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -22,11 +30,16 @@ import com.google.firebase.firestore.FirebaseFirestore;
  */
 public class InfoHomeFragment extends Fragment {
 
+    private String TAG = "InfoHomeFragment";
+
     private TabLayout tablayout;
     private ViewPager viewpager;
     private PagerAdapter pagerAdapter;
     private TextView txt_title, tv_shopname, tv_opentimeInfo, tv_closedInfo, tv_memoInfo;
     private Button btn_scrab, btn_location, btn_call, btn_reservation, btn_share;
+    private static String shopName;
+    private static String shopLocation;
+    private static int shopPos;
 
     //Todo: 이미지 추가
 
@@ -81,17 +94,62 @@ public class InfoHomeFragment extends Fragment {
 
         init(view);
 
+        Log.d(TAG, "mainShopInfo : " + shopPos + " / " + shopName + " / " + shopLocation);
+
+
+        firestore.collection("shoplist")
+                .whereEqualTo("shopname", shopName)
+                .whereEqualTo("location", shopLocation)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if(task.isSuccessful()){
+                            for (QueryDocumentSnapshot document : task.getResult()){
+                                Log.d(TAG, document.getId() + " => " + document.getData());
+//                                txt_title.setText(document.get("shopname").toString());
+                                tv_shopname.setText(document.get("shopname").toString());
+                                tv_opentimeInfo.setText(document.get("time").toString());
+                                tv_closedInfo.setText(document.get("closed").toString());
+                                tv_memoInfo.setText(document.get("memo").toString());
+
+                                Log.d(TAG,"Data : " + document.get("shopname") + " / " + document.get("time") + " / " + document.get("closed") + " / " + document.get("memo"));
+                            }
+                        }
+                        else{
+                            Log.d(TAG, "일치하는 매장정보가 없습니다.");
+                            Toast.makeText(getActivity(), "일치하는 매장정보가 없습니다.", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e(TAG, "일치하는 매장정보가 없습니다.");
+                        Toast.makeText(getActivity(), "일치하는 매장정보가 없습니다.", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                });
 
 
         return view;
     }
 
+    public void setShopInfo(int pos, String shopname, String location){
+        shopPos = pos;
+        shopName = shopname;
+        shopLocation = location;
+
+        Log.d(TAG, "setShopInfo : " + shopPos + " / " + shopName + " / " + shopLocation);
+
+    }
+
     public void init(View view){
-        txt_title = view.findViewById(R.id.txt_title);
-        tv_shopname = view.findViewById(R.id.tv_shopname);
-        tv_opentimeInfo = view.findViewById(R.id.tv_opentimeInfo);
-        tv_closedInfo = view.findViewById(R.id.tv_closedInfo);
-        tv_memoInfo = view.findViewById(R.id.tv_memoInfo);
+//        txt_title = (TextView) view.findViewById(R.id.txt_title);
+        tv_shopname = (TextView) view.findViewById(R.id.tv_shopname);
+        tv_opentimeInfo = (TextView) view.findViewById(R.id.tv_opentimeInfo);
+        tv_closedInfo = (TextView) view.findViewById(R.id.tv_closedInfo);
+        tv_memoInfo = (TextView) view.findViewById(R.id.tv_memoInfo);
         btn_scrab = (Button) view.findViewById(R.id.btn_scrab);
         btn_location = (Button) view.findViewById(R.id.btn_location);
         btn_call = (Button) view.findViewById(R.id.btn_call);

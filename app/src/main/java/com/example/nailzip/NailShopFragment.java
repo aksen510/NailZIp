@@ -36,6 +36,7 @@ public class NailShopFragment extends Fragment {
 
     private String TAG = "NailShopFragment";
     private ArrayList<NailshopData> arrayShops = new ArrayList<>();
+//    private InfoHomeFragment infoHomeFragment = new InfoHomeFragment();
     private NailshopAdapter nailshopAdapter = new NailshopAdapter(arrayShops, getContext());
     private RecyclerView recyclerView;
     private RecyclerView.LayoutManager layoutManager;

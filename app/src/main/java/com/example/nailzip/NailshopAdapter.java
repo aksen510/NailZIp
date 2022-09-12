@@ -2,6 +2,7 @@ package com.example.nailzip;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,6 +30,11 @@ public class NailshopAdapter extends RecyclerView.Adapter<NailshopAdapter.Custom
     private Fragment fragment;
     private FragmentManager fragmentManager;
     private FragmentStateAdapter fragmentStateAdapter;
+    private InfoHomeFragment infoHomeFragment = new InfoHomeFragment();
+    private ShopInfoActivity shopInfoActivity = new ShopInfoActivity();
+    private String location = " ";
+    private String shopname = " ";
+    private int pos = 0;
 
     private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
@@ -36,6 +42,7 @@ public class NailshopAdapter extends RecyclerView.Adapter<NailshopAdapter.Custom
     public NailshopAdapter(ArrayList<NailshopData> arrayList, Context mContext) {
         this.arrayList = arrayList;
         this.mContext = mContext;
+//        this.infoHomeFragment = infoHomeFragment;
     }
 
     @NonNull
@@ -65,14 +72,24 @@ public class NailshopAdapter extends RecyclerView.Adapter<NailshopAdapter.Custom
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent startInformation = new Intent(v.getContext(), ShopInfoActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                firestore.collection("shoplist")
-//                                .whereEqualTo("shopname", )
-//
-//                startInformation.putExtra("name", )
-                v.getContext().startActivity(startInformation);
+                pos = holder.getLayoutPosition();
+                shopname = arrayList.get(pos).getShopname();
+                location = arrayList.get(pos).getLocation();
+                Log.d(TAG, "position and id: " + pos + " / " + shopname + " / " + location);
 
-                Toast.makeText(v.getContext(), "네일 상세 정보 확인", Toast.LENGTH_SHORT).show();
+                if (shopname.isEmpty() == false){
+                    Log.d(TAG, "position2 and id2: " + pos + " / " + shopname + " / " + location);
+                    infoHomeFragment.setShopInfo(pos, shopname, location);
+                    shopInfoActivity.setShopInfo(pos, shopname, location);
+                    Intent startInformation = new Intent(v.getContext(), ShopInfoActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                    v.getContext().startActivity(startInformation);
+
+                    Toast.makeText(v.getContext(), "네일 상세 정보 확인", Toast.LENGTH_SHORT).show();
+                }
+
+
+
             }
         });
     }
