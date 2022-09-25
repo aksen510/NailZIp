@@ -1,12 +1,26 @@
 package com.example.nailzip;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.nailzip.model.Chat;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,6 +37,8 @@ public class ChatFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private FirebaseRemoteConfig mfirebaseRemoteConfig;
 
     public ChatFragment() {
         // Required empty public constructor
@@ -59,6 +75,75 @@ public class ChatFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_chat, container, false);
+        View view = inflater.inflate(R.layout.fragment_chat, container, false);
+
+        init(view);
+
+        RecyclerView recyclerView = view.findViewById(R.id.chat_recyclerview);
+        recyclerView.setLayoutManager(new LinearLayoutManager(inflater.getContext()));
+        recyclerView.setAdapter(new ChatFragmentRecyclerViewAdapter());
+        
+        mfirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
+
+
+        return view;
+    }
+
+    class ChatFragmentRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
+
+        List<Chat> chats;
+
+        public ChatFragmentRecyclerViewAdapter(){
+            chats = new ArrayList<>();
+            FirebaseDatabase.getInstance().getReference().child("chatUsers").addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    chats.clear();
+                    for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+                        chats.add(snapshot.getValue(Chat.class));
+                    }
+                    notifyDataSetChanged();
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        }
+
+        @Override
+        public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType){
+            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_chat, parent, false);
+
+            return new CustomViewHolder(view);
+        }
+
+        @Override
+        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position){
+
+        }
+
+        @Override
+        public int getItemCount(){
+            return chats.size();
+        }
+
+        private class CustomViewHolder extends RecyclerView.ViewHolder{
+            public ImageView imageView;
+            public TextView textView;
+
+            public CustomViewHolder(View view){
+                super(view);
+
+                imageView = view.findViewById(R.id.icon_chatUser);
+                textView = view.findViewById(R.id.tv_chatUserName);
+
+            }
+        }
+    }
+
+    public void init(View view){
+
     }
 }

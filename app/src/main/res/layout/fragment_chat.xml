@@ -74,7 +74,7 @@
         app:layout_constraintTop_toTopOf="@+id/guideline2" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recyclerview"
+        android:id="@+id/chat_recyclerview"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:scrollbarFadeDuration="0"
