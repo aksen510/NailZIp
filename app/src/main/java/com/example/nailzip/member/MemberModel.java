@@ -7,6 +7,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.nailzip.model.Chat;
 import com.example.nailzip.model.NailshopData;
 import com.example.nailzip.model.User;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -16,6 +17,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -72,6 +74,14 @@ public class MemberModel {
                                     }
                                 }
                             });
+
+                            Chat chat = new Chat();
+                            chat.userName = userAccount.getUsername();
+                            chat.position = userAccount.getPosition();
+
+                            String uid = task.getResult().getUser().getUid();
+                            FirebaseDatabase.getInstance().getReference().child("chatUsers").child(uid).setValue(chat);
+
                         }else {
                             saveUserInfoMutableLiveData.postValue(false);
                             Log.w(TAG, "회원가입 오류");
