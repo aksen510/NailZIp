@@ -1,5 +1,7 @@
 package com.example.nailzip;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -39,6 +41,7 @@ public class ChatFragment extends Fragment {
     private String mParam2;
 
     private FirebaseRemoteConfig mfirebaseRemoteConfig;
+    private Chat chat = new Chat();
 
     public ChatFragment() {
         // Required empty public constructor
@@ -120,8 +123,19 @@ public class ChatFragment extends Fragment {
         }
 
         @Override
-        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position){
+        public void onBindViewHolder(RecyclerView.ViewHolder holder, @SuppressLint("RecyclerView") int position){
 
+            ((CustomViewHolder)holder).textView.setText(chats.get(position).getUserName());
+          //  holder.tv_location.setText(arrayList.get(position).getLocation());
+
+            holder.itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent chattingroomActivity = new Intent(getContext(), ChattingroomActivity.class);
+                    chattingroomActivity.putExtra("chatUid", chats.get(position).getChatUid());
+                    startActivity(chattingroomActivity);
+                }
+            });
         }
 
         @Override

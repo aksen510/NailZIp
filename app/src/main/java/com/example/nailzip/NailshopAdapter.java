@@ -32,8 +32,10 @@ public class NailshopAdapter extends RecyclerView.Adapter<NailshopAdapter.Custom
     private FragmentStateAdapter fragmentStateAdapter;
     private InfoHomeFragment infoHomeFragment = new InfoHomeFragment();
     private ShopInfoActivity shopInfoActivity = new ShopInfoActivity();
+    private ChattingroomActivity chattingroomActivity = new ChattingroomActivity();
     private String location = " ";
     private String shopname = " ";
+    private String chatUid = " ";
     private int pos = 0;
 
     private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
@@ -75,12 +77,15 @@ public class NailshopAdapter extends RecyclerView.Adapter<NailshopAdapter.Custom
                 pos = holder.getLayoutPosition();
                 shopname = arrayList.get(pos).getShopname();
                 location = arrayList.get(pos).getLocation();
+                chatUid = arrayList.get(pos).getUid();
                 Log.d(TAG, "position and id: " + pos + " / " + shopname + " / " + location);
 
                 if (shopname.isEmpty() == false){
                     Log.d(TAG, "position2 and id2: " + pos + " / " + shopname + " / " + location);
-                    infoHomeFragment.setShopInfo(pos, shopname, location);
-                    shopInfoActivity.setShopInfo(pos, shopname, location);
+                    infoHomeFragment.setShopInfo(pos, shopname, location, chatUid);
+                    shopInfoActivity.setShopInfo(pos, shopname, location, chatUid);
+                    chattingroomActivity.setShopInfo(pos, shopname, location, chatUid);
+
                     Intent startInformation = new Intent(v.getContext(), ShopInfoActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
                     v.getContext().startActivity(startInformation);

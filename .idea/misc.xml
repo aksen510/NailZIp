@@ -30,7 +30,7 @@
         <entry key="app/src/main/res/drawable/ic_round_keyboard_arrow_down_40.xml" value="0.114" />
         <entry key="app/src/main/res/drawable/size_sorticon.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_changepw.xml" value="0.19410004275331338" />
-        <entry key="app/src/main/res/layout/activity_chattingroom.xml" value="0.21504916631038906" />
+        <entry key="app/src/main/res/layout/activity_chattingroom.xml" value="0.25" />
         <entry key="app/src/main/res/layout/activity_find_idactivity.xml" value="0.2278751603249252" />
         <entry key="app/src/main/res/layout/activity_find_pw.xml" value="0.2278751603249252" />
         <entry key="app/src/main/res/layout/activity_found_idactivity.xml" value="0.2278751603249252" />

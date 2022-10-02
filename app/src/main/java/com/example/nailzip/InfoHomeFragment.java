@@ -39,6 +39,7 @@ public class InfoHomeFragment extends Fragment {
     private Button btn_scrab, btn_location, btn_call, btn_reservation, btn_share;
     private static String shopName;
     private static String shopLocation;
+    private static String chatUid;
     private static int shopPos;
 
     //Todo: 이미지 추가
@@ -135,12 +136,13 @@ public class InfoHomeFragment extends Fragment {
         return view;
     }
 
-    public void setShopInfo(int pos, String shopname, String location){
+    public void setShopInfo(int pos, String shopname, String location, String chatUid){
         shopPos = pos;
         shopName = shopname;
         shopLocation = location;
+        chatUid = chatUid;
 
-        Log.d(TAG, "setShopInfo : " + shopPos + " / " + shopName + " / " + shopLocation);
+        Log.d(TAG, "setShopInfo : " + shopPos + " / " + shopName + " / " + shopLocation + " / " + chatUid);
 
     }
 

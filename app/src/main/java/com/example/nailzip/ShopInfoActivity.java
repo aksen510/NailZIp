@@ -37,7 +37,7 @@ public class ShopInfoActivity extends AppCompatActivity {
     private TabLayout tabLayout;
     private ViewPager viewPager;
     private PagerAdapter pagerAdapter;
-    private static String shopName, shopLocation;
+    private static String shopName, shopLocation, chatUid;
     private static int shopPos;
 
     private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
@@ -103,12 +103,13 @@ public class ShopInfoActivity extends AppCompatActivity {
 
     }
 
-    public void setShopInfo(int pos, String shopname, String location){
+    public void setShopInfo(int pos, String shopname, String location, String chatUid){
         shopPos = pos;
         shopName = shopname;
         shopLocation = location;
+        chatUid = chatUid;
 
-        Log.d(TAG, "setShopInfo : " + shopPos + " / " + shopName + " / " + shopLocation);
+        Log.d(TAG, "setShopInfo : " + shopPos + " / " + shopName + " / " + shopLocation + " / " + chatUid);
 
     }
 
