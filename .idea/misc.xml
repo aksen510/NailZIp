@@ -30,7 +30,7 @@
         <entry key="app/src/main/res/drawable/ic_round_keyboard_arrow_down_40.xml" value="0.114" />
         <entry key="app/src/main/res/drawable/size_sorticon.xml" value="0.1" />
         <entry key="app/src/main/res/layout/activity_changepw.xml" value="0.19410004275331338" />
-        <entry key="app/src/main/res/layout/activity_chattingroom.xml" value="0.25" />
+        <entry key="app/src/main/res/layout/activity_chattingroom.xml" value="0.165" />
         <entry key="app/src/main/res/layout/activity_find_idactivity.xml" value="0.2278751603249252" />
         <entry key="app/src/main/res/layout/activity_find_pw.xml" value="0.2278751603249252" />
         <entry key="app/src/main/res/layout/activity_found_idactivity.xml" value="0.2278751603249252" />
@@ -56,6 +56,7 @@
         <entry key="app/src/main/res/layout/fragment_nail_shop.xml" value="0.165" />
         <entry key="app/src/main/res/layout/fragment_setting.xml" value="0.25" />
         <entry key="app/src/main/res/layout/item_chat.xml" value="0.25031658927817646" />
+        <entry key="app/src/main/res/layout/item_message.xml" value="0.15006412997007268" />
         <entry key="app/src/main/res/layout/item_mypage.xml" value="0.165" />
         <entry key="app/src/main/res/layout/item_shop.xml" value="0.1412633297217153" />
         <entry key="app/src/main/res/layout/tab_custom.xml" value="0.2535271483539974" />

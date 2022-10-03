@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.nailzip.model.Chat;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
@@ -98,12 +99,21 @@ public class ChatFragment extends Fragment {
 
         public ChatFragmentRecyclerViewAdapter(){
             chats = new ArrayList<>();
+            final String myUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
             FirebaseDatabase.getInstance().getReference().child("chatUsers").addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     chats.clear();
                     for(DataSnapshot snapshot : dataSnapshot.getChildren()){
-                        chats.add(snapshot.getValue(Chat.class));
+
+                        Chat chat = snapshot.getValue(Chat.class);
+
+                        if (chat.chatUid.equals(myUid)){
+                            continue;
+                        }
+
+                        chats.add(chat);
                     }
                     notifyDataSetChanged();
                 }
