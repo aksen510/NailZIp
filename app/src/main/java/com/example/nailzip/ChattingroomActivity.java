@@ -2,12 +2,15 @@ package com.example.nailzip;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,8 +19,13 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+import com.example.nailzip.model.Chat;
 import com.example.nailzip.model.Chatting;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -79,7 +87,12 @@ public class ChattingroomActivity extends AppCompatActivity {
                     comment.uid = uid;
                     comment.message = edt_chat.getText().toString();
                     Log.d(TAG, "메세지 내용 : " + comment.message);
-                    FirebaseDatabase.getInstance().getReference().child("chatrooms").child(chatRoomUid).child("comments").push().setValue(comment);
+                    FirebaseDatabase.getInstance().getReference().child("chatrooms").child(chatRoomUid).child("comments").push().setValue(comment).addOnCompleteListener(new OnCompleteListener<Void>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Void> task) {
+                            edt_chat.setText("");
+                        }
+                    });
                 }
 
             }
@@ -126,11 +139,28 @@ public class ChattingroomActivity extends AppCompatActivity {
 
     class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
-        List<Chatting.Comment> comments;
+        public List<Chatting.Comment> comments;
+        public Chat chat = new Chat();
 
         public RecyclerViewAdapter(){
             comments = new ArrayList<>();
 
+            FirebaseDatabase.getInstance().getReference().child("chatUsers").child(chatUid).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    chat = snapshot.getValue(Chat.class);
+
+                    getMessageList();
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+        }
+
+        void getMessageList(){
             FirebaseDatabase.getInstance().getReference().child("chatrooms").child(chatRoomUid).child("comments").addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -139,7 +169,10 @@ public class ChattingroomActivity extends AppCompatActivity {
                     for (DataSnapshot item : snapshot.getChildren()){
                         comments.add(item.getValue(Chatting.Comment.class));
                     }
+                    //메세지가 갱신됨
                     notifyDataSetChanged();
+
+                    msgRecyclerView.scrollToPosition(comments.size() - 1);
                 }
 
                 @Override
@@ -160,8 +193,31 @@ public class ChattingroomActivity extends AppCompatActivity {
 
         @Override
         public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+            MessageViewHolder messageViewHolder = ((MessageViewHolder) holder);
 
-            ((MessageViewHolder)holder).txt_msgItem.setText(comments.get(position).message);
+            // 내가 보낸 메세지
+            if (comments.get(position).uid.equals(uid)){
+                messageViewHolder.txt_msgItem.setText(comments.get(position).message);
+                messageViewHolder.txt_msgItem.setBackgroundResource(R.drawable.rightbubble);
+                messageViewHolder.linearLayout_destination.setVisibility(View.INVISIBLE);
+                messageViewHolder.txt_msgItem.setTextSize(15);
+                messageViewHolder.linearLayout_main.setGravity(Gravity.RIGHT);
+            }
+            // 상대방이 보낸 메세지
+            else {
+                Glide.with(holder.itemView.getContext())
+                        .load(R.drawable.ic_chatuser)
+                        .apply(new RequestOptions().circleCrop())
+                        .into(messageViewHolder.img_profile);
+                messageViewHolder.txt_name.setText(chat.userName);
+                messageViewHolder.linearLayout_destination.setVisibility(View.VISIBLE);
+                messageViewHolder.txt_msgItem.setBackgroundResource(R.drawable.leftbubble);
+                messageViewHolder.txt_msgItem.setText(comments.get(position).message);
+                messageViewHolder.txt_msgItem.setTextSize(15);
+                messageViewHolder.linearLayout_main.setGravity(Gravity.LEFT);
+
+            }
+
         }
 
         @Override
@@ -171,11 +227,19 @@ public class ChattingroomActivity extends AppCompatActivity {
 
         private class MessageViewHolder extends RecyclerView.ViewHolder{
             public TextView txt_msgItem;
+            public TextView txt_name;
+            public ImageView img_profile;
+            public LinearLayout linearLayout_destination;
+            public LinearLayout linearLayout_main;
 
             public MessageViewHolder(View view){
                 super(view);
 
                 txt_msgItem = view.findViewById(R.id.txt_msgItem);
+                txt_name = view.findViewById(R.id.msgItem_txt_name);
+                img_profile = view.findViewById(R.id.msgItem_img_profile);
+                linearLayout_destination = view.findViewById(R.id.msgItem_linearlayout_destination);
+                linearLayout_main = view.findViewById(R.id.msgItem_linearlayout_main);
             }
         }
 
