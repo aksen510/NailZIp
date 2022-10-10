@@ -1,5 +1,6 @@
 package com.example.nailzip;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -13,15 +14,23 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
+import com.example.nailzip.model.Chat;
 import com.example.nailzip.mypage.PagerAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -42,10 +51,15 @@ public class InfoHomeFragment extends Fragment {
     private static String chatUid;
     private static int shopPos;
 
+    private Chat chat = new Chat();
+    private List<Chat> chats = new ArrayList<>();
+    private static String shopUid = "";
+
     //Todo: 이미지 추가
 
     private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+    private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -97,7 +111,6 @@ public class InfoHomeFragment extends Fragment {
 
         Log.d(TAG, "mainShopInfo : " + shopPos + " / " + shopName + " / " + shopLocation);
 
-
         firestore.collection("shoplist")
                 .whereEqualTo("shopname", shopName)
                 .whereEqualTo("location", shopLocation)
@@ -114,7 +127,17 @@ public class InfoHomeFragment extends Fragment {
                                 tv_closedInfo.setText(document.get("closed").toString());
                                 tv_memoInfo.setText(document.get("memo").toString());
 
-                                Log.d(TAG,"Data : " + document.get("shopname") + " / " + document.get("time") + " / " + document.get("closed") + " / " + document.get("memo"));
+//                                shopUid = firebaseAuth.getUid();
+//                                Log.d(TAG, "chatUid1 : " + shopUid);
+//
+//                                Log.d(TAG,"Data : " + document.get("shopname") + " / " + document.get("time") + " / " + document.get("closed") + " / " + document.get("memo"));
+
+//                                chat.userName = userAccount.getUsername();
+//                                chat.position = userAccount.getPosition();
+//                                chat.chatUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+//
+//                                String uid = task.getResult().getUser().getUid();
+//                                FirebaseDatabase.getInstance().getReference().child("chatUsers").child(uid).setValue(chat);
                             }
                         }
                         else{
@@ -131,6 +154,49 @@ public class InfoHomeFragment extends Fragment {
                         return;
                     }
                 });
+
+        firebaseDatabase.getReference().child("chatUsers").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                chats.clear();
+                for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
+
+                    Chat chat = dataSnapshot.getValue(Chat.class);
+                    chats.add(chat);
+
+                }
+                Log.d(TAG, "chats 리스트 : " + chats);
+
+                for(int i=0; i<chats.size(); i++){
+                    Log.d(TAG, "chats 리스트 중 chatUid : " + chats.get(i).getChatUid());
+
+                    int savePos = chats.get(i).getPosition();
+                    String saveName = String.valueOf(chats.get(i).getUserName());
+                    Log.d(TAG, "savePos & saveName : " + savePos + " / " + saveName);
+                    Log.d(TAG, "shopPos & shopName : " + shopPos + " / " + shopName);
+
+                    if(saveName.equals(shopName)){
+                        shopUid = chats.get(i).getChatUid();
+                        Log.d(TAG, "shopUid : " + shopUid);
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.d(TAG, "Error : 리스트 저장 실패");
+            }
+        });
+
+        btn_reservation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent chattingroomActivity = new Intent(getContext(), ChattingroomActivity.class);
+                chattingroomActivity.putExtra("chatUid", shopUid);
+                Log.d(TAG, "chatUid2 : " + shopUid);
+                startActivity(chattingroomActivity);
+            }
+        });
 
 
         return view;

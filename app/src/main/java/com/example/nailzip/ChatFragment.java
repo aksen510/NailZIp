@@ -1,7 +1,6 @@
 package com.example.nailzip;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +14,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.nailzip.model.Chat;
+import com.example.nailzip.model.Chatting;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -23,7 +23,10 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -95,27 +98,21 @@ public class ChatFragment extends Fragment {
 
     class ChatFragmentRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
-        List<Chat> chats;
+        List<Chatting> chattings;
+        String myUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
         public ChatFragmentRecyclerViewAdapter(){
-            chats = new ArrayList<>();
-            final String myUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+            chattings = new ArrayList<>();
 
-            FirebaseDatabase.getInstance().getReference().child("chatUsers").addValueEventListener(new ValueEventListener() {
+            FirebaseDatabase.getInstance().getReference().child("chatrooms").orderByChild("users/"+myUid).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
-                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                    chats.clear();
-                    for(DataSnapshot snapshot : dataSnapshot.getChildren()){
-
-                        Chat chat = snapshot.getValue(Chat.class);
-
-                        if (chat.chatUid.equals(myUid)){
-                            continue;
-                        }
-
-                        chats.add(chat);
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    chattings.clear();
+                    for (DataSnapshot item : snapshot.getChildren()){
+                        chattings.add(item.getValue(Chatting.class));
                     }
                     notifyDataSetChanged();
+
                 }
 
                 @Override
@@ -123,6 +120,30 @@ public class ChatFragment extends Fragment {
 
                 }
             });
+
+            // InfoShopfragment에 적용
+//            FirebaseDatabase.getInstance().getReference().child("chatUsers").addValueEventListener(new ValueEventListener() {
+//                @Override
+//                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                    chats.clear();
+//                    for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+//
+//                        Chat chat = snapshot.getValue(Chat.class);
+//
+//                        if (chat.chatUid.equals(myUid)){
+//                            continue;
+//                        }
+//
+//                        chats.add(chat);
+//                    }
+//                    notifyDataSetChanged();
+//                }
+//
+//                @Override
+//                public void onCancelled(@NonNull DatabaseError error) {
+//
+//                }
+//            });
         }
 
         @Override
@@ -135,33 +156,63 @@ public class ChatFragment extends Fragment {
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, @SuppressLint("RecyclerView") int position){
 
-            ((CustomViewHolder)holder).textView.setText(chats.get(position).getUserName());
+//            ((CustomViewHolder)holder).tv_title.setText(chats.get(position).getUserName());
+//            ((CustomViewHolder)holder).tv_lastMessage.setText();
           //  holder.tv_location.setText(arrayList.get(position).getLocation());
+
+            CustomViewHolder customViewHolder = (CustomViewHolder) holder;
+            String chatUid = null;
+
+            for (String user : chattings.get(position).users.keySet()){
+                if(!user.equals(myUid)){
+                    chatUid = user;
+                }
+            }
+            FirebaseDatabase.getInstance().getReference().child("users").child(chatUid).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    Chat chat = snapshot.getValue(Chat.class);
+                    customViewHolder.tv_title.setText(chat.userName);
+
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
+            });
+
+            // 메세지를 내림차순으로 정렬 후 마지막 메세지의 키값을 가져옴
+            Map<String, Chatting.Comment> commentMap = new TreeMap<>(Collections.reverseOrder());
+            commentMap.putAll(chattings.get(position).comments);
+            String lastMessageKey = (String) commentMap.keySet().toArray()[0];
+            customViewHolder.tv_lastMessage.setText(chattings.get(position).comments.get(lastMessageKey).message);
 
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Intent chattingroomActivity = new Intent(getContext(), ChattingroomActivity.class);
-                    chattingroomActivity.putExtra("chatUid", chats.get(position).getChatUid());
-                    startActivity(chattingroomActivity);
+//                    Intent chattingroomActivity = new Intent(getContext(), ChattingroomActivity.class);
+//                    chattingroomActivity.putExtra("chatUid", chattings.get(position).getChatUid());
+//                    startActivity(chattingroomActivity);
                 }
             });
         }
 
         @Override
         public int getItemCount(){
-            return chats.size();
+            return chattings.size();
         }
 
         private class CustomViewHolder extends RecyclerView.ViewHolder{
             public ImageView imageView;
-            public TextView textView;
+            public TextView tv_title, tv_lastMessage;
 
             public CustomViewHolder(View view){
                 super(view);
 
                 imageView = view.findViewById(R.id.icon_chatUser);
-                textView = view.findViewById(R.id.tv_chatUserName);
+                tv_title = view.findViewById(R.id.tv_chatUserName);
+                tv_lastMessage = view.findViewById(R.id.tv_chatItem_last);
 
             }
         }

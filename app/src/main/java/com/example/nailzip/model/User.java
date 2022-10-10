@@ -6,6 +6,7 @@ public class User {
     String email;
     String username;
     String phonenum;
+    String shopname = "No Shop";
 
     public String getUid() {
         return uid;
@@ -45,5 +46,13 @@ public class User {
 
     public void setPhonenum(String phonenum) {
         this.phonenum = phonenum;
+    }
+
+    public String getShopname() {
+        return shopname;
+    }
+
+    public void setShopname(String shopname) {
+        this.shopname = shopname;
     }
 }

@@ -1,9 +1,5 @@
 package com.example.nailzip.member;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,11 +8,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.example.nailzip.HomeFragment;
-import com.example.nailzip.MainActivity;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.Observer;
+import androidx.lifecycle.ViewModelProvider;
+
 import com.example.nailzip.R;
 import com.example.nailzip.model.User;
-import com.google.android.material.button.MaterialButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -48,13 +45,13 @@ public class RegisterShopActivity extends AppCompatActivity {
                 String pwdcheck = edt_checkPw.getText().toString().trim();
                 String username = edt_ceoname.getText().toString().trim();
                 String phonenum = edt_phonenum.getText().toString().trim();
+                String shopname = edt_shopname.getText().toString().trim();
 
                 // Todo : Nailshop 모델에 추가 저장
                 String shopphone = edt_shopphonenum.getText().toString().trim();
                 String address = edt_address.getText().toString().trim();
-                String shopname = edt_shopname.getText().toString().trim();
 
-                if (email.isEmpty() || pwd.isEmpty() || pwdcheck.isEmpty() || username.isEmpty() || phonenum.isEmpty()) {
+                if (email.isEmpty() || pwd.isEmpty() || pwdcheck.isEmpty() || username.isEmpty() || phonenum.isEmpty() || shopname.isEmpty()) {
                     Toast.makeText(RegisterShopActivity.this, "빈 칸을 채워주세요", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -66,6 +63,7 @@ public class RegisterShopActivity extends AppCompatActivity {
                         userAccount.setEmail(email);
                         userAccount.setUsername(username);
                         userAccount.setPhonenum(phonenum);
+                        userAccount.setShopname(shopname);
 
                         final ProgressDialog mDialog = new ProgressDialog(RegisterShopActivity.this);
 

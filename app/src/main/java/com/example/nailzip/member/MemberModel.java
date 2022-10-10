@@ -75,13 +75,25 @@ public class MemberModel {
                                 }
                             });
 
-                            Chat chat = new Chat();
-                            chat.userName = userAccount.getUsername();
-                            chat.position = userAccount.getPosition();
-                            chat.chatUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                            if (userAccount.getPosition() == 0){
+                                Chat chat = new Chat();
+                                chat.userName = userAccount.getUsername();
+                                chat.position = userAccount.getPosition();
+                                chat.chatUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
-                            String uid = task.getResult().getUser().getUid();
-                            FirebaseDatabase.getInstance().getReference().child("chatUsers").child(uid).setValue(chat);
+                                String uid = task.getResult().getUser().getUid();
+                                FirebaseDatabase.getInstance().getReference().child("chatUsers").child(uid).setValue(chat);
+                            }
+                            else {
+                                Chat chat = new Chat();
+                                chat.userName = userAccount.getShopname();
+                                chat.position = userAccount.getPosition();
+                                chat.chatUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+                                String uid = task.getResult().getUser().getUid();
+                                FirebaseDatabase.getInstance().getReference().child("chatUsers").child(uid).setValue(chat);
+                            }
+
 
                         }else {
                             saveUserInfoMutableLiveData.postValue(false);
