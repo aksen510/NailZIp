@@ -23,18 +23,34 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.nailzip.model.Chat;
 import com.example.nailzip.model.Chatting;
+import com.example.nailzip.model.NotificationModel;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ServerValue;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
+import com.squareup.okhttp.Callback;
+import com.squareup.okhttp.MediaType;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.RequestBody;
+import com.squareup.okhttp.Response;
 
+import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.TimeZone;
 
 public class ChattingroomActivity extends AppCompatActivity {
 
@@ -49,8 +65,14 @@ public class ChattingroomActivity extends AppCompatActivity {
 
     private String uid;
     private String chatRoomUid;
+    public Chat chat = new Chat();
 
     private RecyclerView msgRecyclerView;
+    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy.MM.dd HH:mm");
+
+    private DatabaseReference databaseReference;
+    private ValueEventListener valueEventListener;
+    int peopleCount = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -86,10 +108,12 @@ public class ChattingroomActivity extends AppCompatActivity {
                     Chatting.Comment comment = new Chatting.Comment();
                     comment.uid = uid;
                     comment.message = edt_chat.getText().toString();
+                    comment.timestamp = ServerValue.TIMESTAMP;
                     Log.d(TAG, "메세지 내용 : " + comment.message);
                     FirebaseDatabase.getInstance().getReference().child("chatrooms").child(chatRoomUid).child("comments").push().setValue(comment).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
+                            sendGcm();
                             edt_chat.setText("");
                         }
                     });
@@ -102,7 +126,40 @@ public class ChattingroomActivity extends AppCompatActivity {
         // Toolbar 활성화
         setSupportActionBar(tb_back);
         Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true); // 뒤로가기 버튼 생성
-        getSupportActionBar().setTitle(chatwith); // Toolbar 제목 제거
+        getSupportActionBar().setTitle(chatwith); // Toolbar 제목
+    }
+
+    void sendGcm(){
+        Gson gson = new Gson();
+
+        String userName = FirebaseAuth.getInstance().getCurrentUser().getDisplayName();
+        NotificationModel notificationModel = new NotificationModel();
+        notificationModel.to = chat.pushToken;
+        notificationModel.notification.title = userName;
+        notificationModel.notification.body = edt_chat.getText().toString();
+        notificationModel.data.title = userName;
+        notificationModel.data.body = edt_chat.getText().toString();
+
+        RequestBody requestBody = RequestBody.create(MediaType.parse("application/json; charset=utf8"), gson.toJson(notificationModel));
+
+        Request request = new Request.Builder()
+                .header("Content-Type", "application/json")
+                .addHeader("Authorization", "key=AAAAbGwsNds:APA91bGR8gpu2p-AXUq2pa4VfKTuNd1aZEgzuJqeqUr0MXpgHkmki8c7cqsNDnVG0ej1gLuke7K2V2JScLCLANhqKS4TgDjpG5GPb9-YluZ6Teyvp8I-WWakUUdAeYL0h2RhOD0Xn-WX")
+                .url("https://fcm.googleapis.com/fcm/send")
+                .post(requestBody)
+                .build();
+        OkHttpClient okHttpClient = new OkHttpClient();
+        okHttpClient.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(Request request, IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(Response response) throws IOException {
+
+            }
+        });
     }
 
     void checkChatRoom(){
@@ -140,7 +197,6 @@ public class ChattingroomActivity extends AppCompatActivity {
     class RecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>{
 
         public List<Chatting.Comment> comments;
-        public Chat chat = new Chat();
 
         public RecyclerViewAdapter(){
             comments = new ArrayList<>();
@@ -149,6 +205,10 @@ public class ChattingroomActivity extends AppCompatActivity {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     chat = snapshot.getValue(Chat.class);
+
+                    chatwith=chat.userName;
+                    Log.d(TAG, "chatwith : " + chatwith);
+                    getSupportActionBar().setTitle(chatwith);
 
                     getMessageList();
                 }
@@ -161,18 +221,43 @@ public class ChattingroomActivity extends AppCompatActivity {
         }
 
         void getMessageList(){
-            FirebaseDatabase.getInstance().getReference().child("chatrooms").child(chatRoomUid).child("comments").addValueEventListener(new ValueEventListener() {
+            databaseReference = FirebaseDatabase.getInstance().getReference().child("chatrooms").child(chatRoomUid).child("comments");
+            valueEventListener = databaseReference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     comments.clear();
+                    Map<String, Object> readUsersMap = new HashMap<>();
 
                     for (DataSnapshot item : snapshot.getChildren()){
-                        comments.add(item.getValue(Chatting.Comment.class));
-                    }
-                    //메세지가 갱신됨
-                    notifyDataSetChanged();
+                        String key = item.getKey();
+                        Chatting.Comment comment_origin = item.getValue(Chatting.Comment.class);
+                        Chatting.Comment comment_modify = item.getValue(Chatting.Comment.class);
 
-                    msgRecyclerView.scrollToPosition(comments.size() - 1);
+                        comment_modify.readUsers.put(uid, true);
+
+                        readUsersMap.put(key, comment_modify);
+                        comments.add(comment_origin);
+                    }
+
+//                    if(!(comments.get(comments.size() - 1).readUsers.containsKey(uid))) {
+
+                        FirebaseDatabase.getInstance().getReference().child("chatrooms").child(chatRoomUid).child("comments").updateChildren(readUsersMap).addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                //메세지가 갱신됨
+                                notifyDataSetChanged();
+
+                                msgRecyclerView.scrollToPosition(comments.size() - 1);
+                            }
+                        });
+//                    }
+//                    else{
+//                        //메세지가 갱신됨
+//                        notifyDataSetChanged();
+//
+//                        msgRecyclerView.scrollToPosition(comments.size() - 1);
+//                    }
+
                 }
 
                 @Override
@@ -202,6 +287,7 @@ public class ChattingroomActivity extends AppCompatActivity {
                 messageViewHolder.linearLayout_destination.setVisibility(View.INVISIBLE);
                 messageViewHolder.txt_msgItem.setTextSize(15);
                 messageViewHolder.linearLayout_main.setGravity(Gravity.RIGHT);
+                setReadCounter(position, messageViewHolder.txt_msgItem_readCounter_left);
             }
             // 상대방이 보낸 메세지
             else {
@@ -215,9 +301,50 @@ public class ChattingroomActivity extends AppCompatActivity {
                 messageViewHolder.txt_msgItem.setText(comments.get(position).message);
                 messageViewHolder.txt_msgItem.setTextSize(15);
                 messageViewHolder.linearLayout_main.setGravity(Gravity.LEFT);
+                setReadCounter(position, messageViewHolder.txt_msgItem_readCounter_right);
 
             }
 
+            long unixTime = (long) comments.get(position).timestamp;
+            Date date = new Date(unixTime);
+            simpleDateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
+            String time = simpleDateFormat.format(date);
+            messageViewHolder.timestamp.setText(time);
+
+        }
+
+        void setReadCounter(int position, TextView textView){
+            if (peopleCount == 0) {
+                FirebaseDatabase.getInstance().getReference().child("chatrooms").child(chatRoomUid).child("users").addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        Map<String, Boolean> users = (Map<String, Boolean>) snapshot.getValue();
+                        peopleCount = users.size();
+
+                        int count = peopleCount - comments.get(position).readUsers.size();
+                        if (count > 0) {
+                            textView.setVisibility(View.VISIBLE);
+                            textView.setText(String.valueOf(count));
+                        } else {
+                            textView.setVisibility(View.INVISIBLE);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+            }
+            else {
+                int count = peopleCount - comments.get(position).readUsers.size();
+                if (count > 0) {
+                    textView.setVisibility(View.VISIBLE);
+                    textView.setText(String.valueOf(count));
+                } else {
+                    textView.setVisibility(View.INVISIBLE);
+                }
+            }
         }
 
         @Override
@@ -231,6 +358,9 @@ public class ChattingroomActivity extends AppCompatActivity {
             public ImageView img_profile;
             public LinearLayout linearLayout_destination;
             public LinearLayout linearLayout_main;
+            public TextView timestamp;
+            public TextView txt_msgItem_readCounter_left;
+            public TextView txt_msgItem_readCounter_right;
 
             public MessageViewHolder(View view){
                 super(view);
@@ -240,6 +370,9 @@ public class ChattingroomActivity extends AppCompatActivity {
                 img_profile = view.findViewById(R.id.msgItem_img_profile);
                 linearLayout_destination = view.findViewById(R.id.msgItem_linearlayout_destination);
                 linearLayout_main = view.findViewById(R.id.msgItem_linearlayout_main);
+                timestamp = view.findViewById(R.id.txt_msgTime);
+                txt_msgItem_readCounter_left = view.findViewById(R.id.txt_msgItem_readCounter_left);
+                txt_msgItem_readCounter_right = view.findViewById(R.id.txt_msgItem_readCounter_right);
             }
         }
 
@@ -251,6 +384,7 @@ public class ChattingroomActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home: { //toolbar의 back키 눌렀을 때 동작
+                databaseReference.removeEventListener(valueEventListener);
                 finish();
                 return true;
             }
@@ -264,5 +398,11 @@ public class ChattingroomActivity extends AppCompatActivity {
         edt_chat = findViewById(R.id.edt_chat);
         msgRecyclerView = findViewById(R.id.msgRecyclerView);
 
+    }
+
+    @Override
+    public void onBackPressed(){
+        databaseReference.removeEventListener(valueEventListener);
+        finish();
     }
 }

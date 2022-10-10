@@ -1,6 +1,7 @@
 package com.example.nailzip;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,10 +23,13 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import java.util.TimeZone;
 import java.util.TreeMap;
 
 /**
@@ -46,6 +50,8 @@ public class ChatFragment extends Fragment {
 
     private FirebaseRemoteConfig mfirebaseRemoteConfig;
     private Chat chat = new Chat();
+
+    private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy.MM.dd hh:mm");
 
     public ChatFragment() {
         // Required empty public constructor
@@ -100,11 +106,12 @@ public class ChatFragment extends Fragment {
 
         List<Chatting> chattings;
         String myUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        private ArrayList<String> chatUsers = new ArrayList<>();
 
         public ChatFragmentRecyclerViewAdapter(){
             chattings = new ArrayList<>();
 
-            FirebaseDatabase.getInstance().getReference().child("chatrooms").orderByChild("users/"+myUid).addListenerForSingleValueEvent(new ValueEventListener() {
+            FirebaseDatabase.getInstance().getReference().child("chatrooms").orderByChild("users/"+myUid).equalTo(true).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     chattings.clear();
@@ -166,9 +173,10 @@ public class ChatFragment extends Fragment {
             for (String user : chattings.get(position).users.keySet()){
                 if(!user.equals(myUid)){
                     chatUid = user;
+                    chatUsers.add(chatUid);
                 }
             }
-            FirebaseDatabase.getInstance().getReference().child("users").child(chatUid).addListenerForSingleValueEvent(new ValueEventListener() {
+            FirebaseDatabase.getInstance().getReference().child("chatUsers").child(chatUid).addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     Chat chat = snapshot.getValue(Chat.class);
@@ -188,14 +196,22 @@ public class ChatFragment extends Fragment {
             String lastMessageKey = (String) commentMap.keySet().toArray()[0];
             customViewHolder.tv_lastMessage.setText(chattings.get(position).comments.get(lastMessageKey).message);
 
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
+            customViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
 //                    Intent chattingroomActivity = new Intent(getContext(), ChattingroomActivity.class);
 //                    chattingroomActivity.putExtra("chatUid", chattings.get(position).getChatUid());
 //                    startActivity(chattingroomActivity);
+                    Intent chattingroomActivity = new Intent(getContext(), ChattingroomActivity.class);
+                    chattingroomActivity.putExtra("chatUid", chatUsers.get(position));
+                    startActivity(chattingroomActivity);
                 }
             });
+
+            simpleDateFormat.setTimeZone(TimeZone.getTimeZone("Asia/Seoul"));
+            long unixTime = (long) chattings.get(position).comments.get(lastMessageKey).timestamp;
+            Date date = new Date(unixTime);
+            customViewHolder.tv_timestamp.setText(simpleDateFormat.format(date));
         }
 
         @Override
@@ -205,7 +221,7 @@ public class ChatFragment extends Fragment {
 
         private class CustomViewHolder extends RecyclerView.ViewHolder{
             public ImageView imageView;
-            public TextView tv_title, tv_lastMessage;
+            public TextView tv_title, tv_lastMessage, tv_timestamp;
 
             public CustomViewHolder(View view){
                 super(view);
@@ -213,6 +229,7 @@ public class ChatFragment extends Fragment {
                 imageView = view.findViewById(R.id.icon_chatUser);
                 tv_title = view.findViewById(R.id.tv_chatUserName);
                 tv_lastMessage = view.findViewById(R.id.tv_chatItem_last);
+                tv_timestamp = view.findViewById(R.id.tv_timestamp);
 
             }
         }

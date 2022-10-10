@@ -1,17 +1,27 @@
 package com.example.nailzip;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentPagerAdapter;
-import androidx.viewpager.widget.ViewPager;
-
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.viewpager.widget.ViewPager;
+
 import com.example.nailzip.mypage.PagerAdapter;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.tabs.TabLayout;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.messaging.FirebaseMessaging;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -28,6 +38,8 @@ public class HomeFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private String TAG = "HomeFragment";
 
     private TabLayout tablayout;
     private ViewPager viewpager;
@@ -80,7 +92,39 @@ public class HomeFragment extends Fragment {
         pagerAdapter.addFragment(new HomeNewtabFragment(), "NEW");
         viewpager.setAdapter(pagerAdapter);
 
+        passPushTokenToServer();
+
         return view;
+    }
+
+
+    void passPushTokenToServer(){
+        String uid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        FirebaseMessaging.getInstance().getToken().addOnCompleteListener(new OnCompleteListener<String>() {
+            @Override
+            public void onComplete(@NonNull Task<String> task) {
+                if(task.isSuccessful()){
+
+                    String token = task.getResult();
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("pushToken", token);
+
+                    FirebaseDatabase.getInstance().getReference().child("chatUsers").child(uid).updateChildren(map);
+
+
+                }
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d(TAG, "Error: 토큰 생성");
+            }
+        });
+
+//        String token = String.valueOf(FirebaseMessaging.getInstance().getToken().getResult());
+
+
     }
 
     public void init(View view){

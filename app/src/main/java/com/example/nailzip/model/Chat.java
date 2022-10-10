@@ -6,6 +6,7 @@ public class Chat {
     public String userName;
     public int position;    // 0: 고객, 1: 네일
     public String chatUid;
+    public String pushToken;
 
 
     public String getUserName() {
@@ -30,5 +31,13 @@ public class Chat {
 
     public void setChatUid(String chatUid) {
         this.chatUid = chatUid;
+    }
+
+    public String getPushToken() {
+        return pushToken;
+    }
+
+    public void setPushToken(String pushToken) {
+        this.pushToken = pushToken;
     }
 }

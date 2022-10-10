@@ -109,6 +109,8 @@ public class InfoHomeFragment extends Fragment {
 
         init(view);
 
+        final String myUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
         Log.d(TAG, "mainShopInfo : " + shopPos + " / " + shopName + " / " + shopLocation);
 
         firestore.collection("shoplist")
@@ -154,6 +156,29 @@ public class InfoHomeFragment extends Fragment {
                         return;
                     }
                 });
+        // InfoShopfragment에 적용
+//            FirebaseDatabase.getInstance().getReference().child("chatUsers").addValueEventListener(new ValueEventListener() {
+//                @Override
+//                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+//                    chats.clear();
+//                    for(DataSnapshot snapshot : dataSnapshot.getChildren()){
+//
+//                        Chat chat = snapshot.getValue(Chat.class);
+//
+//                        if (chat.chatUid.equals(myUid)){
+//                            continue;
+//                        }
+//
+//                        chats.add(chat);
+//                    }
+//                    notifyDataSetChanged();
+//                }
+//
+//                @Override
+//                public void onCancelled(@NonNull DatabaseError error) {
+//
+//                }
+//            });
 
         firebaseDatabase.getReference().child("chatUsers").addValueEventListener(new ValueEventListener() {
             @Override
@@ -162,9 +187,15 @@ public class InfoHomeFragment extends Fragment {
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()) {
 
                     Chat chat = dataSnapshot.getValue(Chat.class);
+
+                    if (chat.chatUid.equals(myUid)){
+                        continue;
+                    }
+
                     chats.add(chat);
 
                 }
+
                 Log.d(TAG, "chats 리스트 : " + chats);
 
                 for(int i=0; i<chats.size(); i++){

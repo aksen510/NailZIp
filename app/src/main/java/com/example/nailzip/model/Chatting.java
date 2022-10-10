@@ -14,6 +14,8 @@ public class Chatting {
     public static class Comment {
         public String uid;          // 채팅 보내는 uid
         public String message;
+        public Object timestamp;
+        public Map<String, Object> readUsers = new HashMap<>();
     }
 
     public Map<String, Boolean> getUsers() {

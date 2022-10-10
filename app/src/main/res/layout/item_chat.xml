@@ -18,7 +18,7 @@
             android:layout_height="30dp"
             android:src="@drawable/ic_chatuser"/>
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
@@ -36,12 +36,24 @@
                 android:id="@+id/tv_chatItem_last"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_below="@id/tv_chatUserName"
                 android:text="마지막 메세지"
                 android:textColor="#5f5f5f"
-                android:textSize="13dp"
+                android:textSize="15dp"
                 android:layout_marginTop="10dp"/>
 
-        </LinearLayout>
+            <TextView
+                android:id="@+id/tv_timestamp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_alignParentRight="true"
+                android:layout_margin="10dp"
+                android:textSize="10dp"
+                android:textColor="#5f5f5f"
+                android:text="2022.09.09 09:09"/>
+
+        </RelativeLayout>
 
     </LinearLayout>
 

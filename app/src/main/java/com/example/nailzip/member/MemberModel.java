@@ -17,6 +17,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -58,6 +59,8 @@ public class MemberModel {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if(task.isSuccessful()){
                             userMutableLiveData.postValue(firebaseAuth.getCurrentUser());
+                            UserProfileChangeRequest userProfileChangeRequest;
+
                             firestore.collection("users")
                                     .document(firebaseAuth.getCurrentUser().getUid())
                                     .set(userAccount)
@@ -76,6 +79,8 @@ public class MemberModel {
                             });
 
                             if (userAccount.getPosition() == 0){
+                                userProfileChangeRequest = new UserProfileChangeRequest.Builder().setDisplayName(userAccount.getUsername()).build();
+
                                 Chat chat = new Chat();
                                 chat.userName = userAccount.getUsername();
                                 chat.position = userAccount.getPosition();
@@ -85,6 +90,8 @@ public class MemberModel {
                                 FirebaseDatabase.getInstance().getReference().child("chatUsers").child(uid).setValue(chat);
                             }
                             else {
+                                userProfileChangeRequest = new UserProfileChangeRequest.Builder().setDisplayName(userAccount.getShopname()).build();
+
                                 Chat chat = new Chat();
                                 chat.userName = userAccount.getShopname();
                                 chat.position = userAccount.getPosition();
@@ -93,6 +100,8 @@ public class MemberModel {
                                 String uid = task.getResult().getUser().getUid();
                                 FirebaseDatabase.getInstance().getReference().child("chatUsers").child(uid).setValue(chat);
                             }
+
+                            task.getResult().getUser().updateProfile(userProfileChangeRequest);
 
 
                         }else {
