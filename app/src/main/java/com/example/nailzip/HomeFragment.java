@@ -83,6 +83,7 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         init(view);
+        Log.d(TAG, "Git Test");
 
         tablayout.setupWithViewPager(viewpager);
 
