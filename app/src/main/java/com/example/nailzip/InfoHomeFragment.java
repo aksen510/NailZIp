@@ -232,6 +232,17 @@ public class InfoHomeFragment extends Fragment {
             }
         });
 
+        btn_location.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent locationActivity = new Intent(getContext(), LocationActivity.class);
+                locationActivity.putExtra("shopName", shopName);
+                locationActivity.putExtra("shopLocation", shopLocation);
+                Log.d(TAG, "shopLocation : " + shopLocation);
+                startActivity(locationActivity);
+            }
+        });
+
 
         return view;
     }
