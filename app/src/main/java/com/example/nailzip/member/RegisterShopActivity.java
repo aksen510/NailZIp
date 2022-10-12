@@ -8,6 +8,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProvider;
@@ -34,6 +36,16 @@ public class RegisterShopActivity extends AppCompatActivity {
 
         memberViewModel = new ViewModelProvider(this).get(MemberViewModel.class);
         init();
+
+        edt_address.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 주소 검색 웹뷰 화면으로 이동
+                Intent startSearchAddress = new Intent(RegisterShopActivity.this, SearchAddressActivity.class);
+                getSearchResult.launch(startSearchAddress);
+                //startActivity(startSearchAddress);
+            }
+        });
 
         btn_complete.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,6 +106,19 @@ public class RegisterShopActivity extends AppCompatActivity {
             }
         });
     }
+
+    private final ActivityResultLauncher<Intent> getSearchResult = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                // SearchAddressActivity로부터의 결과 값이 이곳으로 전달됨 (setResult에 의해)
+                if(result.getResultCode() == RESULT_OK){
+                    if(result.getData() != null){
+                        String data = result.getData().getStringExtra("data");
+                        edt_address.setText(data);
+                    }
+                }
+            }
+    );
 
     public void init(){
         edt_shopname = findViewById(R.id.edt_shopname);

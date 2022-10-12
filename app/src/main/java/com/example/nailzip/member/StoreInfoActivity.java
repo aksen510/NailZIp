@@ -1,8 +1,5 @@
 package com.example.nailzip.member;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.lifecycle.ViewModelProvider;
-
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,9 +8,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
+
 import com.example.nailzip.MainActivity;
-import com.example.nailzip.model.NailshopData;
 import com.example.nailzip.R;
+import com.example.nailzip.model.NailshopData;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -33,6 +35,16 @@ public class StoreInfoActivity extends AppCompatActivity {
 
         memberViewModel = new ViewModelProvider(this).get(MemberViewModel.class);
         init();
+
+        edt_address.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 주소 검색 웹뷰 화면으로 이동
+                Intent startSearchAddress = new Intent(StoreInfoActivity.this, SearchAddressActivity.class);
+                getSearchResult.launch(startSearchAddress);
+                //startActivity(startSearchAddress);
+            }
+        });
 
         btn_next.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,6 +93,19 @@ public class StoreInfoActivity extends AppCompatActivity {
         });
 
     }
+
+    private final ActivityResultLauncher<Intent> getSearchResult = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                // SearchAddressActivity로부터의 결과 값이 이곳으로 전달됨 (setResult에 의해)
+                if(result.getResultCode() == RESULT_OK){
+                    if(result.getData() != null){
+                        String data = result.getData().getStringExtra("data");
+                        edt_address.setText(data);
+                    }
+                }
+            }
+    );
 
     public void init(){
         edt_shopname = findViewById(R.id.edt_shopname);

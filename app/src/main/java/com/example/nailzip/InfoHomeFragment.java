@@ -1,6 +1,7 @@
 package com.example.nailzip;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -50,6 +51,8 @@ public class InfoHomeFragment extends Fragment {
     private static String shopLocation;
     private static String chatUid;
     private static int shopPos;
+
+    private String tel, shopPhone;
 
     private Chat chat = new Chat();
     private List<Chat> chats = new ArrayList<>();
@@ -129,17 +132,8 @@ public class InfoHomeFragment extends Fragment {
                                 tv_closedInfo.setText(document.get("closed").toString());
                                 tv_memoInfo.setText(document.get("memo").toString());
 
-//                                shopUid = firebaseAuth.getUid();
-//                                Log.d(TAG, "chatUid1 : " + shopUid);
-//
-//                                Log.d(TAG,"Data : " + document.get("shopname") + " / " + document.get("time") + " / " + document.get("closed") + " / " + document.get("memo"));
+                                shopPhone = document.get("shopphone").toString();
 
-//                                chat.userName = userAccount.getUsername();
-//                                chat.position = userAccount.getPosition();
-//                                chat.chatUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-//
-//                                String uid = task.getResult().getUser().getUid();
-//                                FirebaseDatabase.getInstance().getReference().child("chatUsers").child(uid).setValue(chat);
                             }
                         }
                         else{
@@ -226,6 +220,15 @@ public class InfoHomeFragment extends Fragment {
                 chattingroomActivity.putExtra("chatUid", shopUid);
                 Log.d(TAG, "chatUid2 : " + shopUid);
                 startActivity(chattingroomActivity);
+            }
+        });
+
+        btn_call.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                tel = "tel:" + shopPhone;
+
+                startActivity(new Intent("android.intent.action.DIAL", Uri.parse(tel)));
             }
         });
 
