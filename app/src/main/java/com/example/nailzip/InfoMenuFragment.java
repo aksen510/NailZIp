@@ -1,12 +1,24 @@
 package com.example.nailzip;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -14,6 +26,19 @@ import android.view.ViewGroup;
  * create an instance of this fragment.
  */
 public class InfoMenuFragment extends Fragment {
+
+    private String TAG = "InfoMenuFragment";
+
+    private static String shopName;
+    private static String shopLocation;
+    private static String chatUid;
+    private static int shopPos;
+
+    private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+    private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+    private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
+
+    private TextView txt_price_nail, txt_price_pedi;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -62,12 +87,59 @@ public class InfoMenuFragment extends Fragment {
 
         init(view);
 
+        Log.d(TAG, "mainShopInfo : " + shopPos + " / " + shopName + " / " + shopLocation);
+
+        firestore.collection("shoplist")
+                .whereEqualTo("shopname", shopName)
+                .whereEqualTo("location", shopLocation)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if(task.isSuccessful()){
+                            for (QueryDocumentSnapshot document : task.getResult()){
+                                Log.d(TAG, document.getId() + " => " + document.getData());
+//                                txt_title.setText(document.get("shopname").toString());
+                                txt_price_nail.setText(document.get("price_nail").toString());
+                                txt_price_pedi.setText(document.get("price_pedi").toString());
+
+
+                            }
+                        }
+                        else{
+                            Log.d(TAG, "일치하는 매장정보가 없습니다.");
+                            Toast.makeText(getActivity(), "일치하는 매장정보가 없습니다.", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.e(TAG, "일치하는 매장정보가 없습니다.");
+                        Toast.makeText(getActivity(), "일치하는 매장정보가 없습니다.", Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                });
+
 
 
         return view;
     }
 
+    public void setShopInfo(int pos, String shopname, String location, String chatUid){
+        shopPos = pos;
+        shopName = shopname;
+        shopLocation = location;
+        chatUid = chatUid;
+
+        Log.d(TAG, "setShopInfo : " + shopPos + " / " + shopName + " / " + shopLocation + " / " + chatUid);
+
+    }
+
     public void init(View view){
+
+        txt_price_nail = view.findViewById(R.id.txt_price_nail);
+        txt_price_pedi = view.findViewById(R.id.txt_price_pedi);
 
     }
 }

@@ -206,6 +206,68 @@
 
                 <LinearLayout
                     android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginHorizontal="30dp"
+                    android:layout_marginVertical="10dp"
+                    android:background="@drawable/edge_txtbox">
+
+                    <com.example.nailzip.FontAwesomeTextLight
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:text=""
+                        android:textColor="@color/maincolor"
+                        android:textSize="20sp" />
+
+                    <EditText
+                        android:id="@+id/edt_price_nail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:hint="@string/menu_nail_price"
+                        android:textSize="18dp"
+                        android:inputType="text"
+                        android:background="@android:color/transparent">
+
+                    </EditText>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="44dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical"
+                    android:layout_marginHorizontal="30dp"
+                    android:layout_marginVertical="10dp"
+                    android:background="@drawable/edge_txtbox">
+
+                    <com.example.nailzip.FontAwesomeTextLight
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="20dp"
+                        android:text=""
+                        android:textColor="@color/maincolor"
+                        android:textSize="20sp" />
+
+                    <EditText
+                        android:id="@+id/edt_price_pedi"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="16dp"
+                        android:hint="@string/menu_pedi_price"
+                        android:textSize="18dp"
+                        android:inputType="text"
+                        android:background="@android:color/transparent">
+
+                    </EditText>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="300dp"
                     android:orientation="vertical"
                     android:layout_marginHorizontal="30dp"

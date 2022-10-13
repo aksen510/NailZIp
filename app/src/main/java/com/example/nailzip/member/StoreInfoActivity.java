@@ -22,7 +22,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 public class StoreInfoActivity extends AppCompatActivity {
 
     //Todo: 가격 추가
-    private EditText edt_shopname, edt_opentime, edt_shopphonenum, edt_address, edt_memocontent, edt_closed;
+    private EditText edt_shopname, edt_opentime, edt_shopphonenum, edt_address, edt_price_nail, edt_price_pedi, edt_memocontent, edt_closed;
     private Button btn_next;
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
@@ -53,10 +53,12 @@ public class StoreInfoActivity extends AppCompatActivity {
                 String opentime = edt_opentime.getText().toString().trim();
                 String shopphonenum = edt_shopphonenum.getText().toString().trim();
                 String address = edt_address.getText().toString().trim();
+                String price_nail = edt_price_nail.getText().toString().trim();
+                String price_pedi = edt_price_pedi.getText().toString().trim();
                 String memocontent = edt_memocontent.getText().toString().trim();
                 String closed = edt_closed.getText().toString().trim();
 
-                if (shopname.isEmpty() || opentime.isEmpty() || shopphonenum.isEmpty() || address.isEmpty() || memocontent.isEmpty() || closed.isEmpty()) {
+                if (shopname.isEmpty() || opentime.isEmpty() || shopphonenum.isEmpty() || address.isEmpty() || price_nail.isEmpty() || price_pedi.isEmpty() || memocontent.isEmpty() || closed.isEmpty()) {
                     Toast.makeText(StoreInfoActivity.this, "빈 칸을 채워주세요", Toast.LENGTH_SHORT).show();
                     return;
                 }
@@ -68,6 +70,8 @@ public class StoreInfoActivity extends AppCompatActivity {
                     shopAccount.setClosed(closed);
                     shopAccount.setShopphone(shopphonenum);
                     shopAccount.setLocation(address);
+                    shopAccount.setPrice_nail(price_nail);
+                    shopAccount.setPrice_pedi(price_pedi);
                     shopAccount.setMemo(memocontent);
 
                     //Todo: 추후 삽입
@@ -75,8 +79,8 @@ public class StoreInfoActivity extends AppCompatActivity {
                     shopAccount.setImg_scrab(R.drawable.ic_baseline_bookmark_white);
                     shopAccount.setRating("0");
                     shopAccount.setRatingcnt("0");
-                    shopAccount.setPrice_nail("0");
-                    shopAccount.setPrice_pedi("0");
+//                    shopAccount.setPrice_nail("0");
+//                    shopAccount.setPrice_pedi("0");
 
                     final ProgressDialog mDialog = new ProgressDialog(StoreInfoActivity.this);
 
@@ -112,6 +116,8 @@ public class StoreInfoActivity extends AppCompatActivity {
         edt_opentime = findViewById(R.id.edt_opentime);
         edt_shopphonenum = findViewById(R.id.edt_shopphonenum);
         edt_address = findViewById(R.id.edt_address);
+        edt_price_nail = findViewById(R.id.edt_price_nail);
+        edt_price_pedi = findViewById(R.id.edt_price_pedi);
         edt_memocontent = findViewById(R.id.edt_memocontent);
         edt_closed = findViewById(R.id.edt_closed);
         btn_next = findViewById(R.id.btn_next);

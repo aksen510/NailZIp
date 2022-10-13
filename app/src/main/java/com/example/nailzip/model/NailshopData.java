@@ -1,14 +1,13 @@
 package com.example.nailzip.model;
 
 public class NailshopData {
-    private int img_shop, img_scrab;
-    private String uid, shopname, rating, ratingcnt, time, closed, location;
+    public int img_shop, img_scrab;
+    public String uid, shopname, rating, ratingcnt, time, closed, location;
 
-    String shopphone, memo;
+    public String shopphone, memo;
 
-    //Todo: 추후 추가
-    String price_nail;
-    String price_pedi;
+    public String price_nail;
+    public String price_pedi;
 
     public NailshopData(int img_shop, int img_scrab, String uid, String shopname, String rating, String ratingcnt, String time, String closed, String location, String shopphone, String memo, String price_nail, String price_pedi) {
         this.img_shop = img_shop;
