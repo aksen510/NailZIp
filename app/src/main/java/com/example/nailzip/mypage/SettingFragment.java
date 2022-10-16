@@ -13,8 +13,8 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
-import com.example.nailzip.FollowingFragment;
 import com.example.nailzip.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -43,6 +43,9 @@ public class SettingFragment extends Fragment {
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     public String nickname;
     public String position = "0";
+
+    // 프래그먼트 이동
+    private boolean isNavigating = false;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -159,8 +162,10 @@ public class SettingFragment extends Fragment {
                                             break;
                                         case 2:
                                             Toast.makeText(getActivity(), "팔로잉", Toast.LENGTH_SHORT).show();
-                                            Intent startFollowingFragment = new Intent(getContext(), FollowingFragment.class);
-                                            startActivity(startFollowingFragment);
+//                                            Intent startFollowingFragment = new Intent(getContext(), FollowingFragment.class);
+//                                            startActivity(startFollowingFragment);
+                                            isNavigating = true;
+                                            Navigation.findNavController(getView()).navigate(R.id.action_settingFragment_to_FollowingFragment);
                                             break;
                                         case 3:
                                             Toast.makeText(getActivity(), "나의 후기", Toast.LENGTH_SHORT).show();
@@ -168,6 +173,8 @@ public class SettingFragment extends Fragment {
                                     }
                                 }
                             });
+
+                            isNavigating = false;
                         }
                         else{
                             settings.add(new Setting("설정", R.drawable.ic_outline_settings_24));
@@ -198,8 +205,10 @@ public class SettingFragment extends Fragment {
                                             break;
                                         case 2:
                                             Toast.makeText(getActivity(), "팔로잉", Toast.LENGTH_SHORT).show();
-                                            Intent startFollowingFragment = new Intent(getContext(), FollowingFragment.class);
-                                            startActivity(startFollowingFragment);
+//                                            Intent startFollowingFragment = new Intent(getContext(), FollowingFragment.class);
+//                                            startActivity(startFollowingFragment);
+                                            isNavigating = true;
+                                            Navigation.findNavController(getView()).navigate(R.id.action_settingFragment_to_FollowingFragment);
                                             break;
                                         case 3:
                                             Toast.makeText(getActivity(), "매장 정보 수정", Toast.LENGTH_SHORT).show();
@@ -207,6 +216,7 @@ public class SettingFragment extends Fragment {
                                     }
                                 }
                             });
+                            isNavigating = false;
                         }
 
                     }

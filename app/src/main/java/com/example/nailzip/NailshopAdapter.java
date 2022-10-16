@@ -63,7 +63,7 @@ public class NailshopAdapter extends RecyclerView.Adapter<NailshopAdapter.Custom
     @Override
     public void onBindViewHolder(@NonNull NailshopAdapter.CustomViewHolder holder, int position) {
         holder.linear_bg.setBackgroundResource(arrayList.get(position).getImg_shop());
-        holder.img_scrab.setImageResource(arrayList.get(position).getImg_scrab());
+//        holder.img_scrab.setImageResource(arrayList.get(position).getImg_scrab());
         holder.tv_shopname.setText(arrayList.get(position).getShopname());
         holder.tv_rating.setText(arrayList.get(position).getRating());
         holder.tv_ratingcnt.setText(arrayList.get(position).getRatingcnt());

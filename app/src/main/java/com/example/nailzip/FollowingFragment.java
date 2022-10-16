@@ -1,5 +1,6 @@
 package com.example.nailzip;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -17,11 +19,17 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.nailzip.model.NailshopData;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.remoteconfig.FirebaseRemoteConfig;
 
 import java.util.ArrayList;
@@ -35,6 +43,11 @@ import java.util.List;
 public class FollowingFragment extends Fragment {
     private String TAG = "FollowingFragment";
 
+    private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+    private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+
+    private ArrayList<NailshopData> nailshopDataList = new ArrayList<>();
+
     private FirebaseRemoteConfig mfirebaseRemoteConfig;
     private InfoHomeFragment infoHomeFragment = new InfoHomeFragment();
     private InfoMenuFragment infoMenuFragment = new InfoMenuFragment();
@@ -44,6 +57,7 @@ public class FollowingFragment extends Fragment {
     private String shopname = " ";
     private String chatUid = " ";
     private int pos = 0;
+    private Toolbar tb_back;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -92,36 +106,83 @@ public class FollowingFragment extends Fragment {
 
         init(view);
 
-        RecyclerView recyclerView = view.findViewById(R.id.chat_recyclerview);
+        RecyclerView recyclerView = view.findViewById(R.id.followingrecyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(inflater.getContext()));
         recyclerView.setAdapter(new FollowingFragmentRecyclerViewAdapter());
 
         mfirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
 
+//        // Toolbar 활성화
+//        setSupportActionBar(tb_back);
+//        Objects.requireNonNull(getSupportActionBar()).setDisplayHomeAsUpEnabled(true); // 뒤로가기 버튼 생성
+//        getSupportActionBar().setTitle(null); // Toolbar 제목 제거
 
         return view;
     }
 
     class FollowingFragmentRecyclerViewAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-        List<NailshopData> nailshopDataList = new ArrayList<>();
-        String myUid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        private ArrayList<String> followingList = new ArrayList<>();
+
+//        nailshopDataList = new ArrayList<>();
+//        String saveFollowingUid;
+        String myUid = firebaseAuth.getCurrentUser().getUid();
+        List<String> saveFollowingUid = new ArrayList<>();
 
         public FollowingFragmentRecyclerViewAdapter(){
+            nailshopDataList = new ArrayList<>();
 
-            FirebaseDatabase.getInstance().getReference().child("Follow").orderByChild(myUid).equalTo(true).addListenerForSingleValueEvent(new ValueEventListener() {
+            FirebaseDatabase.getInstance().getReference().child("Follow").child(myUid).child("following").addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     nailshopDataList.clear();
+
                     for (DataSnapshot item : snapshot.getChildren()){
-                        nailshopDataList.add(item.getValue(NailshopData.class));
+                        saveFollowingUid.add(item.getValue().toString());
+//                        saveFollowingUid = item.getValue().toString();
+                        Log.d(TAG, "네일샵 이름 : " + saveFollowingUid);
+
                     }
+
+//                    nailshopDataList.clear();
+
+//                    for (int i = 0; i<saveFollowingUid.size(); i++){
+//                        int finalI = i;
+//                        firestore.collection("shoplist")
+//                                .whereEqualTo("shopname", saveFollowingUid.get(i))
+//                                .get()
+//                                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                                    @Override
+//                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//
+//                                        if (task.isSuccessful()){
+//                                            for (QueryDocumentSnapshot document : task.getResult()){
+//                                                nailshopDataList.add(document.toObject(NailshopData.class));
+//                                                Log.d(TAG,"리스트 저장 성공 " + finalI + " : " + nailshopDataList.get(finalI).getLocation());
+//
+//
+//                                            }
+//                                        }
+//                                        else {
+//                                            Log.d(TAG,"리스트 저장 실패1");
+//                                        }
+//                                    }
+//                                })
+//                                .addOnFailureListener(new OnFailureListener() {
+//                                    @Override
+//                                    public void onFailure(@NonNull Exception e) {
+//                                        Log.d(TAG, "리스트 저장 실패2");
+//                                    }
+//                                });
+//
+//                    }
+
+
                     notifyDataSetChanged();
 
                 }
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError error) {
+                    Log.d(TAG, "error1");
 
                 }
             });
@@ -132,23 +193,52 @@ public class FollowingFragment extends Fragment {
         @Override
         public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
             View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_shop, parent, false);
+            Log.d(TAG, "테스트 3");
 
             return new CustomViewHolder(view);
         }
 
         @Override
-        public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+        public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, @SuppressLint("RecyclerView") int position) {
 
             CustomViewHolder customViewHolder = (CustomViewHolder) holder;
+            Log.d(TAG, "테스트1");
 
-            customViewHolder.linear_bg.setBackgroundResource(nailshopDataList.get(position).getImg_shop());
-            customViewHolder.img_scrab.setImageResource(nailshopDataList.get(position).getImg_scrab());
-            customViewHolder.tv_shopname.setText(nailshopDataList.get(position).getShopname());
-            customViewHolder.tv_rating.setText(nailshopDataList.get(position).getRating());
-            customViewHolder.tv_ratingcnt.setText(nailshopDataList.get(position).getRatingcnt());
-            customViewHolder.tv_time.setText(nailshopDataList.get(position).getTime());
-            customViewHolder.tv_closed.setText(nailshopDataList.get(position).getClosed());
-            customViewHolder.tv_location.setText(nailshopDataList.get(position).getLocation());
+            firestore.collection("shoplist")
+                    .whereEqualTo("shopname", saveFollowingUid.get(position))
+                    .get()
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+
+                            if (task.isSuccessful()){
+                                for (QueryDocumentSnapshot document : task.getResult()){
+                                    nailshopDataList.add(document.toObject(NailshopData.class));
+                                    Log.d(TAG,"리스트 저장 성공 " + position + " : " + nailshopDataList.get(position).getLocation());
+
+                                    customViewHolder.linear_bg.setBackgroundResource(nailshopDataList.get(position).getImg_shop());
+//            customViewHolder.img_scrab.setImageResource(nailshopDataList.get(position).getImg_scrab());
+                                    customViewHolder.tv_shopname.setText(nailshopDataList.get(position).getShopname());
+                                    customViewHolder.tv_rating.setText(nailshopDataList.get(position).getRating());
+                                    customViewHolder.tv_ratingcnt.setText(nailshopDataList.get(position).getRatingcnt());
+                                    customViewHolder.tv_time.setText(nailshopDataList.get(position).getTime());
+                                    customViewHolder.tv_closed.setText(nailshopDataList.get(position).getClosed());
+                                    customViewHolder.tv_location.setText(nailshopDataList.get(position).getLocation());
+                                }
+                            }
+                            else {
+                                Log.d(TAG,"리스트 저장 실패1");
+                            }
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.d(TAG, "리스트 저장 실패2");
+                        }
+                    });
+
+
 
             customViewHolder.itemView.setTag(position);
             customViewHolder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -182,7 +272,8 @@ public class FollowingFragment extends Fragment {
 
         @Override
         public int getItemCount() {
-            return nailshopDataList.size();
+            Log.d(TAG, "테스트 4 : " + saveFollowingUid.size());
+            return (null != saveFollowingUid ? saveFollowingUid.size() : 0);
         }
 
         private class CustomViewHolder extends RecyclerView.ViewHolder {
@@ -203,9 +294,23 @@ public class FollowingFragment extends Fragment {
                 tv_closed = itemView.findViewById(R.id.tv_closed);
                 tv_location = itemView.findViewById(R.id.tv_location);
 
+                Log.d(TAG, "테스트2");
+
             }
         }
     }
+
+    // Toolbar 뒤로가기 버튼 활성화 코드
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        switch (item.getItemId()) {
+//            case android.R.id.home: { //toolbar의 back키 눌렀을 때 동작
+//                finish();
+//                return true;
+//            }
+//        }
+//        return super.onOptionsItemSelected(item);
+//    }
 
     public void init(View view) {
 

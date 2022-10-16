@@ -15,19 +15,19 @@
         android:name="com.example.nailzip.NailShopFragment"
         android:label="fragment_nail_shop"
         tools:layout="@layout/fragment_nail_shop" >
-        <action
-            android:id="@+id/action_nailshopFragment_to_informationFragment"
-            app:destination="@id/informationFragment" />
+<!--        <action-->
+<!--            android:id="@+id/action_nailshopFragment_to_informationFragment"-->
+<!--            app:destination="@id/informationFragment" />-->
     </fragment>
-    <fragment
-        android:id="@+id/informationFragment"
-        android:name="com.example.nailzip.InformationFragment"
-        android:label="fragment_information"
-        tools:layout="@layout/fragment_information" >
-        <action
-            android:id="@+id/action_informationFragment_to_nailshopFragment"
-            app:destination="@id/menu_nailshop" />
-    </fragment>
+<!--    <fragment-->
+<!--        android:id="@+id/informationFragment"-->
+<!--        android:name="com.example.nailzip.InformationFragment"-->
+<!--        android:label="fragment_information"-->
+<!--        tools:layout="@layout/fragment_information" >-->
+<!--        <action-->
+<!--            android:id="@+id/action_informationFragment_to_nailshopFragment"-->
+<!--            app:destination="@id/menu_nailshop" />-->
+<!--    </fragment>-->
     <fragment
         android:id="@+id/menu_chat"
         android:name="com.example.nailzip.ChatFragment"
@@ -37,6 +37,20 @@
         android:id="@+id/menu_setting"
         android:name="com.example.nailzip.mypage.SettingFragment"
         android:label="fragment_setting"
-        tools:layout="@layout/fragment_setting" />
+        tools:layout="@layout/fragment_setting" >
+        <action
+            android:id="@+id/action_settingFragment_to_FollowingFragment"
+            app:destination="@+id/setting_following"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/setting_following"
+        android:name="com.example.nailzip.FollowingFragment"
+        android:label="fragment_following"
+        tools:layout="@layout/fragment_following">
+        <action
+            android:id="@+id/action_followingFragment_to_settingFragment"
+            app:destination="@+id/menu_setting"/>
+    </fragment>
 
 </navigation>

@@ -56,6 +56,7 @@ public class InfoHomeFragment extends Fragment {
     private static String chatUid;
     private static int shopPos;
     private String follow_shop_id;
+    private String follow_shop_name;
 
     private String tel, shopPhone;
 
@@ -134,6 +135,8 @@ public class InfoHomeFragment extends Fragment {
                             for (QueryDocumentSnapshot document : task.getResult()){
                                 follow_shop_id = document.getId();
                                 isFollowing(follow_shop_id, btn_scrab);
+                                follow_shop_name = document.get("shopname").toString();
+//                                isFollowing(follow_shop_name,btn_scrab);
 
                                 Log.d(TAG, document.getId() + " => " + document.getData());
 //                                txt_title.setText(document.get("shopname").toString());
@@ -258,12 +261,36 @@ public class InfoHomeFragment extends Fragment {
 
         // 팔로우 버튼
         // TODO : 사용자가 shop일 경우, 스크랩 버튼 없애는 기능 추가
+
+        FirebaseDatabase.getInstance().getReference().child("Follow").child(myUid).child("following").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot item : snapshot.getChildren()){
+//                    saveFollowingUid.add(item.getValue().toString());
+                    String saveFollowingUid = item.getValue().toString();
+                    Log.d(TAG, "네일샵 이름 : " + saveFollowingUid);
+
+                    if (shopName.equals(saveFollowingUid)){
+                        btn_scrab.setBackgroundResource(R.drawable.bookmark_fill);
+                    }
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.d(TAG, "error");
+
+            }
+        });
+
+
         btn_scrab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(btn_scrab.getText().toString().equals("follow")){
                     firebaseDatabase.getReference().child("Follow").child(firebaseAuth.getUid())
-                            .child("following").child(follow_shop_id).setValue(true);
+                            .child("following").child(follow_shop_id).setValue(follow_shop_name);
                     firebaseDatabase.getReference().child("Follow").child(follow_shop_id)
                             .child("followers").child(firebaseAuth.getUid()).setValue(true);
                     btn_scrab.setBackgroundResource(R.drawable.bookmark_fill);
