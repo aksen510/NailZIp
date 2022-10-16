@@ -66,6 +66,7 @@
     <string name="Info_opentime">영업시간</string>
     <string name="Info_shop">매장정보</string>
     <string name="ex_info">예약제</string>
+    <string name="shop_follow">팔로우</string>
     <string name="location">위치</string>
     <string name="call">전화</string>
     <string name="reservation">예약</string>

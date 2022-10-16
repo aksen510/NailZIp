@@ -126,7 +126,7 @@ public class NailshopAdapter extends RecyclerView.Adapter<NailshopAdapter.Custom
             super(itemView);
 
             linear_bg = itemView.findViewById(R.id.linear_bg);
-            img_scrab = itemView.findViewById(R.id.img_scrab);
+//            img_scrab = itemView.findViewById(R.id.img_scrab);
             tv_shopname = itemView.findViewById(R.id.tv_shopname);
             tv_rating = itemView.findViewById(R.id.tv_rating);
             tv_ratingcnt = itemView.findViewById(R.id.tv_ratingcnt);

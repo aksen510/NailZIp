@@ -169,10 +169,12 @@
         app:layout_constraintTop_toBottomOf="@+id/view_line1">
 
         <LinearLayout
+            android:id="@+id/linear_scrab"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            android:layout_marginHorizontal="15dp"
+            android:gravity="center_horizontal"
+            android:layout_marginHorizontal="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
 
@@ -180,10 +182,16 @@
                 android:id="@+id/btn_scrab"
                 android:layout_width="40dp"
                 android:layout_height="40dp"
-                android:backgroundTint="#FFFFFFFF"
-                app:icon="@drawable/ic_baseline_bookmark_fill"
-                app:iconGravity="textStart"
-                app:iconTint="#FFC900" />
+                android:textColor="#00000000"
+                android:background="@drawable/bookmark_border"
+                android:backgroundTint="#00000000"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/shop_follow"
+                android:textStyle="normal"
+                android:textColor="@color/black"/>
 
 
         </LinearLayout>
@@ -193,7 +201,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:gravity="center_horizontal"
-            android:layout_marginHorizontal="15dp"
+            android:layout_marginHorizontal="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
 
@@ -218,7 +226,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:gravity="center_horizontal"
-            android:layout_marginHorizontal="15dp"
+            android:layout_marginHorizontal="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
 
@@ -243,7 +251,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:gravity="center_horizontal"
-            android:layout_marginHorizontal="15dp"
+            android:layout_marginHorizontal="20dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent">
 
@@ -263,30 +271,30 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:gravity="center_horizontal"
-            android:layout_marginHorizontal="15dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent">
+<!--        <LinearLayout-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:orientation="vertical"-->
+<!--            android:gravity="center_horizontal"-->
+<!--            android:layout_marginHorizontal="15dp"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent">-->
 
-            <Button
-                android:id="@+id/btn_share"
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:background="@drawable/ic_baseline_share_24"
-                android:backgroundTint="#00000000"/>
+<!--            <Button-->
+<!--                android:id="@+id/btn_share"-->
+<!--                android:layout_width="40dp"-->
+<!--                android:layout_height="40dp"-->
+<!--                android:background="@drawable/ic_baseline_share_24"-->
+<!--                android:backgroundTint="#00000000"/>-->
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/share"
-                android:textStyle="normal"
-                android:textColor="@color/black"/>
+<!--            <TextView-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="@string/share"-->
+<!--                android:textStyle="normal"-->
+<!--                android:textColor="@color/black"/>-->
 
-        </LinearLayout>
+<!--        </LinearLayout>-->
 
     </LinearLayout>
 

@@ -2,11 +2,6 @@ package com.example.nailzip.mypage;
 
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.constraintlayout.utils.widget.ImageFilterView;
-import androidx.fragment.app.Fragment;
-
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,13 +11,16 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+
+import com.example.nailzip.FollowingFragment;
 import com.example.nailzip.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -44,6 +42,7 @@ public class SettingFragment extends Fragment {
     private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
     public String nickname;
+    public String position = "0";
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -96,6 +95,13 @@ public class SettingFragment extends Fragment {
         String userUid = user.getUid();
         String uid = user.getEmail();
 
+        // TODO: 회원정보에 따라 다른 리스트뷰 생성
+        final String[] lv1 = {"설정", "찜 목록", "팔로잉", "나의 후기"};
+        final String[] lv2 = {"설정", "찜 목록", "팔로잉", "매장 정보 수정"};
+        final int image[] = {R.drawable.ic_outline_settings_24, R.drawable.ic_heart_regular,R.drawable.ic_bookmark_regular, R.drawable.ic_pen_to_square_regular};
+
+        settings = new ArrayList<>();
+
         firestore.collection("users")
                 .whereEqualTo("email",uid)
                 .get()
@@ -104,8 +110,9 @@ public class SettingFragment extends Fragment {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if(task.isSuccessful()){
                             for (QueryDocumentSnapshot document : task.getResult()){
-                                Log.d(TAG, document.getId() + " => " + document.get("username"));
+                                Log.d(TAG, document.getId() + " => " + document.get("username") + " / " + document.get("position"));
                                 nickname = document.get("username").toString();
+                                position = document.get("position").toString();
 //                                tv_nickname.setText(nickname);
                             }
                             if (nickname == null){
@@ -122,6 +129,86 @@ public class SettingFragment extends Fragment {
                             Toast.makeText(getContext(), "일치하는 회원정보가 없습니다.", Toast.LENGTH_SHORT).show();
                             return;
                         }
+
+                        if(position.equals("0")){
+                            settings.add(new Setting("설정", R.drawable.ic_outline_settings_24));
+                            settings.add(new Setting("찜 목록", R.drawable.ic_heart_regular));
+                            settings.add(new Setting("팔로잉", R.drawable.ic_baseline_bookmark_border_24));
+                            settings.add(new Setting("나의 후기", R.drawable.ic_pen_to_square_regular));
+
+                            lv_mypage = (ListView) view.findViewById(R.id.lv_mypage);
+                            customAdapter = new CustomAdapter(getContext(), settings);
+                            lv_mypage.setAdapter(customAdapter);
+
+                            lv_mypage.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+
+                                @Override
+                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                                    String selectedItem = (String) view.findViewById(R.id.tv_list).getTag().toString();
+                                    // Toast.makeText(getActivity(), "item 클릭", Toast.LENGTH_SHORT).show();
+
+                                    switch (position){
+                                        case 0:
+                                            Toast.makeText(getActivity(), "설정", Toast.LENGTH_SHORT).show();
+                                            Intent startChangepwActivity = new Intent(getContext(), SettingEditInfoActivity.class);
+                                            startActivity(startChangepwActivity);
+                                            break;
+                                        case 1:
+                                            Toast.makeText(getActivity(), "찜목록", Toast.LENGTH_SHORT).show();
+                                            break;
+                                        case 2:
+                                            Toast.makeText(getActivity(), "팔로잉", Toast.LENGTH_SHORT).show();
+                                            Intent startFollowingFragment = new Intent(getContext(), FollowingFragment.class);
+                                            startActivity(startFollowingFragment);
+                                            break;
+                                        case 3:
+                                            Toast.makeText(getActivity(), "나의 후기", Toast.LENGTH_SHORT).show();
+                                            break;
+                                    }
+                                }
+                            });
+                        }
+                        else{
+                            settings.add(new Setting("설정", R.drawable.ic_outline_settings_24));
+                            settings.add(new Setting("찜 목록", R.drawable.ic_heart_regular));
+                            settings.add(new Setting("팔로잉", R.drawable.ic_baseline_bookmark_border_24));
+                            settings.add(new Setting("매장 정보 수정", R.drawable.ic_pen_to_square_regular));
+
+                            lv_mypage = (ListView) view.findViewById(R.id.lv_mypage);
+                            customAdapter = new CustomAdapter(getContext(), settings);
+                            lv_mypage.setAdapter(customAdapter);
+
+                            lv_mypage.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+
+                                @Override
+                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                                    String selectedItem = (String) view.findViewById(R.id.tv_list).getTag().toString();
+                                    // Toast.makeText(getActivity(), "item 클릭", Toast.LENGTH_SHORT).show();
+
+                                    switch (position){
+                                        case 0:
+                                            Toast.makeText(getActivity(), "설정", Toast.LENGTH_SHORT).show();
+                                            Intent startChangepwActivity = new Intent(getContext(), SettingEditInfoActivity.class);
+                                            startActivity(startChangepwActivity);
+                                            break;
+                                        case 1:
+                                            Toast.makeText(getActivity(), "찜목록", Toast.LENGTH_SHORT).show();
+                                            break;
+                                        case 2:
+                                            Toast.makeText(getActivity(), "팔로잉", Toast.LENGTH_SHORT).show();
+                                            Intent startFollowingFragment = new Intent(getContext(), FollowingFragment.class);
+                                            startActivity(startFollowingFragment);
+                                            break;
+                                        case 3:
+                                            Toast.makeText(getActivity(), "매장 정보 수정", Toast.LENGTH_SHORT).show();
+                                            break;
+                                    }
+                                }
+                            });
+                        }
+
                     }
                 }).addOnFailureListener(new OnFailureListener() {
                     @Override
@@ -131,95 +218,6 @@ public class SettingFragment extends Fragment {
                         return;
                     }
                 });
-
-//        Intent intent = getActivity().getIntent();
-//        Log.d(TAG,"닉네임 => " + nickname);
-//        tv_nickname.setText(nickname);
-
-        // TODO: 회원정보에 따라 다른 리스트뷰 생성
-        final String[] lv1 = {"설정", "찜 목록", "팔로우", "나의 후기"};
-        final String[] lv2 = {"설정", "찜 목록", "팔로우", "매장 정보 수정"};
-        final int image[] = {R.drawable.ic_outline_settings_24, R.drawable.ic_heart_regular,R.drawable.ic_bookmark_regular, R.drawable.ic_pen_to_square_regular};
-
-        settings = new ArrayList<>();
-
-        if(firestore.collection("users").document(userUid).collection("position").get().equals(0)){
-            settings.add(new Setting("설정", R.drawable.ic_outline_settings_24));
-            settings.add(new Setting("찜 목록", R.drawable.ic_heart_regular));
-            settings.add(new Setting("팔로우", R.drawable.ic_baseline_bookmark_border_24));
-            settings.add(new Setting("나의 후기", R.drawable.ic_pen_to_square_regular));
-
-            lv_mypage = (ListView) view.findViewById(R.id.lv_mypage);
-            customAdapter = new CustomAdapter(getContext(), settings);
-            lv_mypage.setAdapter(customAdapter);
-
-            lv_mypage.setOnItemClickListener(new AdapterView.OnItemClickListener(){
-
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                    String selectedItem = (String) view.findViewById(R.id.tv_list).getTag().toString();
-                    // Toast.makeText(getActivity(), "item 클릭", Toast.LENGTH_SHORT).show();
-
-                    switch (position){
-                        case 0:
-                            Toast.makeText(getActivity(), "설정", Toast.LENGTH_SHORT).show();
-                            Intent startChangepwActivity = new Intent(getContext(), SettingEditInfoActivity.class);
-                            startActivity(startChangepwActivity);
-                            break;
-                        case 1:
-                            Toast.makeText(getActivity(), "찜목록", Toast.LENGTH_SHORT).show();
-                            break;
-                        case 2:
-                            Toast.makeText(getActivity(), "팔로우", Toast.LENGTH_SHORT).show();
-                            break;
-                        case 3:
-                            Toast.makeText(getActivity(), "나의 후기", Toast.LENGTH_SHORT).show();
-                            break;
-                    }
-                }
-            });
-        }
-        else{
-            settings.add(new Setting("설정", R.drawable.ic_outline_settings_24));
-            settings.add(new Setting("찜 목록", R.drawable.ic_heart_regular));
-            settings.add(new Setting("팔로우", R.drawable.ic_baseline_bookmark_border_24));
-            settings.add(new Setting("매장 정보 수정", R.drawable.ic_pen_to_square_regular));
-
-            lv_mypage = (ListView) view.findViewById(R.id.lv_mypage);
-            customAdapter = new CustomAdapter(getContext(), settings);
-            lv_mypage.setAdapter(customAdapter);
-
-            lv_mypage.setOnItemClickListener(new AdapterView.OnItemClickListener(){
-
-                @Override
-                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
-                    String selectedItem = (String) view.findViewById(R.id.tv_list).getTag().toString();
-                    // Toast.makeText(getActivity(), "item 클릭", Toast.LENGTH_SHORT).show();
-
-                    switch (position){
-                        case 0:
-                            Toast.makeText(getActivity(), "설정", Toast.LENGTH_SHORT).show();
-                            Intent startChangepwActivity = new Intent(getContext(), SettingEditInfoActivity.class);
-                            startActivity(startChangepwActivity);
-                            break;
-                        case 1:
-                            Toast.makeText(getActivity(), "찜목록", Toast.LENGTH_SHORT).show();
-                            break;
-                        case 2:
-                            Toast.makeText(getActivity(), "팔로우", Toast.LENGTH_SHORT).show();
-                            break;
-                        case 3:
-                            Toast.makeText(getActivity(), "매장 정보 수정", Toast.LENGTH_SHORT).show();
-                            break;
-                    }
-                }
-            });
-        }
-
-
-
 
         return view;
     }

@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,6 +17,7 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import com.example.nailzip.model.Chat;
+import com.example.nailzip.model.NailshopData;
 import com.example.nailzip.mypage.PagerAdapter;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -24,6 +26,7 @@ import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -47,15 +50,19 @@ public class InfoHomeFragment extends Fragment {
     private PagerAdapter pagerAdapter;
     private TextView txt_title, tv_shopname, tv_opentimeInfo, tv_closedInfo, tv_memoInfo;
     private Button btn_scrab, btn_location, btn_call, btn_reservation, btn_share;
+    private LinearLayout linear_scrab;
     private static String shopName;
     private static String shopLocation;
     private static String chatUid;
     private static int shopPos;
+    private String follow_shop_id;
 
     private String tel, shopPhone;
 
     private Chat chat = new Chat();
     private List<Chat> chats = new ArrayList<>();
+    private NailshopData follow_nailshop = new NailshopData();
+    private List<NailshopData> nailshopDataList = new ArrayList<>();
     private static String shopUid = "";
 
     //Todo: 이미지 추가
@@ -125,6 +132,9 @@ public class InfoHomeFragment extends Fragment {
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if(task.isSuccessful()){
                             for (QueryDocumentSnapshot document : task.getResult()){
+                                follow_shop_id = document.getId();
+                                isFollowing(follow_shop_id, btn_scrab);
+
                                 Log.d(TAG, document.getId() + " => " + document.getData());
 //                                txt_title.setText(document.get("shopname").toString());
                                 tv_shopname.setText(document.get("shopname").toString());
@@ -213,6 +223,7 @@ public class InfoHomeFragment extends Fragment {
             }
         });
 
+        // 예약 - 채팅 버튼
         btn_reservation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -223,6 +234,7 @@ public class InfoHomeFragment extends Fragment {
             }
         });
 
+        // 전화걸기 버튼
         btn_call.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -232,6 +244,7 @@ public class InfoHomeFragment extends Fragment {
             }
         });
 
+        // 위치 버튼
         btn_location.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -243,8 +256,50 @@ public class InfoHomeFragment extends Fragment {
             }
         });
 
+        // 팔로우 버튼
+        // TODO : 사용자가 shop일 경우, 스크랩 버튼 없애는 기능 추가
+        btn_scrab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(btn_scrab.getText().toString().equals("follow")){
+                    firebaseDatabase.getReference().child("Follow").child(firebaseAuth.getUid())
+                            .child("following").child(follow_shop_id).setValue(true);
+                    firebaseDatabase.getReference().child("Follow").child(follow_shop_id)
+                            .child("followers").child(firebaseAuth.getUid()).setValue(true);
+                    btn_scrab.setBackgroundResource(R.drawable.bookmark_fill);
+                }
+                else{
+                    firebaseDatabase.getReference().child("Follow").child(firebaseAuth.getUid())
+                            .child("following").child(follow_shop_id).removeValue();
+                    firebaseDatabase.getReference().child("Follow").child(follow_shop_id)
+                            .child("followers").child(firebaseAuth.getUid()).removeValue();
+                    btn_scrab.setBackgroundResource(R.drawable.bookmark_border);
+                }
+            }
+        });
 
         return view;
+    }
+
+    private void isFollowing (final String userid, final Button button){
+        DatabaseReference reference = firebaseDatabase.getReference()
+                .child("Follow").child(firebaseAuth.getCurrentUser().getUid()).child("following");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.child(userid).exists()){
+                    button.setText("following");
+                }
+                else{
+                    button.setText("follow");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     public void setShopInfo(int pos, String shopname, String location, String chatUid){
@@ -267,7 +322,8 @@ public class InfoHomeFragment extends Fragment {
         btn_location = (Button) view.findViewById(R.id.btn_location);
         btn_call = (Button) view.findViewById(R.id.btn_call);
         btn_reservation = (Button) view.findViewById(R.id.btn_reservation);
-        btn_share = (Button) view.findViewById(R.id.btn_share);
+//        btn_share = (Button) view.findViewById(R.id.btn_share);
+        linear_scrab = view.findViewById(R.id.linear_scrab);
 
     }
 }

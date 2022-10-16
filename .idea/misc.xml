@@ -45,6 +45,7 @@
         <entry key="app/src/main/res/layout/activity_start.xml" value="0.335" />
         <entry key="app/src/main/res/layout/activity_store_info.xml" value="0.2543822146216332" />
         <entry key="app/src/main/res/layout/fragment_chat.xml" value="0.2334330910645575" />
+        <entry key="app/src/main/res/layout/fragment_following.xml" value="0.2543822146216332" />
         <entry key="app/src/main/res/layout/fragment_home.xml" value="0.165" />
         <entry key="app/src/main/res/layout/fragment_home_alltab.xml" value="0.2543822146216332" />
         <entry key="app/src/main/res/layout/fragment_home_besttab.xml" value="0.24283882000855067" />

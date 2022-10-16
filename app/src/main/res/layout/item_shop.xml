@@ -14,14 +14,15 @@
         android:id="@+id/linear_bg"
         android:background="@drawable/edge">
 
-        <ImageView
-            android:id="@+id/img_scrab"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="right"
-            android:layout_marginRight="6dp"
-            android:layout_marginTop="6dp"
-            android:src="@drawable/ic_baseline_bookmark_white"/>
+        // 스크랩 버튼 임시 삭제
+<!--        <ImageView-->
+<!--            android:id="@+id/img_scrab"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="right"-->
+<!--            android:layout_marginRight="6dp"-->
+<!--            android:layout_marginTop="6dp"-->
+<!--            android:src="@drawable/ic_baseline_bookmark_white"/>-->
 
     </LinearLayout>
 
