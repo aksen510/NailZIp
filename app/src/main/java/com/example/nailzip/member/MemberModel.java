@@ -1,6 +1,8 @@
 package com.example.nailzip.member;
 
 import android.app.Application;
+
+import android.net.Uri;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -18,9 +20,12 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.UploadTask;
 
 public class MemberModel {
 
@@ -29,6 +34,9 @@ public class MemberModel {
     private Application application;
     private FirebaseAuth firebaseAuth;
     private FirebaseFirestore firestore;
+    private DatabaseReference reference;
+    private Uri imageUri;
+
     private MutableLiveData<FirebaseUser> userMutableLiveData;
     private MutableLiveData<Boolean> isSuccessful;
     private MutableLiveData<Boolean> logoutMutableLiveData;
@@ -113,6 +121,9 @@ public class MemberModel {
     }
 
     public void storeInfo(NailshopData shopAccount){
+        FirebaseUser firebaseUser = firebaseAuth.getCurrentUser();
+        String userId = firebaseUser.getUid();
+
         firestore.collection("users")
                 .document(firebaseAuth.getCurrentUser().getUid())
                 .collection("shopInfo")
@@ -144,6 +155,27 @@ public class MemberModel {
                         Log.e(TAG, "매장 등록 실패2");
                     }
                 });
+
+//        imageUri = Uri.parse(shopAccount.getImg_shop());
+//        FirebaseStorage.getInstance().getReference().child("shopImages").child(userId).putFile(imageUri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+//            @Override
+//            public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+//                @SuppressWarnings("VisibleForTests")
+//                String imageUrl = task.getResult().getDownloadUrl().toString();
+//            }
+//        });
+
+//        reference = FirebaseDatabase.getInstance().getReference().child("ShopUsers").child(userId);
+
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("ShopList");
+
+        reference.child(shopAccount.getUid()).setValue(shopAccount);
+
+//        firestore.collection("shoplist")
+//                .document(firebaseAuth.getCurrentUser().getUid())
+//                .collection("")
+
+
     }
 
     public void login(String email, String password){

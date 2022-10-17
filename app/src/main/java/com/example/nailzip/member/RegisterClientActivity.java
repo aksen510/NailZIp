@@ -61,6 +61,7 @@ public class RegisterClientActivity extends AppCompatActivity {
                         userAccount.setEmail(email);
                         userAccount.setUsername(username);
                         userAccount.setPhonenum(phonenum);
+//                        userAccount.setUid(firebaseAuth.getCurrentUser().getUid());
 
                         final ProgressDialog mDialog = new ProgressDialog(RegisterClientActivity.this);
 

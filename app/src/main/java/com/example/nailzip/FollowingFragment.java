@@ -18,6 +18,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.nailzip.model.NailshopData;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -216,7 +218,11 @@ public class FollowingFragment extends Fragment {
                                     nailshopDataList.add(document.toObject(NailshopData.class));
                                     Log.d(TAG,"리스트 저장 성공 " + position + " : " + nailshopDataList.get(position).getLocation());
 
-                                    customViewHolder.linear_bg.setBackgroundResource(nailshopDataList.get(position).getImg_shop());
+                                    Glide.with(customViewHolder.itemView.getContext())
+                                            .load(nailshopDataList.get(position).img_shop)
+                                            .apply(new RequestOptions().centerInside())
+                                            .into(customViewHolder.img_shop);
+                               //     customViewHolder.img_shop.setBackgroundResource(nailshopDataList.get(position).getImg_shop());
 //            customViewHolder.img_scrab.setImageResource(nailshopDataList.get(position).getImg_scrab());
                                     customViewHolder.tv_shopname.setText(nailshopDataList.get(position).getShopname());
                                     customViewHolder.tv_rating.setText(nailshopDataList.get(position).getRating());
@@ -277,16 +283,17 @@ public class FollowingFragment extends Fragment {
         }
 
         private class CustomViewHolder extends RecyclerView.ViewHolder {
-            private LinearLayout linear_bg;
-            private ImageView img_scrab;
+//            private LinearLayout linear_bg;
+            private ImageView img_shop, img_scrab;
             private TextView tv_shopname, tv_rating, tv_ratingcnt, tv_time, tv_closed, tv_location;
 
 
             public CustomViewHolder(@NonNull View itemView) {
                 super(itemView);
 
-                linear_bg = itemView.findViewById(R.id.linear_bg);
+//                linear_bg = itemView.findViewById(R.id.linear_bg);
 //            img_scrab = itemView.findViewById(R.id.img_scrab);
+                img_shop = itemView.findViewById(R.id.img_shop);
                 tv_shopname = itemView.findViewById(R.id.tv_shopname);
                 tv_rating = itemView.findViewById(R.id.tv_rating);
                 tv_ratingcnt = itemView.findViewById(R.id.tv_ratingcnt);

@@ -77,6 +77,8 @@ public class RegisterShopActivity extends AppCompatActivity {
                         userAccount.setPhonenum(phonenum);
                         userAccount.setShopname(shopname);
 
+//                        userAccount.setUid(firebaseAuth.getCurrentUser().getUid());
+
                         final ProgressDialog mDialog = new ProgressDialog(RegisterShopActivity.this);
 
                         memberViewModel.register(email, pwd, userAccount);

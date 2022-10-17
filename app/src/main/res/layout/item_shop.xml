@@ -5,26 +5,34 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical">
 
-    <LinearLayout
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="200dp"-->
+<!--        android:orientation="vertical"-->
+<!--        android:layout_gravity="center_horizontal"-->
+<!--        android:layout_marginHorizontal="25dp"-->
+<!--        android:id="@+id/linear_bg"-->
+<!--        android:background="@drawable/edge">-->
+
+<!--        // 스크랩 버튼 임시 삭제-->
+<!--&lt;!&ndash;        <ImageView&ndash;&gt;-->
+<!--&lt;!&ndash;            android:id="@+id/img_scrab"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:layout_width="wrap_content"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:layout_height="wrap_content"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:layout_gravity="right"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:layout_marginRight="6dp"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:layout_marginTop="6dp"&ndash;&gt;-->
+<!--&lt;!&ndash;            android:src="@drawable/ic_baseline_bookmark_white"/>&ndash;&gt;-->
+
+<!--    </LinearLayout>-->
+
+    <ImageView
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:orientation="vertical"
         android:layout_gravity="center_horizontal"
         android:layout_marginHorizontal="25dp"
-        android:id="@+id/linear_bg"
-        android:background="@drawable/edge">
-
-        // 스크랩 버튼 임시 삭제
-<!--        <ImageView-->
-<!--            android:id="@+id/img_scrab"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_gravity="right"-->
-<!--            android:layout_marginRight="6dp"-->
-<!--            android:layout_marginTop="6dp"-->
-<!--            android:src="@drawable/ic_baseline_bookmark_white"/>-->
-
-    </LinearLayout>
+        android:id="@+id/img_shop"
+        android:background="@drawable/edge"/>
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -6,6 +6,11 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CALL_PHONE" />
     <uses-permission android:name="android.permission.DIAL_PHONE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.whfREAD_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.CAMERA"/>
+
+
 
     <application
         android:allowBackup="true"
@@ -18,6 +23,16 @@
         android:usesCleartextTraffic="true"
         tools:replace="android:appComponentFactory"
         tools:targetApi="p">
+<!--        <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity"-->
+<!--            android:theme="@Style/Base.Theme.Appcompact"/>-->
+
+        <activity
+            android:name=".PostActivity"
+            android:exported="false">
+            <meta-data
+                android:name="android.app.lib_name"
+                android:value="" />
+        </activity>
         <activity
             android:name=".LocationActivity"
             android:exported="false" />

@@ -1,7 +1,7 @@
 package com.example.nailzip.model;
 
 public class NailshopData {
-    public int img_shop, img_scrab;
+    public String img_shop, img_scrab;
     public String uid, shopname, rating, ratingcnt, time, closed, location;
 
     public String shopphone, memo;
@@ -9,7 +9,7 @@ public class NailshopData {
     public String price_nail;
     public String price_pedi;
 
-    public NailshopData(int img_shop, int img_scrab, String uid, String shopname, String rating, String ratingcnt, String time, String closed, String location, String shopphone, String memo, String price_nail, String price_pedi) {
+    public NailshopData(String img_shop, String img_scrab, String uid, String shopname, String rating, String ratingcnt, String time, String closed, String location, String shopphone, String memo, String price_nail, String price_pedi) {
         this.img_shop = img_shop;
         this.img_scrab = img_scrab;
         this.uid = uid;
@@ -29,19 +29,19 @@ public class NailshopData {
 
     }
 
-    public int getImg_shop() {
+    public String getImg_shop() {
         return img_shop;
     }
 
-    public void setImg_shop(int img_shop) {
+    public void setImg_shop(String img_shop) {
         this.img_shop = img_shop;
     }
 
-    public int getImg_scrab() {
+    public String getImg_scrab() {
         return img_scrab;
     }
 
-    public void setImg_scrab(int img_scrab) {
+    public void setImg_scrab(String img_scrab) {
         this.img_scrab = img_scrab;
     }
 

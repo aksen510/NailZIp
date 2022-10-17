@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import com.example.nailzip.PostActivity;
 import com.example.nailzip.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -100,7 +101,7 @@ public class SettingFragment extends Fragment {
 
         // TODO: 회원정보에 따라 다른 리스트뷰 생성
         final String[] lv1 = {"설정", "찜 목록", "팔로잉", "나의 후기"};
-        final String[] lv2 = {"설정", "찜 목록", "팔로잉", "매장 정보 수정"};
+        final String[] lv2 = {"설정", "찜 목록", "팔로잉", "디자인 추가", "매장 정보 수정"};
         final int image[] = {R.drawable.ic_outline_settings_24, R.drawable.ic_heart_regular,R.drawable.ic_bookmark_regular, R.drawable.ic_pen_to_square_regular};
 
         settings = new ArrayList<>();
@@ -180,6 +181,7 @@ public class SettingFragment extends Fragment {
                             settings.add(new Setting("설정", R.drawable.ic_outline_settings_24));
                             settings.add(new Setting("찜 목록", R.drawable.ic_heart_regular));
                             settings.add(new Setting("팔로잉", R.drawable.ic_baseline_bookmark_border_24));
+                            settings.add(new Setting("디자인 추가", R.drawable.ic_baseline_post_add_24));
                             settings.add(new Setting("매장 정보 수정", R.drawable.ic_pen_to_square_regular));
 
                             lv_mypage = (ListView) view.findViewById(R.id.lv_mypage);
@@ -205,12 +207,15 @@ public class SettingFragment extends Fragment {
                                             break;
                                         case 2:
                                             Toast.makeText(getActivity(), "팔로잉", Toast.LENGTH_SHORT).show();
-//                                            Intent startFollowingFragment = new Intent(getContext(), FollowingFragment.class);
-//                                            startActivity(startFollowingFragment);
                                             isNavigating = true;
                                             Navigation.findNavController(getView()).navigate(R.id.action_settingFragment_to_FollowingFragment);
                                             break;
                                         case 3:
+                                            Toast.makeText(getActivity(), "디자인 추가", Toast.LENGTH_SHORT).show();
+                                            Intent startPostActivity = new Intent(getContext(), PostActivity.class);
+                                            startActivity(startPostActivity);
+                                            break;
+                                        case 4:
                                             Toast.makeText(getActivity(), "매장 정보 수정", Toast.LENGTH_SHORT).show();
                                             break;
                                     }

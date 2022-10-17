@@ -17,6 +17,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.nailzip.model.NailshopData;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -62,7 +64,12 @@ public class NailshopAdapter extends RecyclerView.Adapter<NailshopAdapter.Custom
 
     @Override
     public void onBindViewHolder(@NonNull NailshopAdapter.CustomViewHolder holder, int position) {
-        holder.linear_bg.setBackgroundResource(arrayList.get(position).getImg_shop());
+
+        Glide.with(holder.itemView.getContext())
+                .load(arrayList.get(position).img_shop)
+                .apply(new RequestOptions().centerInside())
+                .into(holder.img_shop);
+//        holder.linear_bg.setBackgroundResource(arrayList.get(position).getImg_shop());
 //        holder.img_scrab.setImageResource(arrayList.get(position).getImg_scrab());
         holder.tv_shopname.setText(arrayList.get(position).getShopname());
         holder.tv_rating.setText(arrayList.get(position).getRating());
@@ -118,15 +125,16 @@ public class NailshopAdapter extends RecyclerView.Adapter<NailshopAdapter.Custom
     public class CustomViewHolder extends RecyclerView.ViewHolder {
 
         private LinearLayout linear_bg;
-        private ImageView img_scrab;
+        private ImageView img_shop, img_scrab;
         private TextView tv_shopname, tv_rating, tv_ratingcnt, tv_time, tv_closed, tv_location;
 
 
         public CustomViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            linear_bg = itemView.findViewById(R.id.linear_bg);
+//            linear_bg = itemView.findViewById(R.id.linear_bg);
 //            img_scrab = itemView.findViewById(R.id.img_scrab);
+            img_shop = itemView.findViewById(R.id.img_shop);
             tv_shopname = itemView.findViewById(R.id.tv_shopname);
             tv_rating = itemView.findViewById(R.id.tv_rating);
             tv_ratingcnt = itemView.findViewById(R.id.tv_ratingcnt);
