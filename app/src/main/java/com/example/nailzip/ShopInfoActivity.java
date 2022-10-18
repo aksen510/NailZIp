@@ -63,7 +63,9 @@ public class ShopInfoActivity extends AppCompatActivity {
         pagerAdapter.addFragment(new InfoHomeFragment(), "HOME");
         pagerAdapter.addFragment(new InfoMenuFragment(), "MENU");
         pagerAdapter.addFragment(new InfoDesignFragment(), "DESIGN");
-        pagerAdapter.addFragment(new InfoReviewFragment(), "REVIEW");
+
+        //TODO : 리뷰 탭 추가
+//        pagerAdapter.addFragment(new InfoReviewFragment(), "REVIEW");
         viewPager.setAdapter(pagerAdapter);
 
         firestore.collection("shoplist")

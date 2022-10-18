@@ -98,6 +98,9 @@ public class NailShopFragment extends Fragment {
 
         init(view);
 
+        //TODO: 네일샵 정렬 기능 추가
+        btn_sort.setVisibility(View.GONE);
+
         FirebaseUser user = firebaseAuth.getCurrentUser();
         String uid = user.getUid();
 

@@ -34,6 +34,7 @@ public class NailshopAdapter extends RecyclerView.Adapter<NailshopAdapter.Custom
     private FragmentStateAdapter fragmentStateAdapter;
     private InfoHomeFragment infoHomeFragment = new InfoHomeFragment();
     private InfoMenuFragment infoMenuFragment = new InfoMenuFragment();
+    private InfoDesignFragment infoDesignFragment = new InfoDesignFragment();
     private ShopInfoActivity shopInfoActivity = new ShopInfoActivity();
     private ChattingroomActivity chattingroomActivity = new ChattingroomActivity();
     private String location = " ";
@@ -94,6 +95,7 @@ public class NailshopAdapter extends RecyclerView.Adapter<NailshopAdapter.Custom
                     shopInfoActivity.setShopInfo(pos, shopname, location, chatUid);
                     chattingroomActivity.setShopInfo(pos, shopname, location, chatUid);
                     infoMenuFragment.setShopInfo(pos, shopname, location, chatUid);
+                    infoDesignFragment.setShopInfo(pos, shopname, location, chatUid);
 
                     Intent startInformation = new Intent(v.getContext(), ShopInfoActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 

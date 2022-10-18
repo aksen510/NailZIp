@@ -89,8 +89,8 @@ public class HomeFragment extends Fragment {
 
         pagerAdapter = new PagerAdapter(getActivity().getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         pagerAdapter.addFragment(new HomeAlltabFragment(), "ALL");
-        pagerAdapter.addFragment(new HomeBesttabFragment(), "BEST");
-        pagerAdapter.addFragment(new HomeNewtabFragment(), "NEW");
+        pagerAdapter.addFragment(new HomeBesttabFragment(), "FOLLOWING");
+//        pagerAdapter.addFragment(new HomeNewtabFragment(), "NEW");
         viewpager.setAdapter(pagerAdapter);
 
         passPushTokenToServer();

@@ -163,6 +163,7 @@ public class InfoHomeFragment extends Fragment {
                         return;
                     }
                 });
+
         // InfoShopfragment에 적용
 //            FirebaseDatabase.getInstance().getReference().child("chatUsers").addValueEventListener(new ValueEventListener() {
 //                @Override
@@ -195,7 +196,7 @@ public class InfoHomeFragment extends Fragment {
 
                     Chat chat = dataSnapshot.getValue(Chat.class);
 
-                    if (chat.chatUid.equals(myUid)){
+                    if (myUid.equals(chat.chatUid)){
                         continue;
                     }
 

@@ -8,7 +8,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.Toolbar;
@@ -53,6 +52,7 @@ public class FollowingFragment extends Fragment {
     private FirebaseRemoteConfig mfirebaseRemoteConfig;
     private InfoHomeFragment infoHomeFragment = new InfoHomeFragment();
     private InfoMenuFragment infoMenuFragment = new InfoMenuFragment();
+    private InfoDesignFragment infoDesignFragment = new InfoDesignFragment();
     private ShopInfoActivity shopInfoActivity = new ShopInfoActivity();
     private ChattingroomActivity chattingroomActivity = new ChattingroomActivity();
     private String location = " ";
@@ -206,6 +206,45 @@ public class FollowingFragment extends Fragment {
             CustomViewHolder customViewHolder = (CustomViewHolder) holder;
             Log.d(TAG, "테스트1");
 
+//            firestore.collection("shoplist")
+//                    .whereEqualTo("shopname", saveFollowingUid.get(position))
+//                    .get()
+//                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                        @Override
+//                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//
+//                            if (task.isSuccessful()){
+//                                for (QueryDocumentSnapshot document : task.getResult()){
+//                                    nailshopDataList.add(document.toObject(NailshopData.class));
+//                                    Log.d(TAG,"리스트 저장 성공 " + position + " : " + nailshopDataList.get(position).getLocation());
+//
+//                                    Glide.with(customViewHolder.itemView.getContext())
+//                                            .load(nailshopDataList.get(position).img_shop)
+//                                            .apply(new RequestOptions().centerInside())
+//                                            .into(customViewHolder.img_shop);
+//                               //     customViewHolder.img_shop.setBackgroundResource(nailshopDataList.get(position).getImg_shop());
+////            customViewHolder.img_scrab.setImageResource(nailshopDataList.get(position).getImg_scrab());
+//                                    customViewHolder.tv_shopname.setText(nailshopDataList.get(position).getShopname());
+//                                    customViewHolder.tv_rating.setText(nailshopDataList.get(position).getRating());
+//                                    customViewHolder.tv_ratingcnt.setText(nailshopDataList.get(position).getRatingcnt());
+//                                    customViewHolder.tv_time.setText(nailshopDataList.get(position).getTime());
+//                                    customViewHolder.tv_closed.setText(nailshopDataList.get(position).getClosed());
+//                                    customViewHolder.tv_location.setText(nailshopDataList.get(position).getLocation());
+//                                }
+//                            }
+//                            else {
+//                                Log.d(TAG,"리스트 저장 실패1");
+//                            }
+//                        }
+//                    })
+//                    .addOnFailureListener(new OnFailureListener() {
+//                        @Override
+//                        public void onFailure(@NonNull Exception e) {
+//                            Log.d(TAG, "리스트 저장 실패2");
+//                        }
+//                    });
+
+
             firestore.collection("shoplist")
                     .whereEqualTo("shopname", saveFollowingUid.get(position))
                     .get()
@@ -222,7 +261,7 @@ public class FollowingFragment extends Fragment {
                                             .load(nailshopDataList.get(position).img_shop)
                                             .apply(new RequestOptions().centerInside())
                                             .into(customViewHolder.img_shop);
-                               //     customViewHolder.img_shop.setBackgroundResource(nailshopDataList.get(position).getImg_shop());
+                                    //     customViewHolder.img_shop.setBackgroundResource(nailshopDataList.get(position).getImg_shop());
 //            customViewHolder.img_scrab.setImageResource(nailshopDataList.get(position).getImg_scrab());
                                     customViewHolder.tv_shopname.setText(nailshopDataList.get(position).getShopname());
                                     customViewHolder.tv_rating.setText(nailshopDataList.get(position).getRating());
@@ -262,6 +301,7 @@ public class FollowingFragment extends Fragment {
                         shopInfoActivity.setShopInfo(pos, shopname, location, chatUid);
                         chattingroomActivity.setShopInfo(pos, shopname, location, chatUid);
                         infoMenuFragment.setShopInfo(pos, shopname, location, chatUid);
+                        infoDesignFragment.setShopInfo(pos,shopname, location, chatUid);
 
                         Intent startInformation = new Intent(v.getContext(), ShopInfoActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
