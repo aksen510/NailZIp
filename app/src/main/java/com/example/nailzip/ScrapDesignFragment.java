@@ -173,9 +173,9 @@ public class ScrapDesignFragment extends Fragment {
 
             Log.d(TAG, "scrapLists: " + scrapLists.get(position));
 
-            DatabaseReference reference  = FirebaseDatabase.getInstance().getReference();
+            DatabaseReference reference  = FirebaseDatabase.getInstance().getReference("Posts");
             posts.clear();
-            reference.child("Posts").child(scrapLists.get(position)).addValueEventListener(new ValueEventListener() {
+            reference.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot snapshot) {
                     posts.clear();
@@ -183,76 +183,18 @@ public class ScrapDesignFragment extends Fragment {
                     for (DataSnapshot item : snapshot.getChildren()){
 //                        posts.add(item.getValue(Post.class));
                         Post postList = item.getValue(Post.class);
-                        posts.add(postList);
+
+                        for (String id : scrapLists){
+                            if(postList.getPostid().equals(id)){
+                                posts.add(postList);
+                            }
+                        }
+//                        posts.add(postList);
 
                         Log.d(TAG, "테스트 : " + postList);
 
                         Log.d(TAG, "포스트 아이디 : " + item.getKey());
 
-                        Glide.with(customViewHolder.itemView.getContext())
-                                .load(posts.get(position).getPostimage())
-                                .apply(new RequestOptions().centerInside())
-                                .into(customViewHolder.img_design);
-                        Log.d(TAG, "이미지 링크 : " + posts.get(position).getPostimage());
-
-                        if(posts.get(position).getDescription().equals("")){
-                            customViewHolder.txt_description.setVisibility(View.GONE);
-                        }
-                        else{
-                            customViewHolder.txt_description.setVisibility(View.VISIBLE);
-                            customViewHolder.txt_description.setText(posts.get(position).getDescription());
-                        }
-
-                        shopInfo(customViewHolder.img_profile, customViewHolder.txt_shopname, customViewHolder.txt_shopname_inPost, posts.get(position).getPublisher());
-
-                        isScrap(posts.get(position).getPostid(), customViewHolder.btn_post_scrap);
-
-
-
-                        // 팔로우 버튼
-                        // TODO : 스크랩버튼, 예약버튼 추가
-
-                        FirebaseDatabase.getInstance().getReference().child("ScrapDesign").child(firebaseUser.getUid()).child("scraping").addValueEventListener(new ValueEventListener() {
-                            @Override
-                            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                for (DataSnapshot item : snapshot.getChildren()){
-//                    saveFollowingUid.add(item.getValue().toString());
-                                    String saveScrapPostUid = item.getKey();
-                                    Log.d(TAG, "포스트 아이디 : " + saveScrapPostUid);
-
-                                    if (posts.get(position).getPostid().equals(saveScrapPostUid)){
-                                        customViewHolder.btn_post_scrap.setBackgroundResource(R.drawable.bookmark_fill);
-                                    }
-
-                                }
-                            }
-
-                            @Override
-                            public void onCancelled(@NonNull DatabaseError error) {
-                                Log.d(TAG, "error");
-
-                            }
-                        });
-
-                        customViewHolder.btn_post_scrap.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                if(customViewHolder.btn_post_scrap.getText().toString().equals("scrap")){
-                                    firebaseDatabase.getReference().child("ScrapDesign").child(firebaseAuth.getUid())
-                                            .child("scraping").child(posts.get(position).getPostid()).setValue(posts.get(position).getPublisher());
-//                    firebaseDatabase.getReference().child("Follow").child(follow_shop_id)
-//                            .child("followers").child(firebaseAuth.getUid()).setValue(true);
-                                    customViewHolder.btn_post_scrap.setBackgroundResource(R.drawable.bookmark_fill);
-                                }
-                                else{
-                                    firebaseDatabase.getReference().child("ScrapDesign").child(firebaseAuth.getUid())
-                                            .child("scraping").child(posts.get(position).getPostid()).removeValue();
-//                    firebaseDatabase.getReference().child("Follow").child(follow_shop_id)
-//                            .child("followers").child(firebaseAuth.getUid()).removeValue();
-                                    customViewHolder.btn_post_scrap.setBackgroundResource(R.drawable.bookmark_border);
-                                }
-                            }
-                        });
 
                     }
 
@@ -264,6 +206,71 @@ public class ScrapDesignFragment extends Fragment {
 
                 }
             });
+
+//            Glide.with(customViewHolder.itemView.getContext())
+//                    .load(posts.get(position).getPostimage())
+//                    .apply(new RequestOptions().centerInside())
+//                    .into(customViewHolder.img_design);
+//            Log.d(TAG, "이미지 링크 : " + posts.get(position).getPostimage());
+//
+//            if(posts.get(position).getDescription().equals("")){
+//                customViewHolder.txt_description.setVisibility(View.GONE);
+//            }
+//            else{
+//                customViewHolder.txt_description.setVisibility(View.VISIBLE);
+//                customViewHolder.txt_description.setText(posts.get(position).getDescription());
+//            }
+//
+//            shopInfo(customViewHolder.img_profile, customViewHolder.txt_shopname, customViewHolder.txt_shopname_inPost, posts.get(position).getPublisher());
+//
+//            isScrap(posts.get(position).getPostid(), customViewHolder.btn_post_scrap);
+//
+//
+//
+//            // 팔로우 버튼
+//            // TODO : 스크랩버튼, 예약버튼 추가
+//
+//            FirebaseDatabase.getInstance().getReference().child("ScrapDesign").child(firebaseUser.getUid()).child("scraping").addValueEventListener(new ValueEventListener() {
+//                @Override
+//                public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                    for (DataSnapshot item : snapshot.getChildren()){
+////                    saveFollowingUid.add(item.getValue().toString());
+//                        String saveScrapPostUid = item.getKey();
+//                        Log.d(TAG, "포스트 아이디 : " + saveScrapPostUid);
+//
+//                        if (posts.get(position).getPostid().equals(saveScrapPostUid)){
+//                            customViewHolder.btn_post_scrap.setBackgroundResource(R.drawable.bookmark_fill);
+//                        }
+//
+//                    }
+//                }
+//
+//                @Override
+//                public void onCancelled(@NonNull DatabaseError error) {
+//                    Log.d(TAG, "error");
+//
+//                }
+//            });
+//
+//            customViewHolder.btn_post_scrap.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    if(customViewHolder.btn_post_scrap.getText().toString().equals("scrap")){
+//                        firebaseDatabase.getReference().child("ScrapDesign").child(firebaseAuth.getUid())
+//                                .child("scraping").child(posts.get(position).getPostid()).setValue(posts.get(position).getPublisher());
+////                    firebaseDatabase.getReference().child("Follow").child(follow_shop_id)
+////                            .child("followers").child(firebaseAuth.getUid()).setValue(true);
+//                        customViewHolder.btn_post_scrap.setBackgroundResource(R.drawable.bookmark_fill);
+//                    }
+//                    else{
+//                        firebaseDatabase.getReference().child("ScrapDesign").child(firebaseAuth.getUid())
+//                                .child("scraping").child(posts.get(position).getPostid()).removeValue();
+////                    firebaseDatabase.getReference().child("Follow").child(follow_shop_id)
+////                            .child("followers").child(firebaseAuth.getUid()).removeValue();
+//                        customViewHolder.btn_post_scrap.setBackgroundResource(R.drawable.bookmark_border);
+//                    }
+//                }
+//            });
 
 //            reference.child("Posts").child(scrapLists.get(position)).addListenerForSingleValueEvent(new ValueEventListener() {
 //                @Override
