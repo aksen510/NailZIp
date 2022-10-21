@@ -87,7 +87,7 @@ public class HomeFragment extends Fragment {
 
         tablayout.setupWithViewPager(viewpager);
 
-        pagerAdapter = new PagerAdapter(getActivity().getSupportFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+        pagerAdapter = new PagerAdapter(getChildFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         pagerAdapter.addFragment(new HomeAlltabFragment(), "ALL");
         pagerAdapter.addFragment(new HomeBesttabFragment(), "FOLLOWING");
 //        pagerAdapter.addFragment(new HomeNewtabFragment(), "NEW");

@@ -49,8 +49,8 @@ public class InfoHomeFragment extends Fragment {
     private ViewPager viewpager;
     private PagerAdapter pagerAdapter;
     private TextView txt_title, tv_shopname, tv_opentimeInfo, tv_closedInfo, tv_memoInfo;
-    private Button btn_scrab, btn_location, btn_call, btn_reservation, btn_share;
-    private LinearLayout linear_scrab;
+    private Button btn_scrap, btn_location, btn_call, btn_reservation, btn_share;
+    private LinearLayout linear_scrap;
     private static String shopName;
     private static String shopLocation;
     private static String chatUid;
@@ -134,7 +134,7 @@ public class InfoHomeFragment extends Fragment {
                         if(task.isSuccessful()){
                             for (QueryDocumentSnapshot document : task.getResult()){
                                 follow_shop_id = document.getId();
-                                isFollowing(follow_shop_id, btn_scrab);
+                                isFollowing(follow_shop_id, btn_scrap);
                                 follow_shop_name = document.get("shopname").toString();
 //                                isFollowing(follow_shop_name,btn_scrab);
 
@@ -272,7 +272,7 @@ public class InfoHomeFragment extends Fragment {
                     Log.d(TAG, "네일샵 이름 : " + saveFollowingUid);
 
                     if (shopName.equals(saveFollowingUid)){
-                        btn_scrab.setBackgroundResource(R.drawable.bookmark_fill);
+                        btn_scrap.setBackgroundResource(R.drawable.bookmark_fill);
                     }
 
                 }
@@ -286,22 +286,22 @@ public class InfoHomeFragment extends Fragment {
         });
 
 
-        btn_scrab.setOnClickListener(new View.OnClickListener() {
+        btn_scrap.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(btn_scrab.getText().toString().equals("follow")){
+                if(btn_scrap.getText().toString().equals("follow")){
                     firebaseDatabase.getReference().child("Follow").child(firebaseAuth.getUid())
                             .child("following").child(follow_shop_id).setValue(follow_shop_name);
                     firebaseDatabase.getReference().child("Follow").child(follow_shop_id)
                             .child("followers").child(firebaseAuth.getUid()).setValue(true);
-                    btn_scrab.setBackgroundResource(R.drawable.bookmark_fill);
+                    btn_scrap.setBackgroundResource(R.drawable.bookmark_fill);
                 }
                 else{
                     firebaseDatabase.getReference().child("Follow").child(firebaseAuth.getUid())
                             .child("following").child(follow_shop_id).removeValue();
                     firebaseDatabase.getReference().child("Follow").child(follow_shop_id)
                             .child("followers").child(firebaseAuth.getUid()).removeValue();
-                    btn_scrab.setBackgroundResource(R.drawable.bookmark_border);
+                    btn_scrap.setBackgroundResource(R.drawable.bookmark_border);
                 }
             }
         });
@@ -346,12 +346,12 @@ public class InfoHomeFragment extends Fragment {
         tv_opentimeInfo = (TextView) view.findViewById(R.id.tv_opentimeInfo);
         tv_closedInfo = (TextView) view.findViewById(R.id.tv_closedInfo);
         tv_memoInfo = (TextView) view.findViewById(R.id.tv_memoInfo);
-        btn_scrab = (Button) view.findViewById(R.id.btn_scrab);
+        btn_scrap = (Button) view.findViewById(R.id.btn_scrap);
         btn_location = (Button) view.findViewById(R.id.btn_location);
         btn_call = (Button) view.findViewById(R.id.btn_call);
         btn_reservation = (Button) view.findViewById(R.id.btn_reservation);
 //        btn_share = (Button) view.findViewById(R.id.btn_share);
-        linear_scrab = view.findViewById(R.id.linear_scrab);
+        linear_scrap = view.findViewById(R.id.linear_scrap);
 
     }
 }

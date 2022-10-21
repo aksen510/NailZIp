@@ -38,9 +38,14 @@
         android:name="com.example.nailzip.mypage.SettingFragment"
         android:label="fragment_setting"
         tools:layout="@layout/fragment_setting" >
+
         <action
             android:id="@+id/action_settingFragment_to_FollowingFragment"
             app:destination="@+id/setting_following"/>
+
+        <action
+            android:id="@+id/action_settingFragment_to_ScrapDesignFragment"
+            app:destination="@+id/setting_scrapDesign"/>
     </fragment>
 
     <fragment
@@ -50,6 +55,16 @@
         tools:layout="@layout/fragment_following">
         <action
             android:id="@+id/action_followingFragment_to_settingFragment"
+            app:destination="@+id/menu_setting"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/setting_scrapDesign"
+        android:name="com.example.nailzip.ScrapDesignFragment"
+        android:label="fragment_scrap_design"
+        tools:layout="@layout/fragment_scrap_design">
+        <action
+            android:id="@+id/action_scrapDesignFragment_to_settingFragment"
             app:destination="@+id/menu_setting"/>
     </fragment>
 

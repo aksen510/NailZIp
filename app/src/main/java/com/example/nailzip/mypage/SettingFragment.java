@@ -100,8 +100,8 @@ public class SettingFragment extends Fragment {
         String uid = user.getEmail();
 
         // TODO: 회원정보에 따라 다른 리스트뷰 생성
-        final String[] lv1 = {"설정",  "팔로잉"};
-        final String[] lv2 = {"설정",  "팔로잉", "디자인 추가"};
+        final String[] lv1 = {"설정", "저장된 디자인", "팔로잉"};
+        final String[] lv2 = {"설정", "저장된 디자인", "팔로잉", "디자인 추가"};
         final int image[] = {R.drawable.ic_outline_settings_24, R.drawable.ic_heart_regular,R.drawable.ic_bookmark_regular, R.drawable.ic_pen_to_square_regular};
 
         settings = new ArrayList<>();
@@ -136,7 +136,7 @@ public class SettingFragment extends Fragment {
 
                         if(position.equals("0")){
                             settings.add(new Setting("설정", R.drawable.ic_outline_settings_24));
-//                            settings.add(new Setting("찜 목록", R.drawable.ic_heart_regular));
+                            settings.add(new Setting("저장된 디자인", R.drawable.ic_heart_regular));
                             settings.add(new Setting("팔로잉", R.drawable.ic_baseline_bookmark_border_24));
 //                            settings.add(new Setting("나의 후기", R.drawable.ic_pen_to_square_regular));
 
@@ -158,10 +158,12 @@ public class SettingFragment extends Fragment {
                                             Intent startChangepwActivity = new Intent(getContext(), SettingEditInfoActivity.class);
                                             startActivity(startChangepwActivity);
                                             break;
-//                                        case 1:
-//                                            Toast.makeText(getActivity(), "찜목록", Toast.LENGTH_SHORT).show();
-//                                            break;
                                         case 1:
+                                            Toast.makeText(getActivity(), "저장된 디자인", Toast.LENGTH_SHORT).show();
+                                            isNavigating = true;
+                                            Navigation.findNavController(getView()).navigate(R.id.action_settingFragment_to_ScrapDesignFragment);
+                                            break;
+                                        case 2:
                                             Toast.makeText(getActivity(), "팔로잉", Toast.LENGTH_SHORT).show();
 //                                            Intent startFollowingFragment = new Intent(getContext(), FollowingFragment.class);
 //                                            startActivity(startFollowingFragment);
@@ -179,7 +181,7 @@ public class SettingFragment extends Fragment {
                         }
                         else{
                             settings.add(new Setting("설정", R.drawable.ic_outline_settings_24));
-//                            settings.add(new Setting("찜 목록", R.drawable.ic_heart_regular));
+                            settings.add(new Setting("저장된 디자인", R.drawable.ic_heart_regular));
                             settings.add(new Setting("팔로잉", R.drawable.ic_baseline_bookmark_border_24));
                             settings.add(new Setting("디자인 추가", R.drawable.ic_baseline_post_add_24));
 //                            settings.add(new Setting("매장 정보 수정", R.drawable.ic_pen_to_square_regular));
@@ -202,15 +204,17 @@ public class SettingFragment extends Fragment {
                                             Intent startChangepwActivity = new Intent(getContext(), SettingEditInfoActivity.class);
                                             startActivity(startChangepwActivity);
                                             break;
-//                                        case 1:
-//                                            Toast.makeText(getActivity(), "찜목록", Toast.LENGTH_SHORT).show();
-//                                            break;
                                         case 1:
+                                            Toast.makeText(getActivity(), "저장된 디자인", Toast.LENGTH_SHORT).show();
+                                            isNavigating = true;
+                                            Navigation.findNavController(getView()).navigate(R.id.action_settingFragment_to_ScrapDesignFragment);
+                                            break;
+                                        case 2:
                                             Toast.makeText(getActivity(), "팔로잉", Toast.LENGTH_SHORT).show();
                                             isNavigating = true;
                                             Navigation.findNavController(getView()).navigate(R.id.action_settingFragment_to_FollowingFragment);
                                             break;
-                                        case 2:
+                                        case 3:
                                             Toast.makeText(getActivity(), "디자인 추가", Toast.LENGTH_SHORT).show();
                                             Intent startPostActivity = new Intent(getContext(), PostActivity.class);
                                             startActivity(startPostActivity);

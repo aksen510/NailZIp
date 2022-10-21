@@ -127,7 +127,7 @@ public class NailshopAdapter extends RecyclerView.Adapter<NailshopAdapter.Custom
     public class CustomViewHolder extends RecyclerView.ViewHolder {
 
         private LinearLayout linear_bg;
-        private ImageView img_shop, img_scrab;
+        private ImageView img_shop, img_scrap;
         private TextView tv_shopname, tv_rating, tv_ratingcnt, tv_time, tv_closed, tv_location;
 
 

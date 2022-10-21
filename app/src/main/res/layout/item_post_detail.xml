@@ -60,7 +60,7 @@
             android:padding="8dp">
 
             <Button
-                android:id="@+id/btn_post_scrab"
+                android:id="@+id/btn_post_scrap"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_alignParentEnd="true"

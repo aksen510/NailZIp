@@ -255,7 +255,7 @@ public class FollowingFragment extends Fragment {
                             if (task.isSuccessful()){
                                 for (QueryDocumentSnapshot document : task.getResult()){
                                     nailshopDataList.add(document.toObject(NailshopData.class));
-                                    Log.d(TAG,"리스트 저장 성공 " + position + " : " + nailshopDataList.get(position).getLocation());
+                                 //   Log.d(TAG,"리스트 저장 성공 " + position + " : " + nailshopDataList.get(position).getLocation());
 
                                     Glide.with(customViewHolder.itemView.getContext())
                                             .load(nailshopDataList.get(position).img_shop)
@@ -324,7 +324,7 @@ public class FollowingFragment extends Fragment {
 
         private class CustomViewHolder extends RecyclerView.ViewHolder {
 //            private LinearLayout linear_bg;
-            private ImageView img_shop, img_scrab;
+            private ImageView img_shop, img_scrap;
             private TextView tv_shopname, tv_rating, tv_ratingcnt, tv_time, tv_closed, tv_location;
 
 

@@ -18,8 +18,11 @@ import com.example.nailzip.model.NailshopData;
 import com.example.nailzip.model.Post;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -36,6 +39,14 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
 
     private FirebaseUser firebaseUser;
     private String saveShopname;
+
+    //스크랩
+    private String scrap_design_id;
+    private String scrap_post_shop_name;
+
+    private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
+    private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
+    private FirebaseDatabase firebaseDatabase = FirebaseDatabase.getInstance();
 
     public PostAdapter(Context mContext, List<Post> mPost) {
         this.mContext = mContext;
@@ -69,54 +80,78 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
         Log.d(TAG, "게시글 작성자 정보 : " + post.getPublisher());
         shopInfo(holder.img_profile, holder.txt_shopname, holder.txt_shopname_inPost, post.getPublisher());
 
+        isScrap(post.getPostid(), holder.btn_post_scrap);
 
-        // 팔로우 버튼
-        // TODO : 스크랩버튼, 예약버튼 추가
+        // TODO : 예약버튼 추가
 
-//        FirebaseDatabase.getInstance().getReference().child("Follow").child(firebaseUser.getUid()).child("following").addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                for (DataSnapshot item : snapshot.getChildren()){
-////                    saveFollowingUid.add(item.getValue().toString());
-//                    String saveFollowingUid = item.getValue().toString();
-//                    Log.d(TAG, "네일샵 이름 : " + saveFollowingUid);
-//
-//                    if (holder.txt_shopname.equals(saveFollowingUid)){
-//                        btn_scrab.setBackgroundResource(R.drawable.bookmark_fill);
-//                    }
-//
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//                Log.d(TAG, "error");
-//
-//            }
-//        });
-//
+        // 스크랩 버튼
+        FirebaseDatabase.getInstance().getReference().child("ScrapDesign").child(firebaseUser.getUid()).child("scraping").addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot item : snapshot.getChildren()){
+//                    saveFollowingUid.add(item.getValue().toString());
+                    String saveScrapPostUid = item.getKey();
+                    Log.d(TAG, "포스트 아이디 : " + saveScrapPostUid);
 
-//        holder.btn_post_scrab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                if(btn_scrab.getText().toString().equals("follow")){
-//                    firebaseDatabase.getReference().child("Follow").child(firebaseAuth.getUid())
-//                            .child("following").child(follow_shop_id).setValue(follow_shop_name);
+                    if (post.getPostid().equals(saveScrapPostUid)){
+                        holder.btn_post_scrap.setBackgroundResource(R.drawable.bookmark_fill);
+                    }
+
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+                Log.d(TAG, "error");
+
+            }
+        });
+
+        holder.btn_post_scrap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(holder.btn_post_scrap.getText().toString().equals("scrap")){
+                    firebaseDatabase.getReference().child("ScrapDesign").child(firebaseAuth.getUid())
+                            .child("scraping").child(post.getPostid()).setValue(post.getPublisher());
 //                    firebaseDatabase.getReference().child("Follow").child(follow_shop_id)
 //                            .child("followers").child(firebaseAuth.getUid()).setValue(true);
-//                    btn_scrab.setBackgroundResource(R.drawable.bookmark_fill);
-//                }
-//                else{
-//                    firebaseDatabase.getReference().child("Follow").child(firebaseAuth.getUid())
-//                            .child("following").child(follow_shop_id).removeValue();
+                    holder.btn_post_scrap.setBackgroundResource(R.drawable.bookmark_fill);
+                }
+                else{
+                    firebaseDatabase.getReference().child("ScrapDesign").child(firebaseAuth.getUid())
+                            .child("scraping").child(post.getPostid()).removeValue();
 //                    firebaseDatabase.getReference().child("Follow").child(follow_shop_id)
 //                            .child("followers").child(firebaseAuth.getUid()).removeValue();
-//                    btn_scrab.setBackgroundResource(R.drawable.bookmark_border);
-//                }
-//            }
-//        });
+                    holder.btn_post_scrap.setBackgroundResource(R.drawable.bookmark_border);
+                }
+            }
+        });
 
     }
+
+    private void isScrap (final String postid, final Button button){
+
+
+        DatabaseReference reference = firebaseDatabase.getReference()
+                .child("ScrapDesign").child(firebaseAuth.getCurrentUser().getUid()).child("scraping");
+        reference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if(snapshot.child(postid).exists()){
+                    button.setText("scraping");
+                }
+                else{
+                    button.setText("scrap");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
 
     @Override
     public int getItemCount() {
@@ -126,7 +161,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
     public class ViewHolder extends RecyclerView.ViewHolder{
 
         public ImageView img_profile, img_design;
-        public Button btn_post_scrab, btn_reservation;
+        public Button btn_post_scrap, btn_reservation;
         public TextView txt_shopname, txt_shopname_inPost, txt_description;
 
         public ViewHolder(@NonNull View itemView){
@@ -134,7 +169,7 @@ public class PostAdapter extends RecyclerView.Adapter<PostAdapter.ViewHolder>{
 
             img_profile = itemView.findViewById(R.id.post_img_profile);
             img_design = itemView.findViewById(R.id.img_design);
-            btn_post_scrab = itemView.findViewById(R.id.btn_post_scrab);
+            btn_post_scrap = itemView.findViewById(R.id.btn_post_scrap);
             btn_reservation = itemView.findViewById(R.id.btn_reservation);
             txt_shopname = itemView.findViewById(R.id.txt_shopname);
             txt_shopname_inPost = itemView.findViewById(R.id.txt_shopname_inPost);
