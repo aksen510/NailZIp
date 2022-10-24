@@ -68,6 +68,11 @@ public class StartActivity extends AppCompatActivity {
                     return;
                 }
 
+                if(password.length() < 6){
+                    Toast.makeText(StartActivity.this, "6글자 이상으로 다시 입력해주세요.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
                 memberViewModel.login(email, password);
 
 //                Intent starMainActivity = new Intent(StartActivity.this, MainActivity.class);

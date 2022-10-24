@@ -54,40 +54,44 @@ public class RegisterClientActivity extends AppCompatActivity {
                     return;
                 }
                 else {
-                    if(pwd.equals(pwdcheck)){
+                    if(pwd.equals(pwdcheck)) {
+                        if (pwd.length() >= 6) {
 
-                        User userAccount = new User();
-                        userAccount.setPosition(0);
-                        userAccount.setEmail(email);
-                        userAccount.setUsername(username);
-                        userAccount.setPhonenum(phonenum);
+                            User userAccount = new User();
+                            userAccount.setPosition(0);
+                            userAccount.setEmail(email);
+                            userAccount.setUsername(username);
+                            userAccount.setPhonenum(phonenum);
 //                        userAccount.setUid(firebaseAuth.getCurrentUser().getUid());
 
-                        final ProgressDialog mDialog = new ProgressDialog(RegisterClientActivity.this);
+                            final ProgressDialog mDialog = new ProgressDialog(RegisterClientActivity.this);
 
-                        memberViewModel.register(email, pwd, userAccount);
-                        mDialog.setMessage("가입중입니다");
-                        mDialog.show();
-                        memberViewModel.getSaveUserInfoMutableLiveData().observe(RegisterClientActivity.this, new Observer<Boolean>() {
-                            @Override
-                            public void onChanged(Boolean aBoolean) {
-                                if (aBoolean) {
-                                    mDialog.dismiss();
-                                    Toast.makeText(RegisterClientActivity.this, "가입 성공", Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent(RegisterClientActivity.this, MainActivity.class);
-                                    startActivity(intent);
+                            memberViewModel.register(email, pwd, userAccount);
+                            mDialog.setMessage("가입중입니다");
+                            mDialog.show();
+                            memberViewModel.getSaveUserInfoMutableLiveData().observe(RegisterClientActivity.this, new Observer<Boolean>() {
+                                @Override
+                                public void onChanged(Boolean aBoolean) {
+                                    if (aBoolean) {
+                                        mDialog.dismiss();
+                                        Toast.makeText(RegisterClientActivity.this, "가입 성공", Toast.LENGTH_SHORT).show();
+                                        Intent intent = new Intent(RegisterClientActivity.this, MainActivity.class);
+                                        startActivity(intent);
 //                                    getSupportFragmentManager().beginTransaction().replace(R.id.menu_home, MainActivity()).commitAllowingStateLoss();
 
-                                }else{
-                                    mDialog.dismiss();
-                                    Toast.makeText(RegisterClientActivity.this, "이미 존재하는 아이디입니다.", Toast.LENGTH_SHORT).show();
-                                    return;
+                                    } else {
+                                        mDialog.dismiss();
+                                        Toast.makeText(RegisterClientActivity.this, "이미 존재하는 아이디입니다.", Toast.LENGTH_SHORT).show();
+                                        return;
+                                    }
                                 }
-                            }
-                        });
-                    }
-                    else{
-                        Toast.makeText(RegisterClientActivity.this, "비밀번호가 일치하지 않습니다. 다시 입력해주세요.", Toast.LENGTH_SHORT).show();
+                            });
+                        } else {
+                            Toast.makeText(RegisterClientActivity.this, "비밀번호가 일치하지 않습니다. 다시 입력해주세요.", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                    }else {
+                        Toast.makeText(RegisterClientActivity.this, "6글자 이상으로 다시 입력해주세요.", Toast.LENGTH_SHORT).show();
                         return;
                     }
                 }

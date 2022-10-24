@@ -68,40 +68,44 @@ public class RegisterShopActivity extends AppCompatActivity {
                     return;
                 }
                 else {
-                    if(pwd.equals(pwdcheck)){
+                    if(pwd.equals(pwdcheck)) {
+                        if (pwd.length() >= 6) {
 
-                        User userAccount = new User();
-                        userAccount.setPosition(1);
-                        userAccount.setEmail(email);
-                        userAccount.setUsername(username);
-                        userAccount.setPhonenum(phonenum);
-                        userAccount.setShopname(shopname);
+                            User userAccount = new User();
+                            userAccount.setPosition(1);
+                            userAccount.setEmail(email);
+                            userAccount.setUsername(username);
+                            userAccount.setPhonenum(phonenum);
+                            userAccount.setShopname(shopname);
 
 //                        userAccount.setUid(firebaseAuth.getCurrentUser().getUid());
 
-                        final ProgressDialog mDialog = new ProgressDialog(RegisterShopActivity.this);
+                            final ProgressDialog mDialog = new ProgressDialog(RegisterShopActivity.this);
 
-                        memberViewModel.register(email, pwd, userAccount);
-                        mDialog.setMessage("가입중입니다");
-                        mDialog.show();
-                        memberViewModel.getSaveUserInfoMutableLiveData().observe(RegisterShopActivity.this, new Observer<Boolean>() {
-                            @Override
-                            public void onChanged(Boolean aBoolean) {
-                                if (aBoolean) {
-                                    mDialog.dismiss();
-                                    Toast.makeText(RegisterShopActivity.this, "가입 성공", Toast.LENGTH_SHORT).show();
-                                    Intent intent = new Intent(RegisterShopActivity.this, StoreInfoActivity.class);
-                                    startActivity(intent);
-                                }else{
-                                    mDialog.dismiss();
-                                    Toast.makeText(RegisterShopActivity.this, "이미 존재하는 아이디입니다.", Toast.LENGTH_SHORT).show();
-                                    return;
+                            memberViewModel.register(email, pwd, userAccount);
+                            mDialog.setMessage("가입중입니다");
+                            mDialog.show();
+                            memberViewModel.getSaveUserInfoMutableLiveData().observe(RegisterShopActivity.this, new Observer<Boolean>() {
+                                @Override
+                                public void onChanged(Boolean aBoolean) {
+                                    if (aBoolean) {
+                                        mDialog.dismiss();
+                                        Toast.makeText(RegisterShopActivity.this, "가입 성공", Toast.LENGTH_SHORT).show();
+                                        Intent intent = new Intent(RegisterShopActivity.this, StoreInfoActivity.class);
+                                        startActivity(intent);
+                                    } else {
+                                        mDialog.dismiss();
+                                        Toast.makeText(RegisterShopActivity.this, "이미 존재하는 아이디입니다.", Toast.LENGTH_SHORT).show();
+                                        return;
+                                    }
                                 }
-                            }
-                        });
-                    }
-                    else{
-                        Toast.makeText(RegisterShopActivity.this, "비밀번호가 일치하지 않습니다. 다시 입력해주세요.", Toast.LENGTH_SHORT).show();
+                            });
+                        } else {
+                            Toast.makeText(RegisterShopActivity.this, "비밀번호가 일치하지 않습니다. 다시 입력해주세요.", Toast.LENGTH_SHORT).show();
+                            return;
+                        }
+                    }else{
+                        Toast.makeText(RegisterShopActivity.this, "6글자 이상으로 다시 입력해주세요.", Toast.LENGTH_SHORT).show();
                         return;
                     }
                 }
