@@ -23,6 +23,7 @@ import com.example.nailzip.model.NailshopData;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -106,6 +107,7 @@ public class FollowingFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_following, container, false);
 
+        hideBottomNavigation(true);
         init(view);
 
         RecyclerView recyclerView = view.findViewById(R.id.followingrecyclerview);
@@ -358,6 +360,15 @@ public class FollowingFragment extends Fragment {
 //        }
 //        return super.onOptionsItemSelected(item);
 //    }
+
+    public void hideBottomNavigation(Boolean bool) {
+        BottomNavigationView bottomNavigation = getActivity().findViewById(R.id.bottom_nav);
+        if (bool == true)
+            bottomNavigation.setVisibility(View.GONE);
+        else
+            bottomNavigation.setVisibility(View.VISIBLE);
+    }
+
 
     public void init(View view) {
 

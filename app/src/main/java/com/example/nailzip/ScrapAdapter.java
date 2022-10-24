@@ -1,6 +1,7 @@
 package com.example.nailzip;
 
 import android.content.Context;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -82,8 +83,6 @@ public class ScrapAdapter extends RecyclerView.Adapter<ScrapAdapter.ViewHolder>{
 
         isScrap(post.getPostid(), holder.btn_post_scrap);
 
-        // TODO : 예약버튼 추가
-
         // 스크랩 버튼
         FirebaseDatabase.getInstance().getReference().child("ScrapDesign").child(firebaseUser.getUid()).child("scraping").addValueEventListener(new ValueEventListener() {
             @Override
@@ -127,11 +126,23 @@ public class ScrapAdapter extends RecyclerView.Adapter<ScrapAdapter.ViewHolder>{
             }
         });
 
+        // TODO : 예약버튼 추가
+        //예약버튼
+        holder.btn_reservation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent chattingroomActivity = new Intent(v.getContext(), ChattingroomActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                chattingroomActivity.putExtra("chatUid", post.getPublisher());
+                Log.d(TAG, "chatUid2 : " + post.getPublisher());
+                v.getContext().startActivity(chattingroomActivity);
+            }
+        });
+
     }
 
     @Override
     public int getItemCount() {
-        return 0;
+        return mPost.size();
     }
 
     private void isScrap (final String postid, final Button button){

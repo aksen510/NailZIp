@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.nailzip.model.Post;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
@@ -95,6 +96,7 @@ public class ScrapDesignFragment extends Fragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_scrap_design, container, false);
 
+        hideBottomNavigation(true);
         init(view);
 
         recyclerView.setHasFixedSize(true);
@@ -156,17 +158,17 @@ public class ScrapDesignFragment extends Fragment {
                 for (DataSnapshot dataSnapshot : snapshot.getChildren()){
                     Post post = dataSnapshot.getValue(Post.class);
 
-                    Log.d(TAG, "Post 저장 성공 : " + scrapList.get(0));
+                    Log.d(TAG, "Post test : " + post.getPostid());
 
                     for(String id : scrapList){
-                        if (post.getPostid().equals(id)){
+                        if (id.equals(post.getPostid())){
                             postList.add(post);
                         }
                     }
 
-//                    Log.d(TAG, "Post 저장 성공 : " + postList.get(0));
-
                 }
+                Log.d(TAG, "Post 저장 성공 : " + postList);
+
 
                 scrapAdapter.notifyDataSetChanged();
             }
@@ -176,6 +178,14 @@ public class ScrapDesignFragment extends Fragment {
 
             }
         });
+    }
+
+    public void hideBottomNavigation(Boolean bool) {
+        BottomNavigationView bottomNavigation = getActivity().findViewById(R.id.bottom_nav);
+        if (bool == true)
+            bottomNavigation.setVisibility(View.GONE);
+        else
+            bottomNavigation.setVisibility(View.VISIBLE);
     }
 
     public void init(View view) {
