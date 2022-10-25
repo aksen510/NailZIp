@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -7,156 +7,173 @@
     android:orientation="vertical"
     tools:context=".InfoReviewFragment">
 
-    <androidx.constraintlayout.widget.Guideline
-        android:id="@+id/guideline1"
-        android:layout_width="wrap_content"
-        android:layout_height="1dp"
-        android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.03" />
-    <ScrollView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.Guideline
+            android:id="@+id/guideline1"
+            android:layout_width="wrap_content"
+            android:layout_height="1dp"
+            android:orientation="horizontal"
+            app:layout_constraintGuide_percent="0.03" />
+        <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/guideline1">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
             <LinearLayout
-                android:id="@+id/linearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginHorizontal="25dp"
-                android:gravity="center_vertical"
                 android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@+id/guideline1">
-
-                <TextView
-                    android:id="@+id/tv_shopname"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginTop="5dp"
-                    android:layout_marginBottom="20dp"
-                    android:text="4.8"
-                    android:textColor="@color/black"
-                    android:textSize="40dp"
-                    android:textStyle="bold" />
+                app:layout_constraintTop_toBottomOf="@id/guideline1">
 
                 <LinearLayout
+                    android:id="@+id/linearLayout"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:orientation="horizontal">
+                    android:layout_marginHorizontal="25dp"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="@+id/guideline1">
 
                     <TextView
-                        android:id="@+id/tv_memoInfo"
+                        android:id="@+id/tv_shopname"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal"
+                        android:layout_marginTop="5dp"
+                        android:layout_marginBottom="20dp"
+                        android:text="4.8"
+                        android:textColor="@color/black"
+                        android:textSize="40dp"
+                        android:textStyle="bold" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:id="@+id/tv_memoInfo"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginRight="5dp"
+                            android:text="(10)"
+                            android:textColor="#727272"
+                            android:textSize="15dp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="horizontal">
+
+                        <androidx.constraintlayout.utils.widget.ImageFilterButton
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:backgroundTint="#00000000"
+                            android:src="@drawable/ic_baseline_star_border_24" />
+
+                        <androidx.constraintlayout.utils.widget.ImageFilterButton
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:backgroundTint="#00000000"
+                            android:src="@drawable/ic_baseline_star_border_24" />
+
+                        <androidx.constraintlayout.utils.widget.ImageFilterButton
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:backgroundTint="#00000000"
+                            android:src="@drawable/ic_baseline_star_border_24" />
+
+                        <androidx.constraintlayout.utils.widget.ImageFilterButton
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:backgroundTint="#00000000"
+                            android:src="@drawable/ic_baseline_star_border_24" />
+
+                        <androidx.constraintlayout.utils.widget.ImageFilterButton
+                            android:layout_width="30dp"
+                            android:layout_height="30dp"
+                            android:backgroundTint="#00000000"
+                            android:src="@drawable/ic_baseline_star_border_24" />
+
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/view_line1"
+                    android:layout_width="match_parent"
+                    android:layout_height="5dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginBottom="20dp"
+                    android:background="#EBEBEB"
+                    app:layout_constraintBottom_toTopOf="@+id/linearlayout4"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
+                <LinearLayout
+                    android:id="@+id/linearlayout4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:orientation="horizontal"
+                    android:layout_marginHorizontal="25dp"
+                    app:layout_constraintBottom_toTopOf="@+id/review_recyclerview"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/view_line1">
+
+                    <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="5dp"
-                        android:text="(10)"
-                        android:textColor="#727272"
-                        android:textSize="15dp" />
+                        android:text="고객 리뷰"
+                        android:textColor="@color/black"
+                        android:textSize="20dp"
+                        android:textStyle="bold" />
 
                 </LinearLayout>
 
-                <LinearLayout
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/review_recyclerview"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:gravity="center"
-                    android:orientation="horizontal">
-
-                    <androidx.constraintlayout.utils.widget.ImageFilterButton
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:backgroundTint="#00000000"
-                        android:src="@drawable/ic_baseline_star_border_24" />
-
-                    <androidx.constraintlayout.utils.widget.ImageFilterButton
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:backgroundTint="#00000000"
-                        android:src="@drawable/ic_baseline_star_border_24" />
-
-                    <androidx.constraintlayout.utils.widget.ImageFilterButton
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:backgroundTint="#00000000"
-                        android:src="@drawable/ic_baseline_star_border_24" />
-
-                    <androidx.constraintlayout.utils.widget.ImageFilterButton
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:backgroundTint="#00000000"
-                        android:src="@drawable/ic_baseline_star_border_24" />
-
-                    <androidx.constraintlayout.utils.widget.ImageFilterButton
-                        android:layout_width="30dp"
-                        android:layout_height="30dp"
-                        android:backgroundTint="#00000000"
-                        android:src="@drawable/ic_baseline_star_border_24" />
-
-
-                </LinearLayout>
-
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="15dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/linearlayout4" />
             </LinearLayout>
 
-            <View
-                android:id="@+id/view_line1"
-                android:layout_width="match_parent"
-                android:layout_height="5dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="20dp"
-                android:background="#EBEBEB"
-                app:layout_constraintBottom_toTopOf="@+id/linearlayout4"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
 
-            <LinearLayout
-                android:id="@+id/linearlayout4"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="left"
-                android:orientation="horizontal"
-                app:layout_constraintBottom_toTopOf="@+id/review_recyclerview"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/view_line1">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="5dp"
-                    android:text="고객 리뷰"
-                    android:textColor="@color/black"
-                    android:textSize="20dp"
-                    android:textStyle="bold" />
-
-            </LinearLayout>
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/review_recyclerview"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginTop="15dp"
-                android:scrollbarFadeDuration="0"
-                android:scrollbarSize="5dp"
-                android:scrollbars="vertical"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/linearlayout4" />
-        </LinearLayout>
+        </ScrollView>
 
 
-    </ScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_fab"
+        android:layout_gravity="end|bottom"
+        android:layout_margin="16dp"
+        app:fabSize="normal"
+        android:elevation="6dp"
+        android:backgroundTint="@color/maincolor"
+        android:src="@drawable/ic_baseline_comment_24"/>
 
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
