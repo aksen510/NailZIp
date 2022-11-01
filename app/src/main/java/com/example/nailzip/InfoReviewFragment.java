@@ -1,5 +1,6 @@
 package com.example.nailzip;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -8,12 +9,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.example.nailzip.mypage.SettingEditInfoActivity;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link InfoReviewFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
 public class InfoReviewFragment extends Fragment {
+
+    private FloatingActionButton btn_fab;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -62,12 +68,23 @@ public class InfoReviewFragment extends Fragment {
 
         init(view);
 
+        btn_fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent startCreateReviewActivity = new Intent(getContext(), CreateReviewActivity.class);
+                startActivity(startCreateReviewActivity);
+            }
+        });
+
 
 
         return view;
     }
 
     public void init(View view){
+        btn_fab = view.findViewById(R.id.btn_fab);
+
+
 
     }
 }
