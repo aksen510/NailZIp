@@ -20,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.nailzip.model.NailshopData;
+import com.example.nailzip.model.Review;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
@@ -27,6 +28,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -62,6 +64,13 @@ public class FollowingFragment extends Fragment {
     private String chatUid = " ";
     private int pos = 0;
     private Toolbar tb_back;
+
+    private String txtShopName = " ";
+    private String shopUid;
+    private List<Review> reviewList = new ArrayList<>();
+    private int reviewcount = 0;
+    private float totalScore = 0;
+    private float reviewScore = 0;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -267,11 +276,82 @@ public class FollowingFragment extends Fragment {
                                     //     customViewHolder.img_shop.setBackgroundResource(nailshopDataList.get(position).getImg_shop());
 //            customViewHolder.img_scrab.setImageResource(nailshopDataList.get(position).getImg_scrab());
                                     customViewHolder.tv_shopname.setText(nailshopDataList.get(position).getShopname());
+                                    txtShopName = nailshopDataList.get(position).getShopname();
                                     customViewHolder.tv_rating.setText(nailshopDataList.get(position).getRating());
                                     customViewHolder.tv_ratingcnt.setText(nailshopDataList.get(position).getRatingcnt());
                                     customViewHolder.tv_time.setText(nailshopDataList.get(position).getTime());
                                     customViewHolder.tv_closed.setText(nailshopDataList.get(position).getClosed());
                                     customViewHolder.tv_location.setText(nailshopDataList.get(position).getLocation());
+
+                                    firestore.collection("users")
+                                            .whereEqualTo("position", 1)
+                                            .whereEqualTo("shopname", txtShopName)
+                                            .get()
+                                            .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                                @Override
+                                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                                    if(task.isSuccessful()){
+                                                        for (QueryDocumentSnapshot document : task.getResult()){
+                                                            shopUid = document.getId();
+                                                            Log.d(TAG, "가져온 아이디" + shopUid);
+
+                                                            DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+
+                                                            reference.child("Review").child(shopUid).child("reviewers").addValueEventListener(new ValueEventListener() {
+                                                                @Override
+                                                                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                                                    reviewList.clear();
+                                                                    totalScore = 0;
+                                                                    reviewcount = 0;
+                                                                    reviewScore = 0;
+                                                                    for (DataSnapshot dataSnapshot : snapshot.getChildren()){
+                                                                        Review review = dataSnapshot.getValue(Review.class);
+                                                                        reviewList.add(review);
+
+                                                                        Log.d(TAG, "Review 저장 성공 : " + reviewList.get(0));
+
+                                                                    }
+                                                                    Log.d(TAG, "리스트 크기 : " + reviewList.size());
+
+                                                                    reviewcount = reviewList.size();
+
+                                                                    for (int i = 0; i<reviewcount; i++){
+                                                                        totalScore = totalScore + reviewList.get(i).reviewPoint;
+                                                                    }
+
+                                                                    customViewHolder.tv_ratingcnt.setText(String.valueOf(reviewcount).toString());
+                                                                    if (reviewcount != 0){
+                                                                        reviewScore = totalScore / reviewcount;
+                                                                    }
+                                                                    else {
+                                                                        reviewScore = 0;
+                                                                    }
+                                                                    customViewHolder.tv_rating.setText(String.valueOf(reviewScore).toString());
+
+                                                                    Log.d(TAG, "총 리뷰 점수 : " + reviewcount + " / " + totalScore + " / " + reviewScore);
+
+
+                                                                }
+
+                                                                @Override
+                                                                public void onCancelled(@NonNull DatabaseError error) {
+
+                                                                }
+                                                            });
+
+                                                        }
+                                                    }
+                                                    else{
+                                                        Log.d(TAG, "아이디 가져오기 실패");
+
+                                                    }
+                                                }
+                                            }).addOnFailureListener(new OnFailureListener() {
+                                                @Override
+                                                public void onFailure(@NonNull Exception e) {
+
+                                                }
+                                            });
                                 }
                             }
                             else {
