@@ -24,30 +24,36 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/guideline1">
 
-        <com.example.nailzip.FontAwesomeTextLight
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:textSize="25sp"
-            android:layout_margin="10dp"
-            android:textColor="@color/black"/>
+<!--        <com.example.nailzip.FontAwesomeTextLight-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:text=""-->
+<!--            android:textSize="25sp"-->
+<!--            android:layout_margin="10dp"-->
+<!--            android:textColor="@color/black"/>-->
 
+<!--        <TextView-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:id="@+id/tv_region"-->
+<!--            android:text="NailShop"-->
+<!--            android:textStyle="bold"-->
+<!--            android:textSize="25dp"-->
+<!--            android:textColor="@color/black"/>-->
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="10dp"
-            android:id="@+id/tv_region"
-            android:text="@string/ex_region"
-            android:textStyle="bold"
-            android:textSize="25dp"
-            android:textColor="@color/black"/>
+            android:text="NailShop"
+            android:textColor="@color/maincolor"
+            android:textSize="30dp"
+            android:textStyle="bold" />
 
-        <androidx.constraintlayout.utils.widget.ImageFilterButton
-            android:id="@+id/btn_region"
-            android:layout_width="25dp"
-            android:layout_height="25dp"
-            android:src="@drawable/ic_round_keyboard_arrow_down_40"
-            android:backgroundTint="#00000000"/>
+<!--        <androidx.constraintlayout.utils.widget.ImageFilterButton-->
+<!--            android:id="@+id/btn_region"-->
+<!--            android:layout_width="25dp"-->
+<!--            android:layout_height="25dp"-->
+<!--            android:src="@drawable/ic_round_keyboard_arrow_down_40"-->
+<!--            android:backgroundTint="#00000000"/>-->
 
     </LinearLayout>
 
@@ -56,33 +62,33 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.1" />
+        app:layout_constraintGuide_percent="0.12" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="25dp"
-        android:layout_marginBottom="10dp"
-        android:orientation="horizontal"
-        android:gravity="right"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline2">
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginHorizontal="25dp"-->
+<!--        android:layout_marginBottom="10dp"-->
+<!--        android:orientation="horizontal"-->
+<!--        android:gravity="right"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toTopOf="@+id/guideline2">-->
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_sort"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="#F3E5F5"
-            android:drawableRight="@drawable/ic_round_keyboard_arrow_down_24"
-            android:text="@string/sort_recommand"
-            android:textColor="@color/black"
-            android:textSize="15dp"
-            android:textStyle="bold"
-            app:cornerRadius="30dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-    </LinearLayout>
+<!--        <com.google.android.material.button.MaterialButton-->
+<!--            android:id="@+id/btn_sort"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:backgroundTint="#F3E5F5"-->
+<!--            android:drawableRight="@drawable/ic_round_keyboard_arrow_down_24"-->
+<!--            android:text="@string/sort_recommand"-->
+<!--            android:textColor="@color/black"-->
+<!--            android:textSize="15dp"-->
+<!--            android:textStyle="bold"-->
+<!--            app:cornerRadius="30dp"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintStart_toStartOf="parent" />-->
+<!--    </LinearLayout>-->
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline3"
@@ -101,6 +107,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/guideline3" />
+        app:layout_constraintTop_toTopOf="@+id/guideline2" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

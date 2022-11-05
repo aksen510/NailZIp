@@ -20,10 +20,22 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.nailzip.model.NailshopData;
+import com.example.nailzip.model.Review;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class NailshopAdapter extends RecyclerView.Adapter<NailshopAdapter.CustomViewHolder> {
     private ArrayList<NailshopData> arrayList;
@@ -35,12 +47,20 @@ public class NailshopAdapter extends RecyclerView.Adapter<NailshopAdapter.Custom
     private InfoHomeFragment infoHomeFragment = new InfoHomeFragment();
     private InfoMenuFragment infoMenuFragment = new InfoMenuFragment();
     private InfoDesignFragment infoDesignFragment = new InfoDesignFragment();
+    private InfoReviewFragment infoReviewFragment = new InfoReviewFragment();
     private ShopInfoActivity shopInfoActivity = new ShopInfoActivity();
     private ChattingroomActivity chattingroomActivity = new ChattingroomActivity();
     private String location = " ";
     private String shopname = " ";
     private String chatUid = " ";
     private int pos = 0;
+
+    private String txtShopName = " ";
+    private String shopUid;
+    private List<Review> reviewList = new ArrayList<>();
+    private int reviewcount = 0;
+    private float totalScore = 0;
+    private float reviewScore = 0;
 
     private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
@@ -65,7 +85,6 @@ public class NailshopAdapter extends RecyclerView.Adapter<NailshopAdapter.Custom
 
     @Override
     public void onBindViewHolder(@NonNull NailshopAdapter.CustomViewHolder holder, int position) {
-
         Glide.with(holder.itemView.getContext())
                 .load(arrayList.get(position).img_shop)
                 .apply(new RequestOptions().centerInside())
@@ -73,11 +92,85 @@ public class NailshopAdapter extends RecyclerView.Adapter<NailshopAdapter.Custom
 //        holder.linear_bg.setBackgroundResource(arrayList.get(position).getImg_shop());
 //        holder.img_scrab.setImageResource(arrayList.get(position).getImg_scrab());
         holder.tv_shopname.setText(arrayList.get(position).getShopname());
+        txtShopName = arrayList.get(position).getShopname();
         holder.tv_rating.setText(arrayList.get(position).getRating());
         holder.tv_ratingcnt.setText(arrayList.get(position).getRatingcnt());
         holder.tv_time.setText(arrayList.get(position).getTime());
         holder.tv_closed.setText(arrayList.get(position).getClosed());
         holder.tv_location.setText(arrayList.get(position).getLocation());
+
+//        findShopUid();
+
+        firestore.collection("users")
+                .whereEqualTo("position", 1)
+                .whereEqualTo("shopname", txtShopName)
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if(task.isSuccessful()){
+                            for (QueryDocumentSnapshot document : task.getResult()){
+                                shopUid = document.getId();
+                                Log.d(TAG, "가져온 아이디" + shopUid);
+
+                                DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
+
+                                reference.child("Review").child(shopUid).child("reviewers").addValueEventListener(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                        reviewList.clear();
+                                        totalScore = 0;
+                                        reviewcount = 0;
+                                        reviewScore = 0;
+                                        for (DataSnapshot dataSnapshot : snapshot.getChildren()){
+                                            Review review = dataSnapshot.getValue(Review.class);
+                                            reviewList.add(review);
+
+                                            Log.d(TAG, "Review 저장 성공 : " + reviewList.get(0));
+
+                                        }
+                                        Log.d(TAG, "리스트 크기 : " + reviewList.size());
+
+                                        reviewcount = reviewList.size();
+
+                                        for (int i = 0; i<reviewcount; i++){
+                                            totalScore = totalScore + reviewList.get(i).reviewPoint;
+                                        }
+
+                                        holder.tv_ratingcnt.setText(String.valueOf(reviewcount).toString());
+                                        if (reviewcount != 0){
+                                            reviewScore = totalScore / reviewcount;
+                                        }
+                                        else {
+                                            reviewScore = 0;
+                                        }
+                                        holder.tv_rating.setText(String.valueOf(reviewScore).toString());
+
+                                        Log.d(TAG, "총 리뷰 점수 : " + reviewcount + " / " + totalScore + " / " + reviewScore);
+
+
+                                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) {
+
+                                    }
+                                });
+
+                            }
+                        }
+                        else{
+                            Log.d(TAG, "아이디 가져오기 실패");
+
+                        }
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+
+                    }
+                });
+
 
         holder.itemView.setTag(position);
         holder.itemView.setOnClickListener(new View.OnClickListener() {
@@ -96,6 +189,7 @@ public class NailshopAdapter extends RecyclerView.Adapter<NailshopAdapter.Custom
                     chattingroomActivity.setShopInfo(pos, shopname, location, chatUid);
                     infoMenuFragment.setShopInfo(pos, shopname, location, chatUid);
                     infoDesignFragment.setShopInfo(pos, shopname, location, chatUid);
+                    infoReviewFragment.setShopInfo(pos, shopname, location, chatUid);
 
                     Intent startInformation = new Intent(v.getContext(), ShopInfoActivity.class).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
@@ -109,6 +203,38 @@ public class NailshopAdapter extends RecyclerView.Adapter<NailshopAdapter.Custom
             }
         });
     }
+
+//    private void findShopUid(){
+
+//        firestore.collection("users")
+//                .whereEqualTo("position", 1)
+//                .whereEqualTo("shopname", txtShopName)
+//                .get()
+//                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                        if(task.isSuccessful()){
+//                            for (QueryDocumentSnapshot document : task.getResult()){
+//                                shopUid = document.getId();
+//                                Log.d(TAG, "가져온 아이디" + shopUid);
+//
+//                            }
+//                        }
+//                        else{
+//                            Log.d(TAG, "아이디 가져오기 실패");
+//
+//                        }
+//                    }
+//                }).addOnFailureListener(new OnFailureListener() {
+//                    @Override
+//                    public void onFailure(@NonNull Exception e) {
+//
+//                    }
+//                });
+
+
+//    }
+
 
     @Override
     public int getItemCount() {

@@ -103,7 +103,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginVertical="5dp"
+            android:layout_marginTop="15dp"
+            android:layout_marginBottom="5dp"
             android:gravity="center_vertical"
             android:orientation="horizontal">
 
@@ -150,7 +151,8 @@
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:background="#EBEBEB"
-        android:layout_marginVertical="10dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginBottom="10dp"
         android:layout_marginHorizontal="25dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -309,43 +311,43 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="25dp"
-        android:layout_marginVertical="20dp"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/view_line2">
+<!--    <LinearLayout-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginHorizontal="25dp"-->
+<!--        android:layout_marginVertical="20dp"-->
+<!--        android:orientation="horizontal"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/view_line2">-->
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginVertical="5dp"
-            android:gravity="center_vertical"
-            android:orientation="horizontal">
+<!--        <LinearLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginVertical="5dp"-->
+<!--            android:gravity="center_vertical"-->
+<!--            android:orientation="horizontal">-->
 
-            <com.example.nailzip.FontAwesomeTextLight
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_vertical"
-                android:layout_marginRight="10dp"
-                android:text=""
-                android:textColor="@color/maincolor"
-                android:textSize="20sp" />
+<!--            <com.example.nailzip.FontAwesomeTextLight-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_gravity="center_vertical"-->
+<!--                android:layout_marginRight="10dp"-->
+<!--                android:text=""-->
+<!--                android:textColor="@color/maincolor"-->
+<!--                android:textSize="20sp" />-->
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/img_title"
-                android:textColor="@color/black"
-                android:textSize="20dp" />
+<!--            <TextView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:text="@string/img_title"-->
+<!--                android:textColor="@color/black"-->
+<!--                android:textSize="20dp" />-->
 
-        </LinearLayout>
+<!--        </LinearLayout>-->
 
 
-    </LinearLayout>
+<!--    </LinearLayout>-->
 
     <!-- Todo: 이미지 추가 -->
 

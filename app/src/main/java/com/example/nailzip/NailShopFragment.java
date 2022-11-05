@@ -99,7 +99,7 @@ public class NailShopFragment extends Fragment {
         init(view);
 
         //TODO: 네일샵 정렬 기능 추가
-        btn_sort.setVisibility(View.GONE);
+//        btn_sort.setVisibility(View.GONE);
 
         FirebaseUser user = firebaseAuth.getCurrentUser();
         String uid = user.getUid();
@@ -143,9 +143,9 @@ public class NailShopFragment extends Fragment {
     }
 
     public void init(View view){
-        tv_region = view.findViewById(R.id.tv_region);
-        btn_region = view.findViewById(R.id.btn_region);
-        btn_sort = view.findViewById(R.id.btn_sort);
+//        tv_region = view.findViewById(R.id.tv_region);
+//        btn_region = view.findViewById(R.id.btn_region);
+//        btn_sort = view.findViewById(R.id.btn_sort);
         recyclerView = view.findViewById(R.id.recyclerview);
     }
 }

@@ -31,7 +31,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/title_chatting"
+                android:text="Chat"
                 android:textColor="@color/maincolor"
                 android:textSize="30dp"
                 android:textStyle="bold" />
@@ -44,7 +44,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.1" />
+        app:layout_constraintGuide_percent="0.12" />
 
     <androidx.appcompat.widget.SearchView
         android:id="@+id/searchview"
@@ -61,7 +61,7 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:orientation="horizontal"
-        app:layout_constraintGuide_percent="0.17" />
+        app:layout_constraintGuide_percent="0.2" />
 
     <View
         android:id="@+id/view_line"
