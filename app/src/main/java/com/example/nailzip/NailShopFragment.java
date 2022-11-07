@@ -10,6 +10,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.SearchView;
 import androidx.constraintlayout.utils.widget.ImageFilterButton;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -44,6 +45,7 @@ public class NailShopFragment extends Fragment {
     private TextView tv_region;
     private ImageFilterButton btn_region;
     private Button btn_sort;
+    private SearchView searchView;
 
     private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
@@ -139,6 +141,21 @@ public class NailShopFragment extends Fragment {
                     }
                 });
 
+//        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+//            @Override
+//            public boolean onQueryTextSubmit(String query) {
+//                return false;
+//            }
+//
+//            @Override
+//            public boolean onQueryTextChange(String newText) {
+//                nailshopAdapter.getFilter().filter(newText);
+//                Log.d(TAG, "검색 test : " + newText);
+//
+//                return false;
+//            }
+//        });
+
         return view;
     }
 
@@ -147,5 +164,7 @@ public class NailShopFragment extends Fragment {
 //        btn_region = view.findViewById(R.id.btn_region);
 //        btn_sort = view.findViewById(R.id.btn_sort);
         recyclerView = view.findViewById(R.id.recyclerview);
+//        searchView = view.findViewById(R.id.searchview);
+
     }
 }

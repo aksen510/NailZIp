@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.SearchView;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -38,6 +39,12 @@ import java.util.TreeMap;
  * create an instance of this fragment.
  */
 public class ChatFragment extends Fragment {
+
+    private String TAG = "ChatFragment";
+
+    private SearchView searchview;
+    private ArrayList<Chat> saveList = new ArrayList<>();
+    private ArrayList<Chat> filteredList = new ArrayList<>();
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -97,6 +104,23 @@ public class ChatFragment extends Fragment {
         recyclerView.setAdapter(new ChatFragmentRecyclerViewAdapter());
         
         mfirebaseRemoteConfig = FirebaseRemoteConfig.getInstance();
+
+//        searchview.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+//            @Override
+//            public boolean onQueryTextSubmit(String query) {
+//                return false;
+//            }
+//
+//            @Override
+//            public boolean onQueryTextChange(String newText) {
+//                ChatFragmentRecyclerViewAdapter chatAdapter = new ChatFragmentRecyclerViewAdapter();
+//
+//                chatAdapter.getFilter().filter(newText);
+//                Log.d(TAG, "검색 테스트 : " + newText);
+//
+//                return false;
+//            }
+//        });
 
 
         return view;
@@ -182,6 +206,8 @@ public class ChatFragment extends Fragment {
                     Chat chat = snapshot.getValue(Chat.class);
                     customViewHolder.tv_title.setText(chat.userName);
 
+                    saveList.add(chat);
+
                 }
 
                 @Override
@@ -219,6 +245,45 @@ public class ChatFragment extends Fragment {
             return chattings.size();
         }
 
+//        //검색기능
+//        public Filter getFilter(){
+//            return exampleFilter;
+//        }
+//
+//        private Filter exampleFilter = new Filter() {
+//            @Override
+//            protected FilterResults performFiltering(CharSequence constraint) {
+//                filteredList.clear();
+//
+//                String filterPattern = constraint.toString().toLowerCase().trim();
+//                Log.d(TAG, "검색 0 : " + filterPattern);
+//
+//                for (Chat item : saveList){
+//                    if (item.getUserName().toLowerCase().contains(filterPattern)){
+//                        filteredList.add(item);
+//                        Log.d(TAG, "검색 1 : " + item);
+//                        Log.d(TAG, "검색 2 : " + filteredList.toString());
+//
+//                    }
+//                }
+//
+//                FilterResults results = new FilterResults();
+//                results.values = filteredList;
+//
+//                return results;
+//            }
+//
+//            //검색 결과 화면 노출
+//            @Override
+//            protected void publishResults(CharSequence constraint, FilterResults results) {
+//                chattings.clear();
+//                chattings.addAll((ArrayList) results.values);
+//                notifyDataSetChanged();
+//
+//            }
+//        };
+
+
         private class CustomViewHolder extends RecyclerView.ViewHolder{
             public ImageView imageView;
             public TextView tv_title, tv_lastMessage, tv_timestamp;
@@ -236,6 +301,7 @@ public class ChatFragment extends Fragment {
     }
 
     public void init(View view){
+//        searchview = view.findViewById(R.id.searchview);
 
     }
 }

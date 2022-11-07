@@ -32,13 +32,13 @@
                 android:layout_marginLeft="25dp"
                 android:src="@drawable/nailzip_logo" />
 
-            <androidx.appcompat.widget.SearchView
-                android:layout_width="match_parent"
-                android:layout_height="40dp"
-                android:layout_marginHorizontal="25dp"
-                android:backgroundTint="#F1F1F1"
-                android:background="@drawable/edge_search"
-                app:searchIcon="@drawable/ic_baseline_search_24"/>
+<!--            <androidx.appcompat.widget.SearchView-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="40dp"-->
+<!--                android:layout_marginHorizontal="25dp"-->
+<!--                android:backgroundTint="#F1F1F1"-->
+<!--                android:background="@drawable/edge_search"-->
+<!--                app:searchIcon="@drawable/ic_baseline_search_24"/>-->
 
         </com.google.android.material.appbar.MaterialToolbar>
     </com.google.android.material.appbar.AppBarLayout>

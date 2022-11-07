@@ -39,6 +39,7 @@ import java.util.List;
 
 public class NailshopAdapter extends RecyclerView.Adapter<NailshopAdapter.CustomViewHolder> {
     private ArrayList<NailshopData> arrayList;
+    private ArrayList<NailshopData> filteredList;
     private String TAG = "NailshopAdapter";
     private Context mContext;
     private Fragment fragment;
@@ -68,6 +69,8 @@ public class NailshopAdapter extends RecyclerView.Adapter<NailshopAdapter.Custom
     public NailshopAdapter(ArrayList<NailshopData> arrayList, Context mContext) {
         this.arrayList = arrayList;
         this.mContext = mContext;
+
+
 //        this.infoHomeFragment = infoHomeFragment;
     }
 
@@ -249,6 +252,43 @@ public class NailshopAdapter extends RecyclerView.Adapter<NailshopAdapter.Custom
             ex.printStackTrace();
         }
     }
+
+//    //검색기능
+//    public Filter getFilter(){
+//        return exampleFilter;
+//    }
+//
+//    private Filter exampleFilter = new Filter() {
+//        @Override
+//        protected FilterResults performFiltering(CharSequence constraint) {
+//            filteredList.clear();
+//
+//            String filterPattern = constraint.toString().toLowerCase().trim();
+//            Log.d(TAG, "검색 0 : " + filterPattern);
+//
+//            for (NailshopData item : arrayList){
+//                if(item.getShopname().toLowerCase().contains(filterPattern)){
+//                    filteredList.add(item);
+//                    Log.d(TAG, "검색 1 : " + item);
+//                    Log.d(TAG, "검색 2 : " + filteredList.toString());
+//
+//                }
+//            }
+//            FilterResults results = new FilterResults();
+//            results.values = filteredList;
+//
+//            return results;
+//        }
+//
+//        @Override
+//        protected void publishResults(CharSequence constraint, FilterResults results) {
+//
+//            arrayList.clear();
+//            arrayList.addAll((ArrayList) results.values);
+//            notifyDataSetChanged();
+//        }
+//    };
+
 
     public class CustomViewHolder extends RecyclerView.ViewHolder {
 
