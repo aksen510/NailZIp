@@ -62,6 +62,7 @@ public class NailshopAdapter extends RecyclerView.Adapter<NailshopAdapter.Custom
     private int reviewcount = 0;
     private float totalScore = 0;
     private float reviewScore = 0;
+    private String score;
 
     private FirebaseFirestore firestore = FirebaseFirestore.getInstance();
     private FirebaseAuth firebaseAuth = FirebaseAuth.getInstance();
@@ -142,7 +143,7 @@ public class NailshopAdapter extends RecyclerView.Adapter<NailshopAdapter.Custom
 
                                         holder.tv_ratingcnt.setText(String.valueOf(reviewcount).toString());
                                         if (reviewcount != 0){
-                                            reviewScore = totalScore / reviewcount;
+                                            reviewScore = (float) (Math.round(totalScore / reviewcount * 10) / 10.0);
                                         }
                                         else {
                                             reviewScore = 0;

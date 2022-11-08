@@ -71,6 +71,7 @@ public class FollowingFragment extends Fragment {
     private int reviewcount = 0;
     private float totalScore = 0;
     private float reviewScore = 0;
+    private String score;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -321,7 +322,7 @@ public class FollowingFragment extends Fragment {
 
                                                                     customViewHolder.tv_ratingcnt.setText(String.valueOf(reviewcount).toString());
                                                                     if (reviewcount != 0){
-                                                                        reviewScore = totalScore / reviewcount;
+                                                                        reviewScore = (float) (Math.round(totalScore / reviewcount * 10) / 10.0);
                                                                     }
                                                                     else {
                                                                         reviewScore = 0;

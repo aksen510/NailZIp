@@ -59,6 +59,7 @@ public class InfoReviewFragment extends Fragment {
     private int reviewcount = 0;
     private float totalScore = 0;
     private float reviewScore = 0;
+    private String score;
 
     private SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy.MM.dd HH:mm");
 
@@ -196,7 +197,7 @@ public class InfoReviewFragment extends Fragment {
 
                 tv_reviewCount.setText("( " + String.valueOf(reviewcount).toString() + " )");
                 if (reviewcount != 0){
-                    reviewScore = totalScore / reviewcount;
+                    reviewScore = (float) (Math.round(totalScore / reviewcount * 10) / 10.0);
                 }
                 else {
                     reviewScore = 0;

@@ -180,10 +180,8 @@ public class HomeBesttabFragment extends Fragment {
                             postList.add(post);
                         }
                     }
-
-//                    Log.d(TAG, "Post 저장 성공 : " + postList.get(0));
-
                 }
+                Log.d(TAG, "Post 저장 성공 : " + postList);
 
                 postAdapter.notifyDataSetChanged();
             }
